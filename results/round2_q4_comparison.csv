@@ -1,0 +1,3 @@
+baseline,candidate,metric,baseline_score,candidate_score,difference,difference_low,difference_high,joint_gain
+distance_behavior,add_fidelity,binary_log_loss,0.49058583882144385,0.4953988045652329,0.004812965743789033,-0.0026910371170084184,0.012437676884988317,False
+distance_behavior,add_fidelity,any_response_brier,0.1556656126257918,0.1566304915891748,0.0009648789633830146,-0.0009303283210096228,0.0028141625880104657,False

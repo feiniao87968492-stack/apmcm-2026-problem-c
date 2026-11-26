@@ -143,6 +143,7 @@ def run(data: Path, output: Path, seed: int, n_boot: int) -> dict:
     shared_fidelity = np.empty((len(CALLS), shared.size))
     alternate_fidelity = {key: np.empty_like(shared_fidelity) for key in WEIGHTS if key != "equal"}
     metric_rows, curves, radii, validation = [], [], [], []
+    metric_means_and_draws = {}
     for call_index, call in enumerate(CALLS):
         arrays = tables[call]
         counts = np.isfinite(arrays).sum(axis=1)
@@ -157,6 +158,7 @@ def run(data: Path, output: Path, seed: int, n_boot: int) -> dict:
                 })
 
         mean_draws = {"independent_metric_rows": bootstrap_means(arrays, n_boot, rng)}
+        metric_means_and_draws[call] = (means, mean_draws["independent_metric_rows"])
         if np.all(np.isnan(arrays) == np.isnan(arrays[:1])):
             mean_draws["aligned_metric_rows_sensitivity"] = bootstrap_means(
                 arrays, n_boot, rng, aligned=True
@@ -216,4 +218,5 @@ def run(data: Path, output: Path, seed: int, n_boot: int) -> dict:
     return {
         "distance": shared, "calls": CALLS, "fidelity": shared_fidelity,
         "draws": shared_draws, "alternate_fidelity": alternate_fidelity,
+        "metric_means_and_draws": metric_means_and_draws,
     }

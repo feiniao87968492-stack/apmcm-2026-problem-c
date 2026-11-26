@@ -6,6 +6,7 @@ import q1
 import q2
 import q3
 import q4
+import round2
 
 
 def main():
@@ -25,6 +26,7 @@ def main():
     propagation = q2.run(args.data, args.output, args.seed + 1, args.bootstrap)
     behavior = q3.run(args.data, args.output, args.seed + 2, args.bootstrap)
     q4.run(propagation, behavior, args.output)
+    round2.run(args.data, args.output, args.seed, args.bootstrap, propagation)
     print(f"Results written to {args.output.resolve()}")
 
 
