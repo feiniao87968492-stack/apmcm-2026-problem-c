@@ -19,6 +19,8 @@ Table 1. Pooled held-out scores with paired recording-group bootstrap intervals.
 The same-fold majority macro F1 was 0.229. The forest gained most on modulated calls and recovered one of 24 two-voice calls, versus two for logistic regression. Its F1 gain missed the prespecified interval criterion. We retain the logistic benchmark and the supplied call labels. Adding median-imputed pulse rate gave 0.316. Pulse rate was absent in all flat calls and in ten other recordings. Availability of F02 alone gave 0.595 because it marks two-voice calls in this dataset. Permuting peak frequency lowered logistic F1 by 0.052 on average, with permutation standard deviation 0.028. These descriptive and predictive results motivate retaining spectral similarity in the propagation analysis. Differences in call function remain hypotheses to assess with playback behavior.
 
 Shallow boosting scored 0.383 in macro F1 and recovered four of 24 two-voice calls. The paired F1 gains were 0.069 versus logistic and 0.014 versus forest. The respective 95\% intervals were $[-0.017,0.126]$ and $[-0.069,0.098]$. Omitting group 14 from scoring gave the largest decrease in the forest-minus-logistic gap (0.023). For boosting versus forest, omitting groups 1 or 11 reversed the ordering. Neither tree model's gap versus logistic reversed on deleting a single group. The paired uncertainty supports retaining the logistic benchmark.
+
+Eleven recording groups contain multiple call classes for the Fpeak omnibus test (Holm-adjusted $p=0.0052$). Flat exceeds modulated by 207 Hz across eight informative groups (95\% group interval 61--292 Hz, adjusted $p=0.0100$) and two-voice by 298 Hz across five groups (151--454 Hz, adjusted $p=0.0052$). Group 14 contributes 84 and 156 Hz to the two pooled contrasts. The modulated versus two-voice interval spans zero and adjusted $p=0.7562$. This is an exploratory association because we selected Fpeak from earlier results.
 \par\begin{center}\begin{minipage}{.92\linewidth}\centering\includegraphics[width=\linewidth]{q1_acoustics.png}\\
 {\small Figure 1. Acoustic summaries, grouped logistic classification and held-out permutation importance.}\end{minipage}\end{center}}
 
@@ -42,6 +44,8 @@ Two-voice has the longest estimated range at 0.40--0.60 under all tested fits. E
 There were 74 pairs with a response only to the natural call, two with a response only to control, 16 with both and 47 with neither. The paired difference is 51.8 percentage points (95\% paired bootstrap interval 43.9--60.1 points). The exact McNemar $p$ value was $7.75\times10^{-20}$ for equality of the observed paired marginal response rates. The fold-mean behavior-mask log loss and any-response Brier score were 1.384 and 0.238 for pooled frequencies, 1.177 and 0.172 for stimulus-specific frequencies, and 1.245 and 0.154 for the full model. Relative to stimulus-specific frequencies, the full model raised mask log loss by 0.068 and lowered Brier by 0.017. It improved Brier in all five folds and both scores in one fold, below the joint adoption criterion. We retain it to describe standardized covariate contrasts and as input to the integrated scenarios. At 50 m and eight observed birds, the adjusted natural-call increment for the vocal-only response to flat calls was 0.134, with an interval of 0.043--0.276. The full combination distribution includes joint responses and baseline controls.
 
 In the nested model sequence, adding distance slightly lowers both scores, with intervals that include zero. Adding assigned call and the stimulus interaction increases both point losses. The Brier change from adding context and group size is $-0.0162$ with 95\% interval $[-0.0271,-0.0041]$. The mask loss changes by $+0.0232$ with interval $[-0.0182,0.0803]$. No block meets the joint criterion. On the same folds, switching from the full multinomial to the two-stage model changes mask log loss from 1.2450 to 1.2660 and Brier from 0.1542 to 0.1626. The paired differences are $+0.0210$ ($[0.0011,0.0359]$) and $+0.0084$ ($[0.0043,0.0122]$).
+
+The pairwise log-linear model has mask loss 1.0947 and any-response Brier 0.1549. Relative to its interaction-free ablation, the respective changes are $-0.0401$ ($[-0.0686,-0.0130]$) and $-0.0089$ ($[-0.0142,-0.0038]$). Relative to the released full model, the mask loss falls by 0.1502 (interval for the change $[-0.4090,-0.0279]$), while the Brier change is $+0.0007$ ($[-0.0064,0.0070]$). The empirical stimulus comparison also has a mask-loss interval that includes zero. We retain the released full model for standardization. Conditional head--vocal and head--approach log odds ratios are 1.08 (0.45--1.69) and 0.90 (0.22--1.65). The vocal--approach interval includes zero.
 \par\begin{center}\begin{minipage}{.87\linewidth}\centering\includegraphics[width=\linewidth]{q3_response_curve.png}\\{\small Figure 3. Adjusted any-response probabilities. Shading shows paired bootstrap intervals for natural stimuli.}\end{minipage}\end{center}
 \begin{center}\small
 \begin{tabular}{lrrr}
@@ -83,6 +87,23 @@ At 20\% loss and 50 m, flat meets both cutoffs under acoustic loss alone and fal
 Adding independently derived fidelity to the binary model on 252 playback rows in the common range changes log loss by $+0.0048$ (95\% paired interval $[-0.0027,0.0124]$) and Brier by $+0.0010$ ($[-0.0009,0.0028]$). The log of one plus distance and call indicators explain 84.3\% of fitted fidelity variation in a descriptive regression. The fidelity covariate is determined by call and distance, so it adds a nonlinear distance basis and stimulus interaction. The operational product can compound distance-related decay already represented by the behavioral response. Its scale measures scenario effectiveness.
 
 Reducing the multinomial to stimulus and distance increases held-out binary log loss from 0.4836 to 0.5091 and Brier from 0.1542 to 0.1663, with paired difference intervals $[-0.0072,0.0587]$ and $[-0.0004,0.0237]$. We retain the full behavior model and keep the simpler curve as a scenario contrast. Under the common cutoff, the reduced clean radii are 93.8 m, at least 150 m and at least 150 m. Under the coupled 20\% loss they are 47.2, 80.8 and 86.1 m. The two-voice change from 116.2 to 86.1 m has a bounded paired interval of $[-80.6,23.6]$ m. Cutoff attainment agrees in 83 of 90 tested cases. Under 20\% loss, the two-voice point estimate switches from above to below both cutoffs at 150 m with acoustic loss alone and at 100 m with coupled loss when using the simpler curve.
+
+The fixed smooth gate yields binary log loss 0.5075 and Brier 0.1634. The respective values are 0.4733 and 0.1478 with $G=1$, and 0.4906 and 0.1557 for the released binary logit. Relative to $G=1$, the fixed gate's Brier increases by 0.0156 (95\% paired interval 0.0021--0.0262). The gate fails the joint adoption rule. Its attenuation is a scenario assumption.
+
+\begin{center}\begin{minipage}{.90\linewidth}\centering\small
+\begin{tabular}{lrrr}
+\toprule
+Call & 50 m & 100 m & 150 m\\
+\midrule
+Flat      & 18.0 / 10.4 & Fail / Fail & Fail / Fail\\
+Modulated & $\ge20$ / $\ge20$ & 9.0 / 5.0 & Fail / Fail\\
+Two-voice & $\ge20$ / $\ge20$ & $\ge20$ / 16.4 & 9.7 / 5.2\\
+\bottomrule
+\end{tabular}\\[3pt]
+Table 5. Loss percentages retaining at least 80\% bootstrap support. Cells give acoustic-only / coupled scenarios. Fail denotes insufficient support in clean conditions. The search ends at 20\%.
+\end{minipage}\end{center}
+
+At 150 m the two-voice acoustic-only point estimate still clears the common cutoff at 20\% loss, with margin 0.0062. Only 58.7\% of draws clear it at that loss. Under coupling, its point limit is 12.2\%, while the 80\% support limit is 5.2\%. These values describe sensitivity to the modeled loss and response link. They quantify conditions for field monitoring under the sampled scenarios.
 
 \par\begin{center}\begin{minipage}{.96\linewidth}\centering\includegraphics[width=\linewidth]{q4_loss_comparison.png}\\{\small Figure 4. The common cutoff and two response assumptions at the same 20\% acoustic loss. Shading shows clean conditional intervals.}\end{minipage}\end{center}}
 
