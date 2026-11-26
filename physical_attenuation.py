@@ -1,4 +1,7 @@
 """Compare attenuation fits and hypothetical acquisition batches."""
+import json
+
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from scipy.optimize import least_squares, isotonic_regression
@@ -162,6 +165,54 @@ def fitted_radius(parameters, threshold):
     return distance, "crossing"
 
 
+def plot_selected(propagation, selected, parameters, draws, seed, output):
+    distance = np.geomspace(4, 256, 401)
+    point = curve(distance, parameters)
+    lower, upper = np.quantile([curve(distance, draw) for draw in draws], [.025, .975], axis=0)
+    fig, axes = plt.subplots(1, 3, figsize=(9.6, 3.2), sharey=True, layout="constrained")
+    records = []
+    for i, (call, label, color) in enumerate(zip(q2.CALLS, ("Flat", "Modulated", "Two-voice"),
+                                                ("#0072B2", "#B34B00", "#007951"))):
+        means, _ = propagation["metric_means_and_draws"][call]
+        observed = equal_means(means)
+        isotonic = q2.interpolated(distance, q2.fit_knots(means, q2.WEIGHTS["equal"]))
+        axis = axes[i]
+        for cutoff in q2.THRESHOLDS[:3]:
+            axis.axhline(cutoff, color=".78", lw=.75, ls=":")
+        axis.fill_between(distance, lower[i], upper[i], color=color, alpha=.19)
+        axis.plot(distance, point[i], color=color, lw=1.8, label="Selected fit")
+        axis.plot(distance, isotonic, color=".32", ls="--", lw=1.2, label="Isotonic")
+        axis.scatter(q2.KNOTS, observed, color=color, edgecolor="white", linewidth=.5,
+                     zorder=4, s=23, label="Observed mean")
+        axis.set(xscale="log", xlim=(4, 256), ylim=(0, 1), title=label, xlabel="Distance (m)")
+        axis.set_xticks([4, 16, 64, 256], ["4", "16", "64", "256"])
+        axis.spines[["top", "right"]].set_visible(False)
+        records.append(pd.DataFrame({"call": call, "mark": "curve", "distance_m": distance,
+                                     "selected_fit": point[i], "lower95": lower[i], "upper95": upper[i],
+                                     "isotonic": isotonic}))
+        records.append(pd.DataFrame({"call": call, "mark": "observed", "distance_m": q2.KNOTS,
+                                     "observed": observed}))
+    axes[0].set_ylabel("Equal-weight fidelity")
+    handles, labels = axes[0].get_legend_handles_labels()
+    fig.legend(handles, labels, loc="outside upper center", ncol=3, frameon=False)
+    fig.savefig(output / "physical_q2_curves.png", dpi=300)
+    plt.close(fig)
+    pd.concat(records, ignore_index=True).to_csv(output / "physical_q2_curves.csv", index=False)
+    metadata = {
+        "model": selected,
+        "sources": ["Data03–Data11", "physical_q2_parameters.csv", "physical_q2_radii.csv"],
+        "thresholds": list(q2.THRESHOLDS[:3]),
+        "interval": "Pointwise 95% percentiles from independent whole-row acoustic resamples.",
+        "replicates": len(draws), "seed": seed, "support_m": [4, 256],
+        "styles": {"selected_fit": "solid", "lower95_upper95": "shading",
+                   "isotonic": "dashed", "observed": "points"},
+    }
+    (output / "physical_q2_curves.meta.json").write_text(json.dumps(metadata, indent=2) + "\n",
+                                                       encoding="utf-8")
+
+
+
+
 def run(data, output, seed, n_boot, propagation, behavior):
     means, original = zip(*(propagation["metric_means_and_draws"][c] for c in q2.CALLS))
     targets = np.array([equal_means(m) for m in means])
@@ -191,4 +242,5 @@ def run(data, output, seed, n_boot, propagation, behavior):
     pd.DataFrame(records).to_csv(output / "physical_q2_radii.csv", index=False)
     boot = np.array([curve(propagation["distance"], sample) for sample in boot_parameters])
     q4_comparison(selected, fits[selected], boot, propagation, behavior, output)
+    plot_selected(propagation, selected, fits[selected], boot_parameters, seed, output)
     return fits[selected], boot_parameters

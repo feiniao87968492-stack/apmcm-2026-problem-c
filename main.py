@@ -8,6 +8,7 @@ import creative_q1
 import creative_q3
 import final_analysis
 import matched_sensitivity
+import noise_agreement
 import noise_scenarios
 import onset_analysis
 import physical_attenuation
@@ -63,6 +64,7 @@ def main():
     )
     noise_scenarios.run(propagation, behavior, date_predictions, parameters, sampled_parameters, args.output)
     onset_analysis.run(args.data, frame, sampled_dates, args.output, args.seed, args.bootstrap)
+    noise_agreement.run(args.output)
     print(f"Results written to {args.output.resolve()}")
 
 

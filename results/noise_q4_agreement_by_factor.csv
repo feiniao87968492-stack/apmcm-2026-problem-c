@@ -1,0 +1,7 @@
+factor,db,first,second,both_pass,both_fail,first_only,second_only
+shape,3,noise_power,matched_uniform,11,21,4,0
+shape,6,noise_power,matched_uniform,4,26,6,0
+link,3,acoustic_only,coupled,11,21,4,0
+link,6,acoustic_only,coupled,4,26,6,0
+resampling,3,expID,date,12,22,2,0
+resampling,6,expID,date,6,28,2,0
