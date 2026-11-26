@@ -22,3 +22,10 @@
 | Leave-one-representation propagation radii | results/round2_q2_radii.csv | Threshold-sensitive scenario with conditional whole-row intervals |
 | Nested playback predictors and two-stage factorization | results/round2_q3_comparison.csv, results/final_q3_comparison.csv | Fixed grouped held-out predictions |
 | Fidelity augmentation and curve simplification | results/round2_q4_comparison.csv, results/round2_q4_collinearity.csv, results/final_q4_comparison.csv, results/final_q4_radii.csv, results/final_q4_cutoff_attainment.csv | Predictive comparisons and operational thresholds over 20?150 m |
+
+| Creative result | Supporting artifact | Scope |
+|---|---|---|
+| Blocked Fpeak rank and paired differences | results/creative_q1_fpeak_tests.csv, results/creative_q1_fpeak_groups.csv | Exploratory within-recording-group association |
+| Pairwise behavior likelihood and ablation | results/creative_q3_comparison.csv, results/creative_q3_interactions.csv | Paired grouped predictive scores and conditional associations |
+| Fixed fidelity gate | results/creative_gate_vs_binary_comparison.csv, results/creative_gate_vs_ungated_comparison.csv, results/creative_gate_representative.csv | Fixed scenario and same-fold prediction within 20–150 m |
+| Inverse loss limits and fixed-distance margins | results/creative_q4_inverse_loss.csv | Operational common-cutoff scenarios with censored loss search |
