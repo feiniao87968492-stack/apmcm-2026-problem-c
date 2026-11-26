@@ -34,3 +34,9 @@
 |---|---|---|
 | Sparse mask contribution and smoothed stimulus comparison | results/posthoc_q3_smoothed_comparison.csv, results/posthoc_q3_focal_contribution.csv | Full-sample grouped prediction and additive score decomposition |
 | Inverse limits by support criterion and behavior model | results/posthoc_q4_inverse_sensitivity.csv | Post hoc sensitivity under a fixed common cutoff |
+
+| Q4 decision finding | Supporting artifact | Scope |
+|---|---|---|
+| Dual and product cutoff decisions | results/decision_q4_dual.csv | Exploratory fixed-distance thresholds and conditional support |
+| Acoustic and behavioral variance shares | results/decision_q4_variance.csv | Independent crossed bootstrap draws and recomputed common reference |
+| Matched-playback allocations and precision | results/decision_q4_trial.csv | Illustrative design under clean marginals and covariance sensitivity |

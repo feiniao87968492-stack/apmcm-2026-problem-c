@@ -21,5 +21,6 @@ The six figures in `results/` each have a same-name CSV and JSON metadata file. 
 - [Final behavior comparisons and recording-group influence](docs/final-followup-results.md)
 - [Creative modeling comparisons and inverse loss limits](docs/creative-results.md)
 - [Post hoc checks on sparse masks and inverse loss](docs/posthoc-results.md)
+- [Q4 decision rules, variance decomposition and trial design](docs/q4-decision-results.md)
 - [Workflow and milestones](workflow.md)
 - [Verification and evidence](gates/final.md)

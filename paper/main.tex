@@ -83,9 +83,11 @@ We test whether independently measured propagation fidelity adds predictive info
 
 The stimulus-and-distance comparison holds the eight-bird reference, propagation estimates, response links, and full model's clean cutoff fixed, including the cutoff in each resample.
 
+For a second decision rule we require both fidelity of at least 0.50 and a natural-minus-control response probability of at least 0.20 after loss. We test differences of 0.10 and 0.30 as sensitivities. We evaluate both the joint rule and the product cutoff in the same draws, and classify a setting as passing when at least 80\% of draws attain its criterion. We also cross all propagation and playback draws in clean conditions and under 20\% coupled loss. For each draw pair we recompute the clean common cutoff and partition the variance of the product-minus-cutoff margin into propagation, behavior, and their interaction.
+
 \IntegratedResults
 
-Prioritize joint acoustic and behavioral monitoring in frequently used foraging areas where vessel routes cross typical contact distances. The 100 and 150 m scenarios identify distances where cutoff attainment depends on disturbance assumptions and the behavior curve. They can guide placement of monitoring stations and comparisons before and after trial quiet periods or route changes. Site-specific vessel limits require measured noise, traffic and behavioral responses. A field test should randomize stimulus order, balance call types and distances across sea conditions, record ambient noise and acquisition identifiers, and record individual behavior where feasible.
+Prioritize joint acoustic and behavioral monitoring in frequently used foraging areas where vessel routes cross typical contact distances. The 100 and 150 m scenarios identify distances where cutoff attainment depends on disturbance assumptions and the behavior curve. They can guide placement of monitoring stations and comparisons before and after trial quiet periods or route changes. Site-specific vessel limits require measured noise, traffic and behavioral responses. A field test should randomize stimulus order, balance call types and distances across sea conditions, record ambient noise and acquisition identifiers, and record individual behavior where feasible. An illustrative two-arm design covers three calls at 100 and 150 m, with noise regime randomized across independent groups and natural/control order counterbalanced within pairs. Within each cell we estimate the elevated-minus-reference difference in the natural-minus-control response gap. Using the clean response probabilities in both arms, its working variance with $m$ pairs per arm is $2[v_{\mathrm{nat}}+v_{\mathrm{ctrl}}-2\operatorname{Cov}(Y_{\mathrm{nat}},Y_{\mathrm{ctrl}})]/m$, where $v$ denotes Bernoulli variance. With 120 pairs and at least five per arm per cell, ten per arm in every cell minimizes the worst variance at zero covariance. The widest normal 95\% half-width is 0.50 on the probability-difference scale, ranging from 0.45 to 0.55 under paired correlations of $+0.25$ and $-0.25$ within feasible Bernoulli bounds. This sample size gives coarse precision for cell-specific noise effects.
 
 \section{Limitations and reproducibility}
 Our sample comes from the supplied recording and playback designs. Sparse responses limit precision, especially for individual behavior combinations and conditional onset times. Propagation and behavior come from separate experiments. Their integrated index and noise scenarios depend on the stated model and environmental assumptions. Extrapolation to other habitats or disturbance regimes requires additional data.
@@ -126,6 +128,7 @@ The commands in the repository README reproduce the figures and tables using the
 \lstinputlisting[caption={Control background and fixed fidelity gate}]{../creative_gate.py}
 \lstinputlisting[caption={Inverse loss scenarios}]{../creative_inverse.py}
 \lstinputlisting[caption={Sparse mask and loss limit checks}]{../post_hoc.py}
+\lstinputlisting[caption={Decision rules, crossed variance and trial allocation}]{../q4_decision.py}
 
 \end{document}
 
