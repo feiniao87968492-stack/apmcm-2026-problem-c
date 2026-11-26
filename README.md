@@ -43,3 +43,4 @@ The seven figures in `results/` each have a same-name CSV and JSON metadata file
 - [WAVERYS and assumed propagation example deletions](docs/example-sensitivity.md)
 - [Missing propagation comparisons](docs/missing-propagation.md)
 - [Group size in playback and Q4](docs/group-size.md)
+- [Vocal counts and contact scenarios](docs/vocal-counts.md)

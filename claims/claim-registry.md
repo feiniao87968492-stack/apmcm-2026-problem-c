@@ -101,3 +101,9 @@
 | Size-stratified contrasts across all pairs and pairs matched on distance and size | results/group_size_pair_contrasts.csv |
 | Out-of-date and track-purged prediction with fixed and estimated size coefficients | results/group_size_strict_folds.csv, results/group_size_strict_scores.csv |
 | Fixed-distance Q4 attainment, responder bounds and local support at 2, 8 and 20 birds | results/group_size_q4.csv, results/group_size_q4_coverage.csv |
+
+| Vocal-count finding | Evidence |
+|---|---|
+| Paired changes and count/flag concordance | results/vocal_count_pairs.csv, results/vocal_count_audit.csv |
+| Strict holdout comparison of count models | results/vocal_count_folds.csv, results/vocal_count_scores.csv |
+| Contact and any-response decisions under the same thresholds | results/vocal_contact_q4.csv, results/vocal_contact_coverage.csv |
