@@ -33,3 +33,7 @@ A two-pass clean-checkout pdflatex build of the revised manuscript reproduced th
 ## Creative modeling evidence
 
 The [frozen specification](../docs/model-spec.md#creative-modeling-freeze) is at b47de34 and the results at 5a00f56. A clean checkout reproduced 68 CSV/JSON files byte-for-byte and six PNGs by decoded pixels. The anonymous manuscript is 45 pages including appendices, with body and references on pages 3–10. See the [numeric review](../reviews/creative-numeric-review.md) and [paper review](../reviews/creative-paper-review.md).
+
+## Post hoc verification
+
+The post hoc checks froze at 43c39e6 and ran at 1ac4bbd. A clean checkout of the revised manuscript and source at c873d45 reproduced 74 CSV/JSON files byte-for-byte and six PNGs by decoded pixels. Two pdflatex passes reproduced the released extracted text and all 47 rendered pages. The team field is blank and the body and references occupy pages 3–10. [Results](../docs/posthoc-results.md) · [Independent numerical verification](../reviews/posthoc-numeric-review.md)
