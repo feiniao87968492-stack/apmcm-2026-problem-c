@@ -2,6 +2,10 @@
 from argparse import ArgumentParser
 from pathlib import Path
 
+import creative_gate
+import creative_inverse
+import creative_q1
+import creative_q3
 import final_analysis
 import q1
 import q2
@@ -29,6 +33,10 @@ def main():
     q4.run(propagation, behavior, args.output)
     round2.run(args.data, args.output, args.seed, args.bootstrap, propagation)
     final_analysis.run(args.data, args.output, args.seed, args.bootstrap, propagation, behavior)
+    creative_q1.run(args.data, args.output, args.seed, args.bootstrap)
+    creative_q3.run(args.data, args.output, args.seed, args.bootstrap)
+    creative_gate.run(args.data, args.output, args.seed, args.bootstrap, propagation)
+    creative_inverse.loss_limits(propagation, behavior, args.output)
     print(f"Results written to {args.output.resolve()}")
 
 

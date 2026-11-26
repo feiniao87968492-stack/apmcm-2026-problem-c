@@ -1,0 +1,3 @@
+baseline,candidate,metric,baseline_score,candidate_score,difference,difference_low,difference_high,joint_gain
+published_binary,smooth_gate,binary_log_loss,0.49058583882144385,0.5074700850581657,0.016884246236721856,-0.018242374195523717,0.05438895679626862,False
+published_binary,smooth_gate,any_response_brier,0.1556656126257918,0.1633511122968553,0.007685499671063523,-0.0033071769803012046,0.018712143436033057,False
