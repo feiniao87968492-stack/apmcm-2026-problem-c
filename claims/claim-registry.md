@@ -158,3 +158,4 @@
 |---|---|
 | 120-pair allocations | results/q4_fisher_allocations.csv |
 | Delta-method standard errors and gains versus uniform | results/q4_fisher_precision.csv |
+| Allocation sensitivity to paired dependence | results/q4_paired_planning_allocations.csv, results/q4_paired_planning_precision.csv, results/q4_paired_planning_summary.csv |

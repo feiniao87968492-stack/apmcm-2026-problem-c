@@ -54,3 +54,4 @@ The seven figures in `results/` each have a same-name CSV and JSON metadata file
 - [Q4 distance deletion diagnosis](docs/distance-deletion.md)
 - [Monte Carlo precision of Q4 distance-deletion decisions](docs/distance-deletion-mc.md)
 - [Fisher planning for three Q4 margins](docs/q4-fisher.md)
+- [Q4 allocation under paired response dependence](docs/q4-paired-planning.md)
