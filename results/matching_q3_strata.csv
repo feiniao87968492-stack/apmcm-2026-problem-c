@@ -1,0 +1,4 @@
+natural_distance,pairs,dates_with_pairs,same_group_size,natural_responses,control_responses,natural_only,control_only,response_difference,date_interval_low,date_interval_high,draws_with_support
+same,49,12,49,33,8,27,2,0.5102040816326531,0.3753359462486002,0.6416572796395381,300
+nearer,52,12,52,38,6,32,0,0.6153846153846154,0.5165945945945946,0.6953555878084179,300
+farther,38,9,36,19,4,15,0,0.39473684210526316,0.24250943396226415,0.5572712418300653,300

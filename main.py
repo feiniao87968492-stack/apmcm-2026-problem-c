@@ -7,6 +7,7 @@ import creative_inverse
 import creative_q1
 import creative_q3
 import final_analysis
+import matched_sensitivity
 import playback_dependence
 import post_hoc
 import q1
@@ -44,7 +45,16 @@ def main():
     creative_inverse.loss_limits(propagation, behavior, args.output)
     post_hoc.inverse_sensitivity(propagation, behavior, reduced, reduced_draws, args.output)
     q4_decision.run(propagation, behavior, args.output)
-    playback_dependence.run(args.data, args.output, args.seed, args.bootstrap, propagation, behavior)
+    frame, sampled_dates, date_predictions = playback_dependence.run(
+        args.data, args.output, args.seed, args.bootstrap, propagation, behavior,
+    )
+    matched_sensitivity.stratified_pairs(frame, sampled_dates).to_csv(
+        args.output / "matching_q3_strata.csv", index=False,
+    )
+    matched_sensitivity.loss_intersection(propagation, behavior, date_predictions).to_csv(
+        args.output / "matching_q4_loss_limits.csv", index=False,
+    )
+    matched_sensitivity.weighted_indices(propagation, behavior, args.output)
     print(f"Results written to {args.output.resolve()}")
 
 

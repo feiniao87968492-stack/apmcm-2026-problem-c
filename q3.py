@@ -290,11 +290,13 @@ def run(data: Path, output: Path, seed: int, n_boot: int) -> dict:
     samples = rng.integers(0, pairs, size=(n_boot, pairs))
     representative_positions = np.searchsorted(distances, REPRESENTATIVE)
     draw_arrays = np.empty((n_boot, 2, len(CALLS), len(distances)))
+    natural_mask_draws = np.empty((n_boot, len(CALLS), len(distances), len(MASKS)))
     mask_draws = np.empty((n_boot, 2, len(CALLS), len(REPRESENTATIVE), len(MASKS)))
     for i, pair_draw in enumerate(samples):
         rows = (2 * pair_draw[:, None] + np.arange(2)).ravel()
         fitted = average_context(fit_masks(x[rows], y[rows], grid_x))
         draw_arrays[i] = 1 - fitted[..., 0]
+        natural_mask_draws[i] = fitted[0]
         mask_draws[i] = fitted[:, :, representative_positions, :]
     if not np.allclose(mask_point.sum(axis=-1), 1) or not np.allclose(mask_draws.sum(axis=-1), 1):
         raise RuntimeError("Predicted behavior probabilities do not sum to one.")
@@ -347,5 +349,6 @@ def run(data: Path, output: Path, seed: int, n_boot: int) -> dict:
         "distance": distances, "calls": CALLS, "natural": 1 - mask_point[0, ..., 0],
         "control": 1 - mask_point[1, ..., 0], "natural_draws": draw_arrays[:, 0],
         "control_draws": draw_arrays[:, 1],
+        "natural_masks": mask_point[0], "natural_mask_draws": natural_mask_draws,
     }
 

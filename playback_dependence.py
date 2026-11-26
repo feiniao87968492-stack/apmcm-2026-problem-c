@@ -54,15 +54,14 @@ def grouped_scores(frame, design, output):
     pd.DataFrame(totals).to_csv(output / "dependence_q3_pooled.csv", index=False)
 
 
-def date_draws(frame, design, contexts, weights, distances, seed, n_boot):
+def date_draws(frame, design, contexts, weights, distances, sampled_dates):
     group_rows = [np.flatnonzero(frame.Date.eq(date)) for date in sorted(frame.Date.unique())]
     grid = q3.probability_grid(distances, contexts, 8)
     grid_x = q3.features(grid, contexts)
     y = frame["mask"].to_numpy()
     shape = (len(q3.STIMULI), len(q3.CALLS), len(distances), len(contexts))
-    rng = np.random.default_rng(seed)
     predictions = []
-    for dates in rng.integers(len(group_rows), size=(n_boot, len(group_rows))):
+    for dates in sampled_dates:
         rows = np.concatenate([group_rows[i] for i in dates])
         p = 1 - q3.fit_masks(design[rows], y[rows], grid_x)[:, 0]
         predictions.append(p.reshape(shape) @ weights)
@@ -127,6 +126,9 @@ def run(data, output, seed, n_boot, propagation, behavior):
     contexts = tuple(counts.index)
     design = q3.features(frame, contexts)
     grouped_scores(frame, design, output)
-    draws = date_draws(frame, design, contexts, counts.to_numpy(), propagation["distance"], seed + 2, n_boot)
+    n_dates = frame.Date.nunique()
+    sampled_dates = np.random.default_rng(seed + 2).integers(n_dates, size=(n_boot, n_dates))
+    draws = date_draws(frame, design, contexts, counts.to_numpy(), propagation["distance"], sampled_dates)
     margin_table(propagation, behavior, draws).to_csv(output / "dependence_q4_margins.csv", index=False)
     trial_precision(output)
+    return frame, sampled_dates, draws
