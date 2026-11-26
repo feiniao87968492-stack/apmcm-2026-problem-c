@@ -194,3 +194,7 @@ The five radii, grid counts, pairwise differences and retained playback ranges a
 ## Q4 loss limits by target distance
 
 [The target-distance analysis](../docs/q4-target-loss.md) links retention requirements, hypothetical loss boundaries and recovered radii.
+
+## Q4 local and matched uniform noise
+
+[Target counts and limits](../results/q4_matched_noise_targets.csv) and [grid radii](../results/q4_matched_noise_radii.csv) support the hypothetical net-prefix noise comparison.

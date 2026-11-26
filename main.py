@@ -62,7 +62,14 @@ def main():
                           help="Compare the five Q4 consecutive-distance grid radii")
     analyses.add_argument("--q4-target-loss", action="store_true",
                           help="Compute Q4 loss boundaries for target distances")
+    analyses.add_argument("--q4-matched-noise", action="store_true",
+                          help="Compare local and matched uniform Q4 noise")
     args = parser.parse_args()
+    if args.q4_matched_noise:
+        from q4_matched_noise import write
+
+        write(args.data, args.output, Path(__file__).resolve().parent / "results")
+        return
     if args.q4_target_loss:
         from q4_target_loss import write
 

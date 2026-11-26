@@ -1,0 +1,17 @@
+model,spatial,link,draws,db,radius_m,status,count_at_20,count_at_radius,count_next,prefix_outside_natural_range,prefix_outside_control_range
+full,local,acoustic_only,4800,3,150.0,grid_cap,4799,3890,,False,False
+full,local,acoustic_only,4800,6,119.5,interior,4799,3858,3835.0,False,False
+full,local,coupled,4800,3,126.5,interior,4799,3850,3830.0,False,False
+full,local,coupled,4800,6,93.5,interior,4799,3867,3829.0,False,False
+full,uniform,acoustic_only,4800,3,150.0,grid_cap,4796,4225,,False,False
+full,uniform,acoustic_only,4800,6,137.5,interior,4788,3852,3839.0,False,False
+full,uniform,coupled,4800,3,150.0,grid_cap,4793,3850,,False,False
+full,uniform,coupled,4800,6,79.0,interior,4638,3843,3829.0,False,False
+drop_union,local,acoustic_only,4800,3,127.5,interior,4791,3843,3821.0,True,True
+drop_union,local,acoustic_only,4800,6,107.5,interior,4791,3857,3819.0,True,False
+drop_union,local,coupled,4800,3,112.5,interior,4791,3862,3836.0,True,False
+drop_union,local,coupled,4800,6,89.0,interior,4791,3874,3824.0,False,False
+drop_union,uniform,acoustic_only,4800,3,135.0,interior,4788,3849,3832.0,True,True
+drop_union,uniform,acoustic_only,4800,6,112.0,interior,4780,3853,3834.0,True,False
+drop_union,uniform,coupled,4800,3,120.5,interior,4785,3841,3823.0,True,True
+drop_union,uniform,coupled,4800,6,72.5,interior,4597,3840,3805.0,False,False

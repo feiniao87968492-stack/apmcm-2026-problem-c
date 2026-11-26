@@ -1,0 +1,17 @@
+model,spatial,link,draws,distance_m,count_0db,count_3db,count_6db,max_db,status,count_at_limit,failing_db,failing_count,prefix_outside_natural_range,prefix_outside_control_range
+full,local,acoustic_only,4800,50,4799,4799,4799,6.0,cap,4799,,,False,False
+full,local,acoustic_only,4800,100,4776,4729,4538,6.0,cap,4538,,,False,False
+full,local,coupled,4800,50,4799,4799,4799,6.0,cap,4799,,,False,False
+full,local,coupled,4800,100,4776,4637,3230,5.31640512496233,boundary,3840,5.316405125660822,3839.0,False,False
+full,uniform,acoustic_only,4800,50,4799,4796,4788,6.0,cap,4788,,,False,False
+full,uniform,acoustic_only,4800,100,4776,4727,4530,6.0,cap,4530,,,False,False
+full,uniform,coupled,4800,50,4799,4793,4529,6.0,cap,4529,,,False,False
+full,uniform,coupled,4800,100,4776,4633,3168,5.279167167143896,boundary,3840,5.279167167842388,3839.0,False,False
+drop_union,local,acoustic_only,4800,50,4791,4791,4791,6.0,cap,4791,,,False,False
+drop_union,local,acoustic_only,4800,100,4753,4670,4288,6.0,cap,4288,,,False,False
+drop_union,local,coupled,4800,50,4791,4791,4791,6.0,cap,4791,,,False,False
+drop_union,local,coupled,4800,100,4753,4479,2430,4.502439362229779,boundary,3840,4.502439362928271,3839.0,False,False
+drop_union,uniform,acoustic_only,4800,50,4791,4788,4780,6.0,cap,4780,,,False,False
+drop_union,uniform,acoustic_only,4800,100,4753,4667,4278,6.0,cap,4278,,,False,False
+drop_union,uniform,coupled,4800,50,4791,4785,4534,6.0,cap,4534,,,False,False
+drop_union,uniform,coupled,4800,100,4753,4473,2330,4.4562537025194615,boundary,3840,4.456253703217953,3839.0,False,False

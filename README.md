@@ -67,3 +67,4 @@ The seven figures in `results/` each have a same-name CSV and JSON metadata file
 - [Q4 acoustic and response-loss tradeoffs](docs/q4-net-loss.md)
 - [Q4 consecutive-distance attainment](docs/q4-consecutive.md)
 - [Q4 loss limits by target distance](docs/q4-target-loss.md)
+- [Q4 local and matched uniform noise](docs/q4-matched-noise.md)
