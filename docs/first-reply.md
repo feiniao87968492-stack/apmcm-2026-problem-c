@@ -11,6 +11,8 @@ The protocol froze at `19ae12e` and ran at `2221807`. We use the first reply amo
 | Control | Commuting | 0 | 1 | 0 | 1 | 65 |
 | Control | Searching | 0 | 2 | 0 | 2 | 38 |
 
+Pooling across contexts, flat playback gives 12 flat, 12 modulated and two two-voice replies. Modulated playback gives six, eight and two. Two-voice playback gives ten, 20 and four. The 27 played-call-by-context cells include both denominators and their date-block intervals. Summing counts and denominators over played calls recovers the natural arm cells above. [Played-call detail](../results/first_reply_by_played_call.csv)
+
 For example, modulated first replies while searching account for 56.3% of natural vocal responses (95% date interval 36.0–72.7%) and occur in 47.4% of all corresponding natural trials (29.0–64.5%). The control cells describe five responses across four dates. Conditional shares use 212–263 draws with nonzero response denominators in the control cells. [Full matrix with both denominators and intervals](../results/first_reply_matrix.csv)
 
 | Strict natural-responder prediction | Cross-entropy | Summed Brier |

@@ -111,5 +111,6 @@
 | First reply and event order finding | Evidence |
 |---|---|
 | First reply by stimulus and context, conditional and all-trial denominators | results/first_reply_matrix.csv |
+| Directed reply counts and natural played-call-by-context detail | results/first_reply_by_played_call.csv |
 | Strict reply prediction and same-type matching within dates and contexts | results/first_reply_folds.csv, results/first_reply_scores.csv, results/first_reply_matching.csv |
 | Group vocal and approach onset order and lag | results/first_reply_event_order.csv |
