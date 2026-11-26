@@ -249,3 +249,7 @@ The anonymous manuscript at `3628038` independently rebuilt to PDF SHA-256 `5aa8
 The protocol froze at af6a147. A detached checkout of 57b5b99 regenerated all four CSVs byte-for-byte with the main entry point and its consecutive-distance flag. Independent refits verified 5,220 grid records, 20 radii, 40 differences and 20 published checkpoint counts. The clean union-deletion four-shape prefix count at 150 m is 3,850/4,800. Its exact 95% Monte Carlo interval is 79.05% to 81.33%. Both arms extrapolate there. [Results](../docs/q4-consecutive.md) · [Numerical review](../reviews/q4-consecutive-verification.md)
 
 The anonymous manuscript at ecf2567 independently rebuilt byte-for-byte. Body and references span pages 3–17, with 50 source listings in the appendices. [Manuscript review](../reviews/q4-consecutive-paper-review.md) · [PDF](../paper/main.pdf)
+
+## Q4 target-distance loss verification
+
+The protocol froze at f854f68 and results were published at 82011ee. A detached checkout reproduced all three CSVs byte-for-byte using the main entry point with the target-loss flag. Independent direct score inversion verified 1,566 grid rows, 108 boundary rows and 12 inverse radii. At 20% loss in each component, the four-curve prefix recovers 96 m with full training and 84 m after union deletion. [Results](../docs/q4-target-loss.md) · [Review](../reviews/q4-target-loss-verification.md)
