@@ -178,3 +178,7 @@ The point margins and shared-exponent contrasts use [checkpoint evidence](../res
 ## Q2 attenuation shape and weight ranks
 
 [Holdout predictions](../results/q2_shape_rank_holdouts.csv), [RMSE](../results/q2_shape_rank_rmse.csv) and the [equal-weight decision](../results/q2_shape_rank_decision.csv) support model preference. [Point radii](../results/q2_shape_rank_radii.csv), [paired draws](../results/q2_shape_rank_draws.csv), [gaps](../results/q2_shape_rank_gaps.csv) and [rank frequencies](../results/q2_shape_rank_ranks.csv) support the rank sensitivity.
+
+## Q4 attenuation-shape propagation
+
+[The focal shape comparison](../results/q4_shape_propagation.csv) records score fidelity, margins, paired differences, gains and losses, and 80% decision changes under the common full-data reference.

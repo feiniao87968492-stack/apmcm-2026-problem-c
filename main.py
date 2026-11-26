@@ -54,7 +54,14 @@ def main():
                           help="Run the frozen 4,800-draw tail ablation")
     analyses.add_argument("--q4-envelope-attainment", action="store_true",
                           help="Run the frozen 4,800-draw Q4 envelope-weight analysis")
+    analyses.add_argument("--q4-shape-propagation", action="store_true",
+                          help="Compare four Q4 acoustic shapes in the frozen 4,800-draw analysis")
     args = parser.parse_args()
+    if args.q4_shape_propagation:
+        from q4_shape_propagation import write
+
+        write(args.data, args.output, Path(__file__).resolve().parent / "results")
+        return
     if args.q4_envelope_attainment:
         from q4_envelope_attainment import write
 
