@@ -57,3 +57,7 @@ Protocol 92e3265 and outputs 1284ba2 passed independent recomputation of the dis
 ## Acoustic transformation and onset verification
 
 The analysis froze at 195a5af and ran at 4130bdd. Independent calculations verified the grouped acoustic predictions and paired intervals, latency MAEs, timing scores and all 54 cumulative probability rows. A clean checkout of 2f6b2ae reproduced 97 CSV/JSON files byte-for-byte, six PNGs by decoded pixels and all 59 PDF pages by extracted text and raster comparison. Body and references occupy pages 3–10 and the public team fields are blank. [Results](../docs/acoustic-onset.md) · [Independent recomputation](../reviews/acoustic-onset-verification.md)
+
+## Noise power scenario verification
+
+The scenarios were frozen at 5a0c8c0 and computed at c5fd3fd. Independent calculations verified the matched losses, radius intervals, attainment and responder count bounds. A clean checkout of 9d01ca5 reproduced 101 CSV/JSON files byte-for-byte, six PNGs by decoded pixels and all 61 PDF pages by extracted text and raster comparison. Body and references occupy pages 3–10 and the public team fields are blank. [Results](../docs/noise-scenarios.md) · [Independent recomputation](../reviews/noise-scenarios-verification.md)
