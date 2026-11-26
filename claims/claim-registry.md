@@ -13,6 +13,7 @@
 | All figures | figures/figure-index.md | Plotted data and metadata |
 | Q3 context and group size examples | results/q3_adjusted_conditions.csv | Matched model contrasts |
 | Q1 forest comparison, paired macro F1 and recalls | results/q1_model_comparison.csv, results/q1_fold_counts.csv, results/q1_oof_predictions.csv | Same fixed date-by-location folds. The historical estimate uses other group assignments. |
+| Q1 candidate-set calibration and coverage | results/q1_candidate_sets_thresholds.csv, results/q1_candidate_sets_folds.csv, results/q1_candidate_sets_summary.csv, results/q1_candidate_sets_paired.csv | Held-out date-by-location groups, with six fit and nine calibration groups per fold |
 | Q3 incremental validation and representative coverage | results/q3_grouped_validation.csv, results/q3_validation_oof_scores.csv, results/q3_representative_response_support.csv, results/q3_representative_latency.csv | Predictive metric tradeoff, descriptive distance-window support and pooled conditional onset estimates |
 | Q4 common cutoff and alternate noise link | results/q4_comparison_radii.csv, results/q4_comparison_curves.csv, results/q4_clean_index_differences.csv | Conditional scenario results and support bounds |
 

@@ -26,6 +26,7 @@ import physical_attenuation
 import playback_dependence
 import post_hoc
 import q1
+import q1_candidate_sets
 import q2
 import q3
 import q4
@@ -59,6 +60,7 @@ def main():
             parser.error(f"Expected one Data{number:02d} CSV in {args.data}")
     args.output.mkdir(parents=True, exist_ok=True)
     q1.run(args.data, args.output, args.seed, args.bootstrap)
+    q1_candidate_sets.run(args.data, args.output)
     propagation = q2.run(args.data, args.output, args.seed + 1, args.bootstrap)
     behavior = q3.run(args.data, args.output, args.seed + 2, args.bootstrap)
     q4.run(propagation, behavior, args.output)
