@@ -73,3 +73,7 @@ The protocol was frozen at 9e95367 and run at 5c951ca. Independent recomputation
 ## False Bay sea-state verification
 
 The protocol and snapshots froze at e86dfe1 and the analysis ran at 7bffe2b. Independent recomputation verified the hourly joins, slopes, strict fold scores and standardized contrasts. A clean checkout of d5c153f reproduced 118 CSV/JSON files byte-for-byte, seven PNGs by decoded pixels and the manuscript's extracted text and all 68 rendered pages. The public team fields are blank, and body and references occupy pages 3–11. [Results](../docs/false-bay.md) · [Verification](../reviews/false-bay-verification.md)
+
+## WAVERYS and example-deletion verification
+
+The protocol froze at ea42111 and the computations ran at a81e3ec. Independent recomputation verified WAVERYS interpolation, date slopes, strict validation, 336 radius rows and 504 Q4 rows. A clean checkout of 53f6f7c reproduced 125 CSV/JSON files byte-for-byte, seven PNGs by decoded pixels and all 70 PDF pages by text and raster comparison. Body and references occupy pages 3–11 and the public team fields are blank. [Results](../docs/example-sensitivity.md) · [Verification](../reviews/example-sensitivity-verification.md)
