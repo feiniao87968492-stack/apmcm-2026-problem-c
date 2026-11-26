@@ -9,6 +9,7 @@ import creative_q3
 import example_sensitivity
 import final_analysis
 import matched_sensitivity
+import missing_propagation
 import noise_agreement
 import noise_scenarios
 import onset_analysis
@@ -72,6 +73,7 @@ def main():
     sea_state.run(frame, args.output, args.seed, args.bootstrap)
     example_sensitivity.waverys(frame, args.output, args.seed, args.bootstrap)
     example_sensitivity.example_deletion(args.data, args.output, propagation, behavior, date_predictions, parameters)
+    missing_propagation.run(args.data, args.output, propagation, behavior, date_predictions)
     print(f"Results written to {args.output.resolve()}")
 
 
