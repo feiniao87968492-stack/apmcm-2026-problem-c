@@ -1,4 +1,4 @@
-﻿# Manuscript evidence
+# Manuscript evidence
 
 | Claim | Supporting artifact | Scope |
 |---|---|---|
@@ -11,5 +11,4 @@
 | Q4 modeled response and expected responders | results/q4_environment_curves.csv, results/q4_expected_responders.csv | Scenario assumptions |
 | Mathematical formulas, thresholds, and assumptions | docs/model-spec.md, sections 3 and 5 of paper/main.tex | Fixed before production run |
 | All figures | figures/figure-index.md | Plotted data and metadata |
-
 | Q3 context and group size examples | results/q3_adjusted_conditions.csv | Matched model contrasts |

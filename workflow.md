@@ -1,4 +1,4 @@
-﻿# Workflow and milestones
+# Workflow and milestones
 
 | Milestone | Evidence |
 |---|---|
@@ -9,3 +9,5 @@
 
 The project lead integrates the work and maintains the release sequence. Model design, implementation readiness, results, and paper claims receive independent review. Approval to implement the proposed baseline was recorded in the project conversation.
 
+
+All four milestones are complete. The reproducible baseline is at 5f2639e and independent validation at cedde18. The final paper and evidence gate are linked from the README.

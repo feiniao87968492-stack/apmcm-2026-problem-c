@@ -1,7 +1,20 @@
-﻿# 2026 APMCM Problem C
+# 2026 APMCM Problem C
 
-Reproducible analysis of acoustic communication and playback responses in African penguins. This repository records the analysis of acoustics, propagation, behavior, and model-based communication ranges.
+Reproducible analysis of acoustic communication and playback responses in African penguins. The original observations and supplementary material are available from the [study archive](https://zenodo.org/records/21376649).
 
-The original observations and supplementary material are available from the [study archive](https://zenodo.org/records/21376649). Use the contest attachment folder containing `Data01` through `Data11` as the analysis input.
+## Reproduce
 
-See [workflow and milestones](workflow.md) and the [data audit](docs/data-audit.md).
+Use Python 3.10 and the contest attachment folder containing Data01 through Data11. The default run uses 300 draws with the seeds recorded in the specification.
+
+```sh
+python -m pip install -r requirements.txt
+python main.py --data "/path/to/C-attachments"
+```
+
+The five figures in `results/` each have a same-name CSV and JSON metadata file. To compile the English paper, run `pdflatex -halt-on-error main.tex` twice from `paper/`. Set the team number locally by defining `\TeamNumber` in `paper/team-local.tex` when preparing a team copy.
+
+- [English paper](paper/main.pdf)
+- [Frozen analysis assumptions and rationale](docs/model-spec.md)
+- [Data audit](docs/data-audit.md)
+- [Workflow and milestones](workflow.md)
+- [Verification and evidence](gates/final.md)

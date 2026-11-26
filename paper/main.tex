@@ -1,0 +1,115 @@
+﻿\documentclass[11pt,a4paper]{article}
+\usepackage[margin=23mm,headheight=15pt]{geometry}
+\usepackage{amsmath,graphicx,booktabs,fancyhdr,lastpage}
+\usepackage{listings}\lstset{language=Python,basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,keepspaces=true,literate={–}{{-}}1}
+\usepackage[hidelinks]{hyperref}
+\graphicspath{{../results/}}
+\InputIfFileExists{team-local.tex}{}{\newcommand{\TeamNumber}{\phantom{apmcm26300001}}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Team \TeamNumber}
+\fancyhead[R]{Page \thepage\ of \pageref{LastPage}}
+\setlength{\parskip}{5pt}
+\setlength{\parindent}{0pt}
+\newcommand{\callname}[1]{\textsc{#1}}
+\input{results.tex}
+\begin{document}
+
+\begin{center}
+{\small 2026 Asia and Pacific Mathematical Contest in Modeling}\\[1em]
+{\large Problem C \quad \TeamNumber}\\[2em]
+{\LARGE How far can African penguin calls support communication at sea?}
+\end{center}
+\vspace{1em}
+\section*{Summary}
+\PaperSummary
+
+\textbf{Keywords}\quad African penguin, playback experiment, acoustic fidelity, grouped validation, communication radius
+
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{Question and evidence}
+African penguins use several call types at sea. A useful comparison needs to account for differences in the recorded call features, the loss of signal fidelity over distance, and the behaviors observed after playback. We analyze the acoustic recordings, propagation trials and paired playback data supplied with Problem C \cite{problem,archive}. We use acoustic recordings to characterize the calls, propagation tables to estimate signal retention, and paired stimuli to distinguish behavioral responses to natural calls from background responses to control sounds.
+
+We treat the playback group as the observational unit for behavior. A positive group outcome means at least one of the scored behaviors was observed. The integrated radius is an operational measure defined on the distance range supported by both data sources. Its interpretation depends on the chosen reference level and experimental context.
+
+\section{Acoustic characteristics and classification}
+The recording date and location define groups for held-out validation. The main feature set contains duration, first fundamental frequency, peak frequency, and three spectral quartiles. The second fundamental contributes to the descriptive analysis of two-voice calls. Because its availability is associated with the call type in the supplied recordings, we analyze that field separately from the main classifier.
+
+We compare call types with Kruskal--Wallis tests and use Mann--Whitney tests to examine pairwise differences. Holm correction is applied within the omnibus and pairwise test families. These rank tests summarize the recorded samples, whose observations can share recording sessions. We estimate predictive performance from held-out groups, with preprocessing fitted on each training fold. Feature importance is measured by perturbing a feature on held-out data and measuring the reduction in macro F1.
+
+\AcousticResults
+
+\section{Propagation, signal fidelity and recognition criteria}
+Let $\bar r_{cm}(d)$ be the available-case mean correlation with the one-metre reference for call type $c$, representation $m$ and distance $d$. The representations are the spectrogram, amplitude spectrum, and amplitude envelope. The equal-weight fidelity combines their means, with monotonicity imposed through a least-squares isotonic fit at the observed distances. Interpolation is linear in $\log d$.
+
+\[
+F_c(d)=\operatorname{Interp}_{\log d}
+       \left(\operatorname{Iso}_{\downarrow}
+       \left[\operatorname{clip}_{[0,1]}\left(\tfrac 13\sum_{m=1}^{3}\bar r_{cm}(d)\right)\right]\right).
+\]
+
+Thresholds of 0.40, 0.50 and 0.60 denote potential recognition, recognition and reliable recognition in the model. The thresholds act as assumptions linking acoustic similarity to recognition. We resample rows intact across distances within each file. Acquisition identifiers are unavailable, so the intervals express sensitivity to the working row resampling model. They do not measure uncertainty over independently identified sound propagation experiments.
+
+\PropagationResults
+
+\section{Paired playback responses}
+The natural and control stimuli share experiment identifiers, and many such pairs were recorded at different distances. The raw within-pair comparison describes the sampled stimuli. The adjusted prediction model retains the measured covariates and evaluates both stimulus conditions at identical covariate values. Natural call type is assigned to the pair for both conditions.
+
+Each combination of the three scored behaviors is represented by a mask in $\{0,\ldots,7\}$, where zero means no observed behavior. A regularized multinomial model uses call type, stimulus type, their interaction, context, $\log(1+\mathrm{distance})$ and $\log(1+\mathrm{group\ size})$. The sum of probabilities over nonzero masks defines the any-response probability. Held-out evaluation and bootstrap sampling retain complete experiment pairs.
+
+The adjusted covariate grid also illustrates variation with context and group size. For a natural two-voice call at 100 m and eight birds, the fitted response probabilities are 0.600 when commuting, 0.784 when searching and 0.645 in the after category. In the searching context they are 0.869, 0.784 and 0.706 for group sizes of 3, 8 and 15. These are conditional contrasts under the fitted model.
+
+We model onset conditional on observing the corresponding behavior and report the response probability alongside its conditional time. Conditional modeling distinguishes a stimulus that produces infrequent behavior from one that produces slow behavior among the responders. For the representative scenarios we use median group size and distances of 50, 100 and 150 metres. Duration and vocal count describe the intensity of behavior after onset.
+
+\BehaviorResults
+
+\section{Integrated communication and conservation}
+Let $p_c(d)$ be the natural-stimulus any-response probability at median group size, averaged over the observed contexts. We model communication effectiveness as
+\[
+E_c(d)=F_c(d)p_c(d).
+\]
+The product favors distances where both the available acoustic signal and the behavioral response probability are high. Our operational radius uses a fixed cutoff equal to half the clean-condition effectiveness at the near end of the common range. We find the sustained downward crossing on the distance grid and report a lower or upper range bound when a crossing cannot be observed. We repeat the calculation with 40\% and 60\% reference fractions.
+
+We increase the recognition threshold or reduce the fidelity by a specified fraction. To illustrate a behavioral consequence under an explicit assumption, the environmental scenario reduces the positive natural-call probability excess over the control probability as acoustic information is lost. If the natural-call probability is already at or below the control probability, it is held at its clean modeled value. The clean threshold remains fixed in each scenario. Estimated numbers of responding individuals additionally depend on the assumed share that responds within a group showing a response.
+
+\IntegratedResults
+
+Within the sampled habitat and distances, monitoring calls and vessel noise together would help establish whether the scenarios reflect typical conditions. Candidate interventions include maintaining quiet periods during foraging and routing vessels away from frequently used foraging areas, with subsequent monitoring of acoustic conditions and behavior. A field test should randomize stimulus order, balance call type and distance across sea conditions, record background noise and acquisition identifiers, and record individual behavior where feasible. Those measurements would support a direct estimate of noise effects and a site-specific evaluation of protective distances.
+
+\section{Limitations and reproducibility}
+Our sample comes from the supplied recording and playback designs. Sparse responses limit precision, especially for individual behavior combinations and conditional onset times. Propagation and behavior come from separate experiments. Their integrated index and noise scenarios depend on the stated model and environmental assumptions. Extrapolation to other habitats or disturbance regimes requires additional data.
+
+The team used Python with NumPy, pandas, SciPy, scikit-learn and Matplotlib. The research code and full supporting tables are available in the accompanying repository. Plotting data and metadata accompany every figure.
+
+\begin{thebibliography}{9}
+\bibitem{problem} APMCM Organizing Committee. 2026 APMCM Problem C, \emph{Acoustic Communication and Playback Responses of African Penguins at Sea}. Contest statement and attachments, 2026.
+\bibitem{archive} \emph{African penguin acoustic and playback study, associated data and supplementary material}. Zenodo record 21376649, \url{https://zenodo.org/records/21376649}.
+\end{thebibliography}
+\appendix
+\section{Full representative-condition onset table}
+\input{latency-table.tex}
+
+\section{Behavior combinations}
+\begin{center}
+\includegraphics[width=.96\linewidth]{q3_behavior_masks.png}\\
+{\small Figure 5. Predicted behavior combinations for natural and control stimuli at 100 m and eight birds, averaged over empirical context frequencies.}
+\end{center}
+
+\section{Analysis source}
+The commands in the repository README reproduce the figures and tables using the supplied CSV files.
+\lstinputlisting[caption={Reproduction entry point}]{../main.py}
+\lstinputlisting[caption={Acoustic classification}]{../q1.py}
+\lstinputlisting[caption={Acoustic propagation}]{../q2.py}
+\lstinputlisting[caption={Playback behavior}]{../q3.py}
+\lstinputlisting[caption={Communication effectiveness}]{../q4.py}
+
+\end{document}
+
+
+
+
+
+
