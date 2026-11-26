@@ -243,3 +243,9 @@ The anonymous manuscript at `64f59c8` has PDF SHA-256 `658ace1af86b54523eee8998f
 The protocol froze at `771a615` and the results were published at `7cf5d88`. A detached checkout of that commit reproduced all three CSVs byte-for-byte with `python main.py --data "<attachment directory>/date" --q4-net-loss`. The independent calculation confirmed positivity of the cutoff, all 20 requirements, 120 boundary rows, 180 checkpoints and 16 published overlap counts. All 54 solved boundaries qualified in 3,840 draws and lost one qualifying draw at the 1e-8 probe beyond the boundary. [Results](../docs/q4-net-loss.md) · [Numerical review](../reviews/q4-net-loss-verification.md)
 
 The anonymous manuscript at `3628038` independently rebuilt to PDF SHA-256 `5aa85c3446a636cbb30b7a5cefe2c1d4169317d96dae85bcf54f9fce48f3639e`. Body and references occupy pages 3–17. The appendices start on page 18 of 139 and include all 49 Python sources. [Manuscript review](../reviews/q4-net-loss-paper-review.md) · [PDF](../paper/main.pdf)
+
+## Q4 consecutive-distance verification
+
+The protocol froze at af6a147. A detached checkout of 57b5b99 regenerated all four CSVs byte-for-byte with the main entry point and its consecutive-distance flag. Independent refits verified 5,220 grid records, 20 radii, 40 differences and 20 published checkpoint counts. The clean union-deletion four-shape prefix count at 150 m is 3,850/4,800. Its exact 95% Monte Carlo interval is 79.05% to 81.33%. Both arms extrapolate there. [Results](../docs/q4-consecutive.md) · [Numerical review](../reviews/q4-consecutive-verification.md)
+
+The anonymous manuscript at ecf2567 independently rebuilt byte-for-byte. Body and references span pages 3–17, with 50 source listings in the appendices. [Manuscript review](../reviews/q4-consecutive-paper-review.md) · [PDF](../paper/main.pdf)
