@@ -1,9 +1,10 @@
 {
   "source": "Data01",
-  "caption": "Acoustic feature summaries and five-fold grouped validation of call type.",
+  "caption": "Acoustic feature summaries and five-fold grouped logistic validation of call type.",
   "feature_summary": "Medians and quartiles use a common per-feature scale across call types with observed values.",
   "permutation_importance": "Mean and standard deviation across 40 shuffles within each held-out fold.",
   "groups": "Recording date and location.",
+  "folds": "Fixed label-balanced group allocation in docs/model-spec.md.",
   "pulse_rate": "Unavailable for flat calls. Restricted to a secondary classifier with fold-local median imputation, and an observed modulated versus two-voice comparison.",
   "metric_intervals": "Percentile bootstrap over recording groups of fixed out-of-fold predictions.",
   "rank_tests": "Sample-level descriptive inference. Recordings within a date and location may be dependent."

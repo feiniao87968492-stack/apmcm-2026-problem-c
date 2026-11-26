@@ -8,10 +8,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from scipy.stats import kruskal, mannwhitneyu
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import confusion_matrix, f1_score
-from sklearn.model_selection import StratifiedGroupKFold
+from sklearn.metrics import confusion_matrix, f1_score, recall_score
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from statsmodels.stats.multitest import multipletests
@@ -21,10 +21,16 @@ CALLS = ("flat", "mod", "tv")
 FEATURES = ("Duration", "F01", "Fpeak", "Q25", "Q50", "Q75")
 LABELS = ("Flat", "Modulated", "Two-voice")
 FEATURE_LABELS = ("Duration", "Fundamental", "Peak", "Q25", "Q50", "Q75")
+FROZEN_TEST_GROUPS = ((1, 15, 12, 5), (3, 7, 0), (8, 10, 9), (2, 6, 11), (13, 14, 4))
 
 
 def macro_f1(actual, predicted):
     return f1_score(actual, predicted, labels=CALLS, average="macro", zero_division=0)
+
+
+def comparison_scores(actual, predicted):
+    recalls = recall_score(actual, predicted, labels=CALLS, average=None, zero_division=0)
+    return np.r_[macro_f1(actual, predicted), recalls]
 
 
 def describe(frame, output):
@@ -71,10 +77,14 @@ def describe(frame, output):
 def validate(frame, output, seed, n_boot):
     target = frame.CallType.to_numpy()
     groups = (frame.Date.astype(str) + " | " + frame.Location.astype(str)).to_numpy()
+    unique_groups, group_ids = np.unique(groups, return_inverse=True)
+    if len(unique_groups) != sum(map(len, FROZEN_TEST_GROUPS)):
+        raise ValueError("The frozen Q1 validation uses the 16 contest recording groups")
     values = frame.loc[:, FEATURES].to_numpy()
     pulse_values = frame.loc[:, (*FEATURES, "PulseRate")].to_numpy()
     f02_present = frame.F02.notna().to_numpy()
     predicted = np.empty_like(target)
+    forest_predictions = np.empty_like(target)
     missingness = np.empty_like(target)
     with_pulse = np.empty_like(target)
     majority = np.empty_like(target)
@@ -82,13 +92,17 @@ def validate(frame, output, seed, n_boot):
     rng = np.random.default_rng(seed)
     repeats = 40
     perturbed = np.empty((len(FEATURES), repeats, len(frame)), dtype=target.dtype)
-    split = StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=seed)
-    for fold, (train, test) in enumerate(split.split(values, target, groups), start=1):
-        if set(groups[train]) & set(groups[test]):
-            raise ValueError("Recording groups overlap between training and validation")
-        estimator = make_pipeline(StandardScaler(), LogisticRegression(max_iter=1000))
+    for fold, test_groups in enumerate(FROZEN_TEST_GROUPS, start=1):
+        held_out = np.isin(group_ids, test_groups)
+        train = np.flatnonzero(~held_out)
+        test = np.flatnonzero(held_out)
+        estimator = make_pipeline(StandardScaler(), LogisticRegression(C=1, max_iter=1000))
         estimator.fit(values[train], target[train])
         predicted[test] = estimator.predict(values[test])
+        forest = RandomForestClassifier(n_estimators=200, max_depth=3, min_samples_leaf=4,
+                                        random_state=seed)
+        forest.fit(values[train], target[train])
+        forest_predictions[test] = forest.predict(values[test])
         pulse_estimator = make_pipeline(SimpleImputer(strategy="median"), StandardScaler(),
                                         LogisticRegression(max_iter=1000))
         pulse_estimator.fit(pulse_values[train], target[train])
@@ -109,7 +123,8 @@ def validate(frame, output, seed, n_boot):
                 perturbed[j, replicate, test] = estimator.predict(permutation)
 
     pd.DataFrame({
-        "row": np.arange(1, len(frame) + 1), "fold": split_id, "actual": target,
+        "row": np.arange(1, len(frame) + 1), "fold": split_id, "recording_group": group_ids,
+        "actual": target, "random_forest": forest_predictions,
         "shared_features": predicted, "with_imputed_pulse": with_pulse,
         "f02_availability": missingness, "majority": majority,
     }).to_csv(output / "q1_oof_predictions.csv", index=False)
@@ -117,26 +132,62 @@ def validate(frame, output, seed, n_boot):
     fold_counts["recording_groups"] = pd.Series(groups).groupby(split_id).nunique()
     fold_counts.rename_axis("fold").to_csv(output / "q1_fold_counts.csv")
 
-    unique_groups = np.unique(groups)
-    group_rows = [np.flatnonzero(groups == group) for group in unique_groups]
+    group_rows = [np.flatnonzero(group_ids == group) for group in range(len(unique_groups))]
+    bootstrap_rng = np.random.default_rng(seed)
     draws = [
-        np.concatenate([group_rows[i] for i in rng.integers(len(group_rows), size=len(group_rows))])
+        np.concatenate([group_rows[i] for i in bootstrap_rng.integers(len(group_rows), size=len(group_rows))])
         for _ in range(n_boot)
     ]
+    draws = [rows for rows in draws if len(set(target[rows])) == len(CALLS)]
     metrics = []
+    intervals = {}
+    estimates = {}
+    sample_scores = {}
     for name, predictions in (
-        ("shared_features", predicted), ("with_imputed_pulse", with_pulse),
+        ("shared_features", predicted), ("random_forest", forest_predictions),
+        ("with_imputed_pulse", with_pulse),
         ("f02_availability", missingness), ("majority", majority),
     ):
-        scores = [macro_f1(target[rows], predictions[rows]) for rows in draws if len(set(target[rows])) == 3]
-        low, high = np.quantile(scores, [.025, .975]) if scores else (np.nan, np.nan)
+        scores = np.array([comparison_scores(target[rows], predictions[rows]) for rows in draws])
+        sample_scores[name] = scores
+        estimates[name] = comparison_scores(target, predictions)
+        low, high = np.quantile(scores, [.025, .975], axis=0) if len(scores) else np.full((2, 4), np.nan)
+        intervals[name] = (low, high)
         metrics.append({
-            "model": name, "macro_f1": macro_f1(target, predictions),
-            "group_bootstrap_low": low, "group_bootstrap_high": high,
-            "draws_with_all_classes": len(scores), "n_recordings": len(frame),
+            "model": name, "macro_f1": estimates[name][0],
+            "group_bootstrap_low": low[0], "group_bootstrap_high": high[0],
+            "draws_with_all_classes": len(draws), "n_recordings": len(frame),
             "n_groups": len(unique_groups),
         })
     pd.DataFrame(metrics).to_csv(output / "q1_metrics.csv", index=False)
+
+    logistic, forest = "shared_features", "random_forest"
+    deltas = estimates[forest] - estimates[logistic]
+    bootstrap_deltas = sample_scores[forest] - sample_scores[logistic]
+    delta_low, delta_high = (
+        np.quantile(bootstrap_deltas, [.025, .975], axis=0)
+        if draws else np.full((2, 4), np.nan)
+    )
+    adopt_forest = (
+        estimates[forest][0] > max(estimates[logistic][0], estimates["majority"][0])
+        and delta_low[0] > 0
+    )
+    reason = (
+        "Forest exceeds logistic and majority in pooled F1 and the paired F1 interval is above zero."
+        if adopt_forest else
+        "Forest did not meet the prespecified pooled F1 and paired interval criterion."
+    )
+    comparison = []
+    for i, metric in enumerate(("macro_f1", *(f"recall_{call}" for call in CALLS))):
+        comparison.append({
+            "metric": metric, "logistic": estimates[logistic][i], "random_forest": estimates[forest][i],
+            "logistic_low": intervals[logistic][0][i], "logistic_high": intervals[logistic][1][i],
+            "forest_low": intervals[forest][0][i], "forest_high": intervals[forest][1][i],
+            "forest_minus_logistic": deltas[i], "difference_low": delta_low[i],
+            "difference_high": delta_high[i], "draws_with_all_classes": len(draws),
+            "preferred_model": "random_forest" if adopt_forest else "logistic", "reason": reason,
+        })
+    pd.DataFrame(comparison).to_csv(output / "q1_model_comparison.csv", index=False)
 
     baseline_score = macro_f1(target, predicted)
     importance = []
@@ -183,7 +234,7 @@ def plot_summary(summary, matrix, importance, output):
 
     axes[1].imshow(matrix, cmap="BuGn", vmin=0)
     axes[1].set(xticks=np.arange(3), xticklabels=LABELS, yticks=np.arange(3), yticklabels=LABELS,
-                ylabel="Recorded class", xlabel="Predicted class", title="B  Grouped validation")
+                ylabel="Recorded class", xlabel="Predicted class", title="B  Grouped logistic validation")
     axes[1].tick_params(axis="x", labelrotation=22)
     for i, actual in enumerate(CALLS):
         for j, predicted in enumerate(CALLS):
@@ -208,10 +259,11 @@ def plot_summary(summary, matrix, importance, output):
     pd.DataFrame(plot_rows).to_csv(output / "q1_acoustics.csv", index=False)
     (output / "q1_acoustics.meta.json").write_text(json.dumps({
         "source": "Data01",
-        "caption": "Acoustic feature summaries and five-fold grouped validation of call type.",
+        "caption": "Acoustic feature summaries and five-fold grouped logistic validation of call type.",
         "feature_summary": "Medians and quartiles use a common per-feature scale across call types with observed values.",
         "permutation_importance": "Mean and standard deviation across 40 shuffles within each held-out fold.",
         "groups": "Recording date and location.",
+        "folds": "Fixed label-balanced group allocation in docs/model-spec.md.",
         "pulse_rate": "Unavailable for flat calls. Restricted to a secondary classifier with fold-local median imputation, and an observed modulated versus two-voice comparison.",
         "metric_intervals": "Percentile bootstrap over recording groups of fixed out-of-fold predictions.",
         "rank_tests": "Sample-level descriptive inference. Recordings within a date and location may be dependent.",

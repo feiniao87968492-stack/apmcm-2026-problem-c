@@ -1,0 +1,18 @@
+{
+  "sources": [
+    "Data02–Data11",
+    "docs/model-spec.md"
+  ],
+  "support_m": [
+    20,
+    150
+  ],
+  "bands": "95% conditional combined bootstrap interval for clean",
+  "threshold": "half the equal-call mean clean index at 20 m",
+  "loss": 0.2,
+  "response_links": [
+    "clean",
+    "acoustic_only",
+    "coupled"
+  ]
+}

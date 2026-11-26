@@ -91,21 +91,47 @@ def paired_summary(frame: pd.DataFrame, samples: np.ndarray, output: Path) -> No
 
 def grouped_validation(x: np.ndarray, frame: pd.DataFrame, output: Path) -> None:
     y = frame["mask"].to_numpy()
+    stimuli = frame["Type"].to_numpy()
     folds = GroupKFold(n_splits=5)
-    records = []
+    records, oof_scores = [], []
     for fold, (train, test) in enumerate(folds.split(x, y, frame["expID"]), start=1):
         pooled = np.bincount(y[train], minlength=len(MASKS))[None, :] / len(train)
-        variants = [
-            ("multinomial", fit_masks(x[train], y[train], x[test])),
-            ("pooled_frequency", np.broadcast_to(pooled, (len(test), len(MASKS)))),
-        ]
-        for name, p in variants:
+        stratified = np.zeros((len(test), len(MASKS)))
+        for stimulus in STIMULI:
+            training_masks = y[train[stimuli[train] == stimulus]]
+            frequencies = np.bincount(training_masks, minlength=len(MASKS))
+            stratified[stimuli[test] == stimulus] = frequencies / len(training_masks)
+        variants = {
+            "multinomial": fit_masks(x[train], y[train], x[test]),
+            "pooled_frequency": np.broadcast_to(pooled, (len(test), len(MASKS))),
+            "stimulus_frequency": stratified,
+        }
+        pair_numbers, test_experiments = pd.factorize(frame.iloc[test]["expID"])
+        scores = {}
+        for name, probabilities in variants.items():
+            observed_probability = probabilities[np.arange(len(test)), y[test]]
+            row_scores = pd.DataFrame({
+                "pair_in_fold": pair_numbers + 1,
+                "mask_log_loss": -np.log(observed_probability.clip(1e-12)),
+                "any_response_brier": (1 - probabilities[:, 0] - (y[test] != 0)) ** 2,
+            })
+            pair_scores = row_scores.groupby("pair_in_fold", as_index=False).mean()
+            oof_scores.append(pair_scores.assign(fold=fold, model=name))
+            scores[name] = row_scores[["mask_log_loss", "any_response_brier"]].mean()
+        for name, score in scores.items():
+            difference = score - scores["stimulus_frequency"]
             records.append({
-                "fold": fold, "model": name, "test_experiments": frame.iloc[test]["expID"].nunique(),
-                "mask_log_loss": -np.mean(np.log(p[np.arange(len(test)), y[test]].clip(1e-12))),
-                "any_response_brier": np.mean((1 - p[:, 0] - (y[test] != 0)) ** 2),
+                "fold": fold, "model": name, "test_experiments": len(test_experiments),
+                "mask_log_loss": score["mask_log_loss"],
+                "any_response_brier": score["any_response_brier"],
+                "mask_log_loss_minus_stimulus": difference["mask_log_loss"],
+                "any_response_brier_minus_stimulus": difference["any_response_brier"],
             })
     pd.DataFrame(records).to_csv(output / "q3_grouped_validation.csv", index=False)
+    columns = ["fold", "pair_in_fold", "model", "mask_log_loss", "any_response_brier"]
+    pd.concat(oof_scores, ignore_index=True)[columns].to_csv(
+        output / "q3_validation_oof_scores.csv", index=False,
+    )
 
 
 def probability_grid(distances: np.ndarray, contexts: tuple[str, ...], size: float) -> pd.DataFrame:
@@ -170,7 +196,8 @@ def latency_predictions(
     records, intensities = [], []
     for index, (behavior, intensity) in enumerate(zip(BEHAVIORS, INTENSITY)):
         onset = behavior + "Latency"
-        valid = frame[behavior + "YesNo"].eq(1) & frame[onset].notna()
+        events = frame[behavior + "YesNo"].eq(1)
+        valid = events & frame[onset].notna()
         observed = frame.loc[valid, onset].to_numpy()
         if np.any(observed < 0):
             raise ValueError(f"Negative observed latency in {onset}.")
@@ -210,14 +237,32 @@ def latency_predictions(
                         "behavior": behavior, "stimulus": stimulus, "call_type": call,
                         "distance_m": distance, "predicted_response_probability": event_weights.sum(),
                         "conditional_latency_median_s": conditional_median,
+                        "response_events": int((stratum & events).sum()),
                         "observed_latency_count": latency_count,
                         "stimuli_within_25m": int(in_window.sum()),
+                        "response_events_within_25m": int((in_window & events).sum()),
                         "observed_latencies_within_25m": int((in_window & valid).sum()),
                         "latency_support": "unavailable" if not latency_count else
                         "sparse" if (in_window & valid).sum() < 5 else "supported",
                     })
     pd.DataFrame(records).to_csv(output / "q3_representative_latency.csv", index=False)
     pd.DataFrame(intensities).to_csv(output / "q3_observed_intensity.csv", index=False)
+
+
+def any_response_support(frame: pd.DataFrame, curve: pd.DataFrame, output: Path) -> None:
+    records = []
+    responses = frame["mask"].ne(0)
+    for row in curve.loc[curve["distance_m"].isin(REPRESENTATIVE)].itertuples(index=False):
+        stratum = frame["Type"].eq(row.stimulus) & frame["assigned_call"].eq(row.call_type)
+        in_window = stratum & frame["Distance"].sub(row.distance_m).abs().le(25)
+        records.append({
+            "stimulus": row.stimulus, "call_type": row.call_type,
+            "distance_m": row.distance_m, "predicted_any_response_probability": row.probability,
+            "stimuli": int(stratum.sum()), "responses": int((stratum & responses).sum()),
+            "stimuli_within_25m": int(in_window.sum()),
+            "responses_within_25m": int((in_window & responses).sum()),
+        })
+    pd.DataFrame(records).to_csv(output / "q3_representative_response_support.csv", index=False)
 
 
 def run(data: Path, output: Path, seed: int, n_boot: int) -> dict:
@@ -285,6 +330,7 @@ def run(data: Path, output: Path, seed: int, n_boot: int) -> dict:
     response_figures(curve, masks, output, n_boot)
     paired_summary(frame, samples, output)
     grouped_validation(x, frame, output)
+    any_response_support(frame, curve, output)
     latency_predictions(frame, x, grid, grid_x, point, context_weights, output)
     # The same adjusted model predicts changes in context, distance, and group size.
     group_sizes = np.unique(np.quantile(frame["Npenguins"], [.25, .5, .75]))

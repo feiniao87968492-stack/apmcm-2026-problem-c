@@ -32,6 +32,112 @@ def environment(fidelity, natural, control, loss, threshold):
     return index, probability
 
 
+def scenario_comparisons(distance, calls, fidelity, natural, control,
+                         fidelity_draws, natural_draws, control_draws, output):
+    clean = fidelity * natural
+    clean_draws = fidelity_draws * natural_draws
+    relative = .5 * clean[:, 0]
+    relative_draws = .5 * clean_draws[:, :, 0]
+    common = relative.mean()
+    common_draws = relative_draws.mean(axis=1)
+    policies = {
+        "call_specific": (relative, relative_draws),
+        "common": (np.full_like(relative, common),
+                   np.broadcast_to(common_draws[:, None], relative_draws.shape)),
+    }
+    positions = np.flatnonzero(np.isin(distance, (20, 50, 100, 150)))
+    radii, curves, comparisons = [], [], []
+    for loss in (0, .05, .10, .15, .20):
+        acoustic = fidelity * (1 - loss) * natural
+        acoustic_draws = fidelity_draws * (1 - loss) * natural_draws
+        coupled, coupled_p = environment(fidelity, natural, control, loss, 0)
+        coupled_draws, coupled_p_draws = environment(
+            fidelity_draws, natural_draws, control_draws, loss, 0,
+        )
+        if np.any(coupled > acoustic + 1e-12) or np.any(acoustic > clean + 1e-12):
+            raise ValueError("Loss scenarios must reduce or preserve clean effectiveness")
+        variants = (("clean", clean, clean_draws, natural, natural_draws),) if loss == 0 else (
+            ("acoustic_only", acoustic, acoustic_draws, natural, natural_draws),
+            ("coupled", coupled, coupled_draws, coupled_p, coupled_p_draws),
+        )
+        for link, index, boot, probability, p_draws in variants:
+            low, high = np.quantile(boot, [.025, .975], axis=0)
+            p_low, p_high = np.quantile(p_draws, [.025, .975], axis=0)
+            if loss == 0:
+                for i, j in ((1, 0), (2, 0), (2, 1)):
+                    deltas = boot[:, i, positions] - boot[:, j, positions]
+                    interval = np.quantile(deltas, [.025, .975], axis=0)
+                    for k, pos in enumerate(positions):
+                        comparisons.append({
+                            "distance_m": distance[pos], "call": calls[i], "reference_call": calls[j],
+                            "difference": index[i, pos] - index[j, pos],
+                            "low": interval[0, k], "high": interval[1, k],
+                        })
+            for policy, (cutoffs, draw_cutoffs) in policies.items():
+                for i, call in enumerate(calls):
+                    cutoff = cutoffs[i]
+                    estimate, status = radius(distance, index[i], cutoff)
+                    draws = [radius(distance, values, c)
+                             for values, c in zip(boot[:, i], draw_cutoffs[:, i])]
+                    bounded_low, bounded_high = np.quantile([v for v, _ in draws], [.025, .975])
+                    radii.append({
+                        "threshold_policy": policy, "response_link": link, "loss": loss,
+                        "call": call, "clean_cutoff": cutoff, "radius_m": estimate, "status": status,
+                        "bounded_low_m": bounded_low, "bounded_high_m": bounded_high,
+                        "draws_below_support": sum(s == "below_support" for _, s in draws),
+                        "draws_above_support": sum(s == "above_support" for _, s in draws),
+                    })
+                    # Store the full comparison curves used by the figure and the audit.
+                    curves.extend({
+                        "threshold_policy": policy, "response_link": link, "loss": loss,
+                        "call": call, "distance_m": d, "clean_cutoff": cutoff,
+                        "index": index[i, k], "low": low[i, k], "high": high[i, k],
+                        "response_probability": probability[i, k], "response_low": p_low[i, k],
+                        "response_high": p_high[i, k], "meets_cutoff": index[i, k] >= cutoff,
+                        "bootstrap_share_meeting_cutoff": (boot[:, i, k] >= draw_cutoffs[:, i]).mean(),
+                    } for k, d in enumerate(distance))
+    pd.DataFrame(radii).to_csv(output / "q4_comparison_radii.csv", index=False)
+    pd.DataFrame(comparisons).to_csv(output / "q4_clean_index_differences.csv", index=False)
+    frame = pd.DataFrame(curves)
+    frame.to_csv(output / "q4_comparison_curves.csv", index=False)
+    plot_comparisons(frame, calls, output)
+
+
+def plot_comparisons(frame, calls, output):
+    plotted = frame.loc[frame.threshold_policy.eq("common") & frame.loss.isin((0, .20))].copy()
+    plotted.to_csv(output / "q4_loss_comparison.csv", index=False)
+    figure, axes = plt.subplots(1, 3, figsize=(10, 3.5), sharex=True, sharey=True)
+    styles = {
+        "clean": ("#17686a", "-", "Clean"),
+        "acoustic_only": ("#533d80", "--", "20% acoustic loss only"),
+        "coupled": ("#a24c1f", "-.", "20% loss with response change"),
+    }
+    for axis, call, name in zip(axes, calls, ("Flat", "Modulated", "Two-voice")):
+        block = plotted.loc[plotted.call.eq(call)]
+        for link, (color, linestyle, label) in styles.items():
+            series = block.loc[block.response_link.eq(link)]
+            axis.plot(series.distance_m, series["index"], label=label, color=color, ls=linestyle, lw=1.7)
+            if link == "clean":
+                axis.fill_between(series.distance_m, series.low, series.high, color=color, alpha=.13)
+        axis.axhline(block.clean_cutoff.iloc[0], color="#686868", lw=1, ls=":", label="Common cutoff")
+        axis.set_title(name)
+        axis.set_xlabel("Distance (m)")
+        axis.spines[["top", "right"]].set_visible(False)
+    axes[0].set_ylabel("Communication effectiveness")
+    handles, labels = axes[-1].get_legend_handles_labels()
+    figure.legend(handles, labels, loc="upper center", ncol=4, frameon=False)
+    figure.tight_layout(rect=(0, 0, 1, .9))
+    figure.savefig(output / "q4_loss_comparison.png", dpi=300)
+    plt.close(figure)
+    (output / "q4_loss_comparison.meta.json").write_text(json.dumps({
+        "sources": ["Data02–Data11", "docs/model-spec.md"],
+        "support_m": [20, 150], "bands": "95% conditional combined bootstrap interval for clean",
+        "threshold": "half the equal-call mean clean index at 20 m",
+        "loss": .20, "response_links": list(styles),
+    }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+
 def run(propagation, behavior, output):
     distance = propagation["distance"]
     calls = tuple(propagation["calls"])
@@ -43,6 +149,9 @@ def run(propagation, behavior, output):
     natural_draws, control_draws = behavior["natural_draws"], behavior["control_draws"]
     if fidelity_draws.shape != natural_draws.shape or natural_draws.shape != control_draws.shape:
         raise ValueError("Bootstrap arrays must share shape (draw, call, distance)")
+
+    scenario_comparisons(distance, calls, fidelity, natural, control,
+                         fidelity_draws, natural_draws, control_draws, output)
 
     specifications = [
         ("clean", 0, 0), ("threshold_0.50", 0, .50), ("threshold_0.60", 0, .60), ("threshold_0.70", 0, .70),
