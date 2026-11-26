@@ -139,3 +139,9 @@ The anonymous manuscript at `1c0b92e` has PDF SHA-256 `7bc15d45c2785eba781128a5b
 The protocol froze at `f2d71da` and ran at `7b713f6`. A detached checkout reproduced 164 CSVs and seven JSON files byte-for-byte with the default 300-draw analysis. All seven PNGs matched by decoded pixels. Independent recomputation verified the archived gross baseline and all 225 rows in the five new tables. [Results](../docs/control-subtraction.md) · [Numerical review](../reviews/control-subtraction-verification.md)
 
 The anonymous manuscript at `8f0d913` has SHA-256 `8342503fc4dbdceb445804981c78728527012e2a884d4f91389262c4c93f987a`. Body and references occupy pages 3–14 and appendices begin on page 15 of 75. [Manuscript review](../reviews/control-subtraction-paper-review.md) · [PDF](../paper/main.pdf)
+
+## Q4 behavior model ablation verification
+
+The protocol froze at `aa170ea` and ran at `4adb6e7`. A detached checkout reproduced 168 CSVs and seven JSON files byte-for-byte with the default 300-draw analysis. All seven PNGs matched by decoded pixels. Independent recomputation verified the archived full-model baseline, the gross-minus-net identities and all 252 rows in the four new tables. [Results](../docs/behavior-ablation.md) · [Numerical review](../reviews/behavior-ablation-verification.md)
+
+The anonymous manuscript at `5d58a82` has SHA-256 `4a46e23b571f145376b431481ba79f7f3a447cfd4b5b2e6ed5454a5d41065839`. Body and references occupy pages 3–14 and appendices begin on page 15 of 75. [Manuscript review](../reviews/behavior-ablation-paper-review.md) · [PDF](../paper/main.pdf)
