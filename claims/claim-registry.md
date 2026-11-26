@@ -9,7 +9,7 @@
 | Q3 behavior combinations, conditional latency, and intensity | results/q3_predicted_mask_contrasts.csv, results/q3_representative_latency.csv, results/q3_observed_intensity.csv | Group-level estimates |
 | Q4 clean and scenario radii and component comparison | results/q4_radii.csv, results/q4_model_comparison.csv | Clean-reference operational ranges and support bounds |
 | Q4 modeled response and expected responders | results/q4_environment_curves.csv, results/q4_expected_responders.csv | Scenario assumptions |
-| Mathematical formulas, thresholds, and assumptions | docs/model-spec.md, sections 3 and 5 of paper/main.tex | Fixed before production run |
+| Mathematical formulas, thresholds, and assumptions | docs/model-spec.md, the methods sections of paper/main.tex | Fixed before production run |
 | All figures | figures/figure-index.md | Plotted data and metadata |
 | Q3 context and group size examples | results/q3_adjusted_conditions.csv | Matched model contrasts |
 | Q1 forest comparison, paired macro F1 and recalls | results/q1_model_comparison.csv, results/q1_fold_counts.csv, results/q1_oof_predictions.csv | Same fixed date-by-location folds. The historical estimate uses other group assignments. |

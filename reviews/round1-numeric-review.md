@@ -1,0 +1,33 @@
+# Round 1 independent numerical review
+
+**Reviewed versions** [Analysis and outputs at 5e7c49d](https://github.com/feiniao87968492-stack/apmcm-2026-problem-c/commit/5e7c49d), [frozen specification at 3a7b195](https://github.com/feiniao87968492-stack/apmcm-2026-problem-c/commit/3a7b195), and the historical baseline at 5f2639e.
+
+**Verdict** PASS. The independent checks found no calculation or grouping discrepancy in the reviewed comparisons. I used standalone calculations from the original attachments and published tables, without importing project modeling modules.
+
+## Q1. Recording groups and model adoption
+
+I derived all 16 group IDs from Data01 date and location and matched all 108 held-out labels and group assignments. The five folds held out 4, 3, 3, 3 and 3 distinct groups. Flat/modulated/two-voice test counts were (10,5,4), (6,4,4), (11,6,4), (10,10,5) and (7,15,7). Training groups were the complement of the test assignments. Independent logistic and forest fits on each complement reproduced every exported prediction. Confusion-count calculations gave pooled F1 of 0.314408 logistic, 0.369801 forest and 0.228571 majority. Resampling 16 group IDs with replacement per draw under the frozen seed gave the forest-minus-logistic difference 0.055393 with percentile interval [-0.009527, 0.099795]. The forest therefore misses the frozen adoption criterion. Per-class logistic-to-forest recalls were 0.523 to 0.568 for flat, 0.375 to 0.600 for modulated and 0.083 to 0.042 for two-voice. All four paired intervals and marginal model intervals reproduced.
+
+**Paper implication.** Keep the historical logistic result of 0.225 attached to its original grouping and use the paired comparison for the forest assessment. Data01 had pulse-rate values for 0/44, 34/40 and 20/24 calls and F02 values for 0/44, 0/40 and 24/24. Keep both as schema-sensitive diagnostics. [OOF predictions](../results/q1_oof_predictions.csv) · [Model comparison](../results/q1_model_comparison.csv)
+
+## Q2. Propagation thresholds and sampling
+
+I recalculated marginal means from Data03–Data11, pooled adjacent monotonicity violations independently and solved for the threshold crossings on the log-distance scale. This reproduced all 12 primary estimates, including 84.72, 144.56 and 169.73 m at 0.50. The released sensitivity table matches the baseline. At 0.70, modulated and two-voice equal-weight intervals overlap under both row-index conventions. Envelope-first radii at that threshold are 25.53, 66.77 and 12.11 m in flat/modulated/two-voice order. Equal-weight unconstrained fits give 35.38, 79.52 and 92.42 m.
+
+**Paper implication.** State the complete envelope-first rank reversal and qualify propagation intervals by the resampling unit. I verified matching cross-representation missingness masks in each call type. Common indices are a sensitivity assumption and the acquisition IDs needed to establish actual pairing are unavailable. [Threshold and sensitivity table](../results/q2_radii.csv) · [Fitting checks](../results/q2_fit_checks.csv)
+
+## Q3. Validation contrasts and local latency support
+
+I independently formed the masks from the three behavior flags, kept pairs together and recovered test sizes of 28, 28, 28, 28 and 27 experiments. Training-fold empirical frequencies and independent held-out fits gave all exported pair scores and fold means. Pooled, stimulus-only and full mask log loss was 1.384345, 1.176821 and 1.244955. Any-response Brier was 0.237825, 0.171507 and 0.154153. Full minus stimulus was +0.068134 and -0.017354 respectively. The full model improved Brier in five folds, log loss in one fold and both jointly in one fold. It missed the frozen incremental-superiority criterion.
+
+Raw counts reproduce 90 natural and 18 control responses across 139 matched experiments and 90 pairs with differing distances. In the three inclusive 25 m windows, natural/control counts are 37/57 versus 4/54 at 50 m, 35/61 versus 7/57 at 100 m and 6/8 versus 1/8 at 150 m. I recomputed every per-behavior local trial, event and observed-onset count and its coverage flag. All nine control-approach estimates lack observed onset and are unestimable.
+
+**Paper implication.** Retain the full covariate model for standardized exploration and Q4, report the opposing validation changes and keep the distinction between probability and conditional onset. Model-based probabilities for control approach are compatible with zero observed control approaches. [Grouped validation](../results/q3_grouped_validation.csv) · [Pair scores](../results/q3_validation_oof_scores.csv) · [Local response support](../results/q3_representative_response_support.csv) · [Latency coverage](../results/q3_representative_latency.csv)
+
+## Q4. Distances, scenarios and common support
+
+I combined the published acoustic and behavior curves independently and recomputed all 54 point radii, cutoff decisions and support statuses. I also regenerated 300 independently coded propagation and intact-pair behavior draws from the raw inputs with the frozen seeds. All curve percentiles and cutoff frequencies, clean paired index intervals, bounded radius percentiles and support counts matched the reported outputs. The published call-specific 50% clean and coupled-loss baseline values also reproduced, including 71 modulated and 286 two-voice clean draws at 150 m.
+
+The common cutoff was 0.287598199. The clean grid ranks modulated above two-voice above flat from 20 through 50.5 m, and two-voice above modulated above flat from 51 through 150 m. The paired two-voice-minus-modulated intervals include zero at all four representative distances. Across the two reference definitions and named losses, the point radius order was always two-voice, modulated, flat, with the appropriate support bounds. At 20% loss, acoustic-only versus coupled treatment changes flat cutoff attainment at 50 m and two-voice attainment at 150 m under both references. Modulated attainment at 100 m depends on reference under acoustic-only loss. At 100 m and 20% loss, two-voice clears both thresholds under both response assumptions and flat falls below both in the point predictions.
+
+**Paper implication.** State the point and uncertainty conclusions separately. A 150 m point result means the modeled curve still clears the cutoff at the evidence boundary. The scenario-dependent flips support monitoring and local testing before setting management distances. They quantify specified assumptions about loss and response and do not calibrate an ambient-noise effect. [Scenario radii](../results/q4_comparison_radii.csv) · [Scenario curves](../results/q4_comparison_curves.csv) · [Clean contrasts](../results/q4_clean_index_differences.csv)
