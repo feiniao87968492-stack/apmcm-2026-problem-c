@@ -136,3 +136,11 @@ Reference efcc817. No results for these noise scenarios or responder bounds were
 - For an eight-bird group let p be the probability of at least one recorded response. The sharp expected count interval is [p,8p]. Its endpoints put all positive counts at one or eight. Identical independent individual response gives 8*(1-(1-p)^(1/8)). The prior conditional shares 25%, 50% and 75% give 2p, 4p and 6p. At each representative distance and call compare these quantities in clean conditions and the physical 3/6 dB coupled scenarios. Report date and expID conditional percentile intervals from the same draws. These scenarios use standardized group predictions and impose distinct assumptions on individuals.
 
 Independently recompute attenuation matching, radii and attainment and responder counts. Integrate material contrasts in the manuscript and verify the clean build.
+
+## Final figure and scenario agreement protocol
+
+Reference d335cfa. Figure 2 shows the seven empirical equal-weight points, adopted shared-exponent curve with pointwise 95% intervals from the original 300 independent-row acoustic draws, and archived isotonic curve. Plot the three recognition thresholds in Table 2 over 4–256 m.
+
+For each nonzero noise level (3 or 6 dB), call type, and distance (50, 100, or 150 m), use the published common-reference 80% flags in noise_q4_points.csv. Each of the 18 settings has eight flags from two attenuation shapes, two response links, and two resampling schemes. All eight passing defines intersection attainment. All eight failing defines agreement below the criterion. Any mixture defines disagreement. Report these counts overall and by noise level, plus matched two-way counts for each factor with the other factors held fixed. Clean conditions have only two distinct resampling flags and are summarized separately. These are agreement rules on conditional scenario outputs.
+
+The independent paper review uses the previously frozen rubric.
