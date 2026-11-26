@@ -65,6 +65,8 @@ The adjusted covariate grid also illustrates variation with context and group si
 
 We model onset conditional on observing the corresponding behavior and report the response probability alongside its conditional time. Conditional modeling distinguishes a stimulus that produces infrequent behavior from one that produces slow behavior among the responders. We fit ridge regression ($\alpha=5$) to log-transformed onset time, $\log(1+t)$, among observed responders. We model Gaussian residuals on the log scale and compute a mixture median across contexts, weighting each context by its empirical frequency times its modeled event probability. For the representative scenarios we use eight birds, the median group size, and distances of 50, 100 and 150 m. We count local trials and onsets in inclusive 25 m windows and flag fewer than five local onsets. The conditional model pools information across distances. Duration and vocal count describe the intensity of behavior after onset. We compare ridge with a training median on observed onset times, and assess multinomial first-onset bins against half-count stimulus frequencies. Both comparisons hold out experiment pairs and, separately, entire dates.
 
+In False Bay, field playbacks took place on 12 days in June 2022 between 07:48 and 13:15 in wind below 10 knots \cite{fieldstudy}. We joined Data02 by date to six local hourly values (08:00--13:00) from ERA5 via Open-Meteo \cite{era5}. Wind at 10 m uses $34.25^\circ$S, $18.50^\circ$E and significant offshore wave height uses $34.50^\circ$S, $18.50^\circ$E. We fit separate slopes for daily paired response differences, repeated the analysis in same-distance pairs, and tested each weather term and its interaction with natural stimulus in strict date-and-track holdouts.
+
 \BehaviorResults
 
 \section{Integrated communication and conservation}
@@ -94,6 +96,8 @@ Sparse responses limit precision for behavior combinations and onset times. The 
 \begin{thebibliography}{9}
 \bibitem{problem} APMCM Organizing Committee. 2026 APMCM Problem C, \emph{Acoustic Communication and Playback Responses of African Penguins at Sea}. Contest statement and attachments, 2026.
 \bibitem{archive} \emph{African penguin acoustic and playback study, associated data and supplementary material}. Zenodo record 21376649, \url{https://zenodo.org/records/21376649}, accessed November 26, 2026.
+\bibitem{fieldstudy} Thiebault, A., et al. Contact and recruit: the importance of acoustic communication in the foraging strategy of a flightless seabird. \emph{Open Research Europe}, 2026. \url{https://doi.org/10.12688/openreseurope.24618.1}.
+\bibitem{era5} Copernicus Climate Change Service. ERA5 hourly data on single levels, accessed through Open-Meteo on November 26, 2026. \url{https://doi.org/10.24381/cds.adbb2d47}.
 \end{thebibliography}
 \clearpage
 \appendix
@@ -134,6 +138,7 @@ The commands in the repository README reproduce the figures and tables using the
 \lstinputlisting[caption={Noise power and individual responder bounds}]{../noise_scenarios.py}
 \lstinputlisting[caption={Agreement across noise scenarios}]{../noise_agreement.py}
 \lstinputlisting[caption={Strict playback and crossed resampling}]{../strict_playback.py}
+\lstinputlisting[caption={False Bay sea-state sensitivity}]{../sea_state.py}
 \end{document}
 
 

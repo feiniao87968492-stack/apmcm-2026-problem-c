@@ -79,3 +79,8 @@
 | Date holdout with a natural-track purge | results/strict_q3_coverage.csv, results/strict_q3_scores.csv | All 139 pairs held out once |
 | Joint binary outcomes with fixed margins | results/strict_q3_pair_folds.csv, results/strict_q3_pair_contrast.csv | Fold-specific estimates of a shared association |
 | Crossed playback resampling and fixed-reference Q4 | results/strict_q4_crossed_coverage.csv, results/strict_q4_margins.csv | Conditional on sampled dates and natural tracks |
+
+| Sea-state finding | Supporting artifacts | Scope |
+|---|---|---|
+| Observed date-level slopes and strict prediction comparisons | results/sea_state_daily.csv, results/sea_state_slopes.csv, results/sea_state_validation.csv | Exploratory comparison across 12 observed dates |
+| Standardized weather contrasts | results/sea_state_standardized.csv, sources/false-bay/README.md | Reanalysis proxies and date-block intervals |

@@ -1,0 +1,3 @@
+# Independent recomputation of False Bay sensitivities
+
+**PASS.** Frozen specification e86dfe1 and outputs 7bffe2b. I indexed the archived snapshots by hour and independently selected all 72 timestamps for each source. I used polynomial least squares for the four response-gap slopes and independently rebuilt date and natural-track exclusions for all 12 folds. Explicit scaling and logistic fits reproduced the six scores and paired date intervals. Separate prediction and averaging code reproduced all 126 standardized rows and their percentile intervals. The source paper confirms 12 dates, 07:48–13:15 and field wind below 10 knots. [Results](../docs/false-bay.md)

@@ -37,3 +37,5 @@ The seven figures in `results/` each have a same-name CSV and JSON metadata file
 - [Final Figure 2 and noise agreement](docs/final-delivery.md)
 
 - [Strict playback holdouts and crossed resampling](docs/strict-playback.md)
+
+- [False Bay sea-state sensitivity](docs/false-bay.md)
