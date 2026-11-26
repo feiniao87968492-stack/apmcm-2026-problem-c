@@ -16,6 +16,10 @@ Among 76 natural responders, 24 first replies matched the played call type, comp
 
 Of 19 natural trials with both events, all have finite latencies and occur on 11 dates. Eighteen were vocal-first, one was approach-first and none tied. The vocal-first fraction was 94.7% (95% date interval 87.5%–100%), with a mean signed lag of 6.679 seconds (3.607–11.600) and a median lag of 3.6 seconds (2.2–11.6). All date draws had eligible cases. Each released statistic and its interval matches the independent reconstruction. The lags describe first events at group level. [Event order](../results/first_reply_event_order.csv)
 
+## Natural playback detail
+
+I rebuilt all 27 played-call, context and reply cells from Data02 under `8de62a4` and compared them with the export at `abce327`. Counts, both denominators, date coverage, retained bootstrap draws, shares and all percentile endpoints match exactly. Summing the counts over played calls reproduces all nine natural-arm counts. Summing each denominator once per played-call and context cell reproduces the original 17, 27 and 32 responses and 36, 65 and 38 trials across after, commuting and searching. The replies to flat playback number 12 flat, 12 modulated and two two-voice. The counts are 6, 8 and 2 for modulated playback and 10, 20 and 4 for two-voice playback. These recover the known response totals of 26, 16 and 34 and the same-type counts of 12, 8 and 4. The narrowest response support is three responses to modulated playback while commuting. The fewest bootstrap draws with a nonzero response denominator is 268 for modulated playback in the after context. [Played-call detail](../results/first_reply_by_played_call.csv) · [Arm matrix](../results/first_reply_matrix.csv)
+
 ## Reproduction
 
 The independent verifier imports no project modules. I ran the temporary verifier and comparison scripts from the repository root.
@@ -23,4 +27,5 @@ The independent verifier imports no project modules. I ran the temporary verifie
 ```powershell
 & "$env:TEMP/apmcm-2026-c-round2-venv/Scripts/python.exe" "$env:TEMP/apmcm-reply-verify.py" "<attachment directory>/date" "$env:TEMP/apmcm-reply-independent"
 & "$env:TEMP/apmcm-2026-c-round2-venv/Scripts/python.exe" "$env:TEMP/apmcm-reply-compare.py" "$env:TEMP/apmcm-reply-independent" results results
+& "$env:TEMP/apmcm-2026-c-round2-venv/Scripts/python.exe" "$env:TEMP/apmcm-reply-detail-verify.py" "<attachment directory>/date" "$env:TEMP/apmcm-reply-independent"
 ```
