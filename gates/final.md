@@ -49,3 +49,7 @@ The analysis was frozen at fa1b026 and computed at 4c1b3a3. Independent refits v
 ## Matched distance and weighted behavior verification
 
 The analyses were frozen at c4bf42f and computed at f6e5984. Independent calculations reproduced the stratified intervals, loss limits and weighted comparisons. A clean checkout of 28437c5 reproduced 86 CSV/JSON files byte-for-byte, six PNGs by decoded pixels and all 53 rendered PDF pages. The public team fields are blank. Body and references occupy pages 3–10. [Results](../docs/matched-sensitivity.md) · [Independent recomputation](../reviews/matched-sensitivity-verification.md)
+
+## Physical attenuation verification
+
+Protocol 92e3265 and outputs 1284ba2 passed independent recomputation of the distance holdout, block intervals and fixed-reference Q4 decisions. A clean checkout of a58d784 reproduced 92 CSV/JSON files byte-for-byte, six PNGs by decoded pixels and all 56 rendered manuscript pages. The team fields are blank, and body and references occupy pages 3–10. [Results](../docs/physical-attenuation.md) · [Independent recomputation](../reviews/physical-attenuation-verification.md)
