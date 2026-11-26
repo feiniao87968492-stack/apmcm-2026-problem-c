@@ -53,3 +53,7 @@ The analyses were frozen at c4bf42f and computed at f6e5984. Independent calcula
 ## Physical attenuation verification
 
 Protocol 92e3265 and outputs 1284ba2 passed independent recomputation of the distance holdout, block intervals and fixed-reference Q4 decisions. A clean checkout of a58d784 reproduced 92 CSV/JSON files byte-for-byte, six PNGs by decoded pixels and all 56 rendered manuscript pages. The team fields are blank, and body and references occupy pages 3–10. [Results](../docs/physical-attenuation.md) · [Independent recomputation](../reviews/physical-attenuation-verification.md)
+
+## Acoustic transformation and onset verification
+
+The analysis froze at 195a5af and ran at 4130bdd. Independent calculations verified the grouped acoustic predictions and paired intervals, latency MAEs, timing scores and all 54 cumulative probability rows. A clean checkout of 2f6b2ae reproduced 97 CSV/JSON files byte-for-byte, six PNGs by decoded pixels and all 59 PDF pages by extracted text and raster comparison. Body and references occupy pages 3–10 and the public team fields are blank. [Results](../docs/acoustic-onset.md) · [Independent recomputation](../reviews/acoustic-onset-verification.md)
