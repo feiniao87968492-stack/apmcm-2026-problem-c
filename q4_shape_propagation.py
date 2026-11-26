@@ -14,7 +14,7 @@ from q2_shape_rank import fit_all
 from q4_envelope_attainment import DISTANCES, DRAWS, MODELS, REQUIRED
 
 
-def acoustic_fidelities(data):
+def acoustic_fidelities(data, distances=DISTANCES):
     tables = q2.load_tables(data)
     rng = np.random.default_rng(ACOUSTIC_SEED)
     samples = []
@@ -25,20 +25,20 @@ def acoustic_fidelities(data):
     rows = []
     for draw in zip(*samples):
         fits = fit_all(q2.KNOTS, np.stack([physical.equal_means(m) for m in draw]))
-        rows.append({shape: (np.stack([q2.interpolated(DISTANCES, row) for row in fitted])
-                             if shape == "isotonic" else physical.curve(DISTANCES, fitted))
+        rows.append({shape: (np.stack([q2.interpolated(distances, row) for row in fitted])
+                             if shape == "isotonic" else physical.curve(distances, fitted))
                      for shape, fitted in fits.items()})
     return {shape: np.stack([row[shape] for row in rows]) for shape in rows[0]}
 
 
-def behavior_probabilities(data):
+def behavior_probabilities(data, distances=DISTANCES):
     frame = q3.load_playbacks(data)
     weights = frame.loc[frame.Type.eq("call"), "Context"].value_counts(normalize=True).sort_index()
     n_dates = frame.Date.nunique()
     dates = np.random.default_rng(DATE_SEED).integers(n_dates, size=(DRAWS, n_dates))
     filters, _ = pair_filters(frame)
     for model in MODELS:
-        point, draws = refit(frame, filters[model], dates, weights, distances=DISTANCES)
+        point, draws = refit(frame, filters[model], dates, weights, distances=distances)
         yield model, np.concatenate((point[None], draws))
 
 

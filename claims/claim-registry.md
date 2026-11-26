@@ -186,3 +186,7 @@ The point margins and shared-exponent contrasts use [checkpoint evidence](../res
 ## Q4 two-loss net tradeoffs
 
 [Retention requirements and binding shapes](../results/q4_net_loss_requirements.csv), [loss boundaries](../results/q4_net_loss_boundaries.csv), and [direct counts](../results/q4_net_loss_counts.csv) support the simultaneous four-shape comparison.
+
+## Q4 consecutive-distance attainment
+
+The five radii, grid counts, pairwise differences and retained playback ranges are linked from [the consecutive-distance analysis](../docs/q4-consecutive.md).

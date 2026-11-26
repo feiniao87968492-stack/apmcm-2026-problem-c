@@ -1,0 +1,5 @@
+model,arm,trials,min_m,max_m
+full,call,58,20,200
+full,control,58,5,200
+drop_union,call,49,20,100
+drop_union,control,49,5,120

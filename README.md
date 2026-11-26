@@ -65,3 +65,4 @@ The seven figures in `results/` each have a same-name CSV and JSON metadata file
 - [Q2 attenuation shape and representation weights](docs/q2-shape-rank.md)
 - [Q4 attenuation-shape propagation](docs/q4-shape-propagation.md)
 - [Q4 acoustic and response-loss tradeoffs](docs/q4-net-loss.md)
+- [Q4 consecutive-distance attainment](docs/q4-consecutive.md)
