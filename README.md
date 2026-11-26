@@ -47,3 +47,4 @@ The seven figures in `results/` each have a same-name CSV and JSON metadata file
 - [First vocal replies and group event order](docs/first-reply.md)
 - [Q4 averages and attainment over the supported annulus](docs/spatial-annulus.md)
 - [Q4 ranking by context and behavior priority](docs/context-priority.md)
+- [Historical correlation recovery priorities](docs/recovery-priority.md)

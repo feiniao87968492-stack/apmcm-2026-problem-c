@@ -126,3 +126,8 @@
 | Context-specific and empirical area averages, ranks and paired gaps | results/context_priority_scores.csv, results/context_priority_gaps.csv |
 | Exact pairwise gap endpoints, vertices and directional robustness | results/context_priority_bounds.csv |
 | Natural trial, date and event coverage | results/context_priority_coverage.csv |
+
+| Historical recovery finding | Evidence |
+|---|---|
+| Missing counts and one- and two-unit recovery comparisons | results/recovery_units.csv, results/recovery_plans.csv, results/recovery_cases.csv |
+| Selected-plan radius and ranking sensitivities | results/recovery_radii.csv, results/recovery_gaps.csv |
