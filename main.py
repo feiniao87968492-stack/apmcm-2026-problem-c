@@ -56,7 +56,14 @@ def main():
                           help="Run the frozen 4,800-draw Q4 envelope-weight analysis")
     analyses.add_argument("--q4-shape-propagation", action="store_true",
                           help="Compare four Q4 acoustic shapes in the frozen 4,800-draw analysis")
+    analyses.add_argument("--q4-net-loss", action="store_true",
+                          help="Compute Q4 boundaries for separate acoustic and response losses")
     args = parser.parse_args()
+    if args.q4_net_loss:
+        from q4_net_loss import write
+
+        write(args.data, args.output, Path(__file__).resolve().parent / "results")
+        return
     if args.q4_shape_propagation:
         from q4_shape_propagation import write
 
