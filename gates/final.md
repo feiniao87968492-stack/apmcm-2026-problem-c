@@ -21,3 +21,11 @@ The regenerated directory contained the same 46 files as results/. The 40 CSV an
 Two passes of pdflatex from paper/ in the clean checkout reproduced the released PDF's extracted text and all 28 rendered pages. Page 1 is the summary, page 2 the contents, pages 3–8 the body and references, and appendices start on page 9. The public build left the team number blank. The released PDF SHA-256 is a1ec58529561ae98f6b4ab7f9e091d650e1e88da06c4549ee7ecd659b245483b.
 
 The recording-group comparison, the incremental playback validation and the operational scenario checks support the stated adoption decisions. Acquisition identifiers, local playback events at the far end of the range and measured ambient-noise effects remain evidence limits.
+
+## Final follow-up evidence and reproduction
+
+The experimental specification was frozen at 634bd20. A clean clone of 13c5be8 reproduced all 62 result files using the original attachments and the isolated Python 3.10.11 environment installed from requirements.txt. All 56 CSV/JSON files matched byte-for-byte and all six PNGs matched by decoded pixels. The default 300-draw entry point is `python main.py --data <attachment-dir>`.
+
+The [independent numerical review](../reviews/final-followup-numeric-review.md) verifies the recording-group deletion impacts, grouped behavior scores, paired intervals and all radius and cutoff comparisons. The [independent manuscript review](../reviews/final-followup-paper-review.md) verifies the manuscript claims, figures and format against the frozen rubric.
+
+A two-pass clean-checkout pdflatex build of the revised manuscript reproduced the published PDF's extracted text and all 37 rendered pages. The summary and contents occupy pages 1–2, the body and references occupy pages 3–9, and the appendices begin on page 10. The public team fields are blank.

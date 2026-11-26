@@ -20,3 +20,7 @@ All four milestones are complete. The reproducible baseline is at 5f2639e and in
 | Reproducible experiments and adoption decisions | [5e7c49d](https://github.com/feiniao87968492-stack/apmcm-2026-problem-c/commit/5e7c49d), [comparison table](docs/round1-results.md) |
 | Independent numerical validation and manuscript re-review | [Numerical review](reviews/round1-numeric-review.md), [two manuscript versions and scores](reviews/round1-paper-review.md) |
 | Revised English paper and clean-checkout reproduction | [22529a9](https://github.com/feiniao87968492-stack/apmcm-2026-problem-c/commit/22529a9), [PDF](paper/main.pdf), [reproduction evidence](gates/final.md) |
+
+## Final follow-up
+
+The [round-two ablations](docs/round2-results.md) and [final follow-up](docs/final-followup-results.md) are complete. The last three comparisons were frozen at 634bd20 and executed at 13c5be8. The English manuscript integrates the evidence from both sets of comparisons. See the [independent numeric verification](reviews/final-followup-numeric-review.md), [manuscript review](reviews/final-followup-paper-review.md) and [reproduction evidence](gates/final.md).
