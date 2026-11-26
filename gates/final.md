@@ -253,3 +253,7 @@ The anonymous manuscript at ecf2567 independently rebuilt byte-for-byte. Body an
 ## Q4 target-distance loss verification
 
 The protocol froze at f854f68 and results were published at 82011ee. A detached checkout reproduced all three CSVs byte-for-byte using the main entry point with the target-loss flag. Independent direct score inversion verified 1,566 grid rows, 108 boundary rows and 12 inverse radii. At 20% loss in each component, the four-curve prefix recovers 96 m with full training and 84 m after union deletion. [Results](../docs/q4-target-loss.md) · [Review](../reviews/q4-target-loss-verification.md)
+
+## Q4 matched-noise verification
+
+The protocol froze at 5bdf5ae. A detached checkout of 52116da reproduced both CSVs byte-for-byte with the matched-noise flag. Independent fits verified all 16 target and 16 radius rows and 522 clean prefix counts. The maximum noise-limit discrepancy was 5.93e-7 dB. [Results](../docs/q4-matched-noise.md) · [Review](../reviews/q4-matched-noise-verification.md)
