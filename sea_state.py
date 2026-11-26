@@ -29,7 +29,7 @@ def daily_weather(dates, output):
     return daily.mean()
 
 
-def date_slopes(pairs, weather, samples, output):
+def date_slopes(pairs, weather, samples, output, prefix="sea_state"):
     records, inputs = [], []
     for name, indices in (("all", pairs.index), ("same_distance", pairs.index[pairs.same_distance])):
         daily = pairs.loc[indices].groupby("date").difference.agg(["mean", "size"]).reindex(weather.index)
@@ -51,8 +51,8 @@ def date_slopes(pairs, weather, samples, output):
             records.append({"subset": name, "weather": variable, "dates": daily["size"].count(),
                             "pairs": len(indices), "slope": slope(np.arange(len(x))),
                             "low": limits[0], "high": limits[1], "draws": np.isfinite(draws).sum()})
-    pd.concat(inputs).rename_axis("date").to_csv(output / "sea_state_daily.csv")
-    pd.DataFrame(records).to_csv(output / "sea_state_slopes.csv", index=False)
+    pd.concat(inputs).rename_axis("date").to_csv(output / f"{prefix}_daily.csv")
+    pd.DataFrame(records).to_csv(output / f"{prefix}_slopes.csv", index=False)
 
 
 def augment(design, values):
@@ -64,7 +64,7 @@ def probability(x, y, target):
     return model.fit(x, y).predict_proba(target)[:, 1]
 
 
-def compare(pairs, design, y, weather, samples, output):
+def compare(pairs, design, y, weather, samples, output, prefix="sea_state"):
     sizes, scores, coverage = [], [], []
     for date in weather.index:
         test = pairs.date.eq(date)
@@ -90,8 +90,8 @@ def compare(pairs, design, y, weather, samples, output):
             records.append({"model": name, "metric": metric, "score": point[j,m],
                             "delta": point[j,m]-point[j,0], "low": low[j,m], "high": high[j,m],
                             "joint_gain": bool((high[:,m]<0).all())})
-    pd.DataFrame(records).to_csv(output / "sea_state_validation.csv", index=False)
-    pd.DataFrame(coverage).to_csv(output / "sea_state_coverage.csv", index=False)
+    pd.DataFrame(records).to_csv(output / f"{prefix}_validation.csv", index=False)
+    pd.DataFrame(coverage).to_csv(output / f"{prefix}_coverage.csv", index=False)
 
 
 def standardized(frame, pairs, designs, y, contexts, weights, weather, samples, output):

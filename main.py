@@ -6,6 +6,7 @@ import creative_gate
 import creative_inverse
 import creative_q1
 import creative_q3
+import example_sensitivity
 import final_analysis
 import matched_sensitivity
 import noise_agreement
@@ -69,6 +70,8 @@ def main():
     noise_agreement.run(args.output)
     strict_playback.run(frame, propagation, behavior, date_predictions, args.output, args.seed, args.bootstrap)
     sea_state.run(frame, args.output, args.seed, args.bootstrap)
+    example_sensitivity.waverys(frame, args.output, args.seed, args.bootstrap)
+    example_sensitivity.example_deletion(args.data, args.output, propagation, behavior, date_predictions, parameters)
     print(f"Results written to {args.output.resolve()}")
 
 
