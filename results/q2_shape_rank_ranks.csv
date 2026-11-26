@@ -1,0 +1,11 @@
+model,threshold,rank,count
+fixed_g,0.5,tv>mod>flat,300
+fixed_g,0.7,mod>tv>flat,300
+isotonic,0.5,tv>mod>flat,300
+isotonic,0.7,mod>tv>flat,28
+isotonic,0.7,tv>mod>flat,272
+separate_g,0.5,tv>mod>flat,300
+separate_g,0.7,tv>mod>flat,300
+shared_g,0.5,tv>mod>flat,300
+shared_g,0.7,mod>tv>flat,232
+shared_g,0.7,tv>mod>flat,68

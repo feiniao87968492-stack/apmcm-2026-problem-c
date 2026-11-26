@@ -174,3 +174,7 @@ The point margins and shared-exponent contrasts use [checkpoint evidence](../res
 ## Q3 discordant-pair direction
 
 [Raw counts](../results/q3_direction_counts.csv), [purged fold counts](../results/q3_direction_folds.csv), [conditional scores](../results/q3_direction_scores.csv), [paired differences](../results/q3_direction_contrasts.csv), and [equal-distance standardized predictions](../results/q3_direction_standardized.csv) support the direction comparison.
+
+## Q2 attenuation shape and weight ranks
+
+[Holdout predictions](../results/q2_shape_rank_holdouts.csv), [RMSE](../results/q2_shape_rank_rmse.csv) and the [equal-weight decision](../results/q2_shape_rank_decision.csv) support model preference. [Point radii](../results/q2_shape_rank_radii.csv), [paired draws](../results/q2_shape_rank_draws.csv), [gaps](../results/q2_shape_rank_gaps.csv) and [rank frequencies](../results/q2_shape_rank_ranks.csv) support the rank sensitivity.
