@@ -131,3 +131,4 @@
 |---|---|
 | Missing counts and one- and two-unit recovery comparisons | results/recovery_units.csv, results/recovery_plans.csv, results/recovery_cases.csv |
 | Selected-plan radius and ranking sensitivities | results/recovery_radii.csv, results/recovery_gaps.csv |
+| Continuous worst-case shrinkage and clean optimality certificate | results/recovery_continuous.csv, results/recovery_breakpoints.csv |
