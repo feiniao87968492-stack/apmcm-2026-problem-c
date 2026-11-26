@@ -2,6 +2,7 @@
 from argparse import ArgumentParser
 from pathlib import Path
 
+import behavior_gap
 import context_priority
 import continuous_recovery
 
@@ -61,7 +62,8 @@ def main():
     creative_inverse.loss_limits(propagation, behavior, args.output)
     post_hoc.inverse_sensitivity(propagation, behavior, reduced, reduced_draws, args.output)
     q4_decision.run(propagation, behavior, args.output)
-    frame, sampled_dates, date_predictions, point_masks, date_masks = playback_dependence.run(
+    (frame, sampled_dates, date_predictions, point_masks, date_masks,
+     point_mixed, date_mixed) = playback_dependence.run(
         args.data, args.output, args.seed, args.bootstrap, propagation, behavior,
     )
     matched_sensitivity.stratified_pairs(frame, sampled_dates).to_csv(
@@ -92,6 +94,7 @@ def main():
                             behavior, recovery_plans, args.output)
     context_priority.run(frame, propagation["distance"], parameters, sampled_parameters,
                          point_masks, date_masks, args.output)
+    behavior_gap.run(frame, sampled_dates, point_mixed, date_mixed, args.output)
     group_size.run(frame, sampled_dates, propagation, behavior, date_predictions, args.output)
     vocal_counts.run(frame, sampled_dates, propagation, behavior, date_predictions, args.output)
     first_reply.run(frame, sampled_dates, args.seed, args.output)

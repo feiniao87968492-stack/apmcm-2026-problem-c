@@ -62,14 +62,18 @@ def date_draws(frame, design, contexts, weights, distances, sampled_dates):
     shape = (len(q3.STIMULI), len(q3.CALLS), len(distances), len(contexts))
     predictions = []
     natural_masks = []
-    point_masks = q3.fit_masks(design, y, grid_x).reshape(*shape, len(q3.MASKS))[0]
+    representative = np.searchsorted(distances, q3.REPRESENTATIVE)
+    point_masks = q3.fit_masks(design, y, grid_x).reshape(*shape, len(q3.MASKS))
+    point_mixed = np.einsum("scdjm,j->scdm", point_masks[:, :, representative], weights)
+    date_mixed = []
     for dates in sampled_dates:
         rows = np.concatenate([group_rows[i] for i in dates])
         masks = q3.fit_masks(design[rows], y[rows], grid_x).reshape(*shape, len(q3.MASKS))
         p = 1 - masks[..., 0]
         predictions.append(p.reshape(shape) @ weights)
         natural_masks.append(masks[0])
-    return np.asarray(predictions), point_masks, np.stack(natural_masks)
+        date_mixed.append(np.einsum("scdjm,j->scdm", masks[:, :, representative], weights))
+    return np.asarray(predictions), point_masks[0], np.stack(natural_masks), point_mixed, np.stack(date_mixed)
 
 
 def margin_table(propagation, behavior, date_predictions, crossed_predictions=None):
@@ -134,9 +138,9 @@ def run(data, output, seed, n_boot, propagation, behavior):
     grouped_scores(frame, design, output)
     n_dates = frame.Date.nunique()
     sampled_dates = np.random.default_rng(seed + 2).integers(n_dates, size=(n_boot, n_dates))
-    draws, point_masks, natural_masks = date_draws(
+    draws, point_masks, natural_masks, point_mixed, date_mixed = date_draws(
         frame, design, contexts, counts.to_numpy(), propagation["distance"], sampled_dates,
     )
     margin_table(propagation, behavior, draws).to_csv(output / "dependence_q4_margins.csv", index=False)
     trial_precision(output)
-    return frame, sampled_dates, draws, point_masks, natural_masks
+    return frame, sampled_dates, draws, point_masks, natural_masks, point_mixed, date_mixed
