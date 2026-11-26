@@ -80,21 +80,25 @@ def radius_functions(pieces, threshold):
             yield a, b, numerator, denominator
 
 
-def direct(means, e, threshold, snap=False):
-    knots = q2.fit_knots(means, ((1-e)/2, (1-e)/2, e))
+def equal_spectral(e):
+    return (1-e)/2, (1-e)/2, e
+
+
+def direct(means, e, threshold, snap=False, weights=equal_spectral):
+    knots = q2.fit_knots(means, weights(e))
     if snap:
         knots[np.abs(knots-threshold) <= 1e-13] = threshold
     return q2.radius(knots, threshold)
 
 
-def state(left, right, e, threshold, snap=False):
-    left_radius, _ = direct(left, e, threshold, snap)
-    right_radius, _ = direct(right, e, threshold, snap)
+def state(left, right, e, threshold, snap=False, weights=equal_spectral):
+    left_radius, _ = direct(left, e, threshold, snap, weights)
+    right_radius, _ = direct(right, e, threshold, snap, weights)
     gap = np.log2(left_radius / right_radius)
     return int(np.sign(gap)) if abs(gap) > TOL else 0
 
 
-def pair_path(left, right, left_pieces, right_pieces, threshold):
+def pair_path(left, right, left_pieces, right_pieces, threshold, weights=equal_spectral):
     low, high = left_pieces[0][0], left_pieces[-1][1]
     left_edges = [p[0] for p in left_pieces]
     right_edges = [p[0] for p in right_pieces]
@@ -114,12 +118,13 @@ def pair_path(left, right, left_pieces, right_pieces, threshold):
             if abs(root.imag) <= TOL and 0 < root.real < 1:
                 roots.append(a + (b-a) * root.real)
     edges = partitions(np.r_[edges[1:-1], roots], low, high)
-    on_edges = [state(left, right, e, threshold, snap=True) for e in edges]
-    interiors = [state(left, right, (a+b)/2, threshold) for a, b in zip(edges[:-1], edges[1:])]
+    on_edges = [state(left, right, e, threshold, snap=True, weights=weights) for e in edges]
+    interiors = [state(left, right, (a+b)/2, threshold, weights=weights)
+                 for a, b in zip(edges[:-1], edges[1:])]
     return edges, on_edges, interiors
 
 
-def rank_events(left, right, path, threshold):
+def rank_events(left, right, path, threshold, weights=equal_spectral):
     edges, on, interior = path
     for i, (e, at_e) in enumerate(zip(edges, on)):
         before = interior[i-1] if i else None
@@ -129,8 +134,8 @@ def rank_events(left, right, path, threshold):
                 continue
         elif before == at_e == after:
             continue
-        l_radius, l_status = direct(left, e, threshold, snap=True)
-        r_radius, r_status = direct(right, e, threshold, snap=True)
+        l_radius, l_status = direct(left, e, threshold, snap=True, weights=weights)
+        r_radius, r_status = direct(right, e, threshold, snap=True, weights=weights)
         yield dict(weight=e, before=before, at=at_e, after=after, radius_left=l_radius,
                    radius_right=r_radius, status_left=l_status, status_right=r_status)
 
