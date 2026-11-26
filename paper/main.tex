@@ -127,6 +127,15 @@ Sparse responses limit precision for behavior combinations and onset times. The 
 
 \section{Analysis source}
 The commands in the repository README reproduce the figures and tables using the supplied CSV files.
+
+\subsection{Software}
+The analysis used Python 3.10.11 with NumPy 2.2.6, pandas 2.3.3,
+SciPy 1.15.3, scikit-learn 1.7.2, Matplotlib 3.10.8,
+statsmodels 0.14.6, and XGBoost 3.2.0. The paper was built with
+\texttt{pdflatex} (MiKTeX-pdfTeX 4.23, MiKTeX 25.12).
+Poppler 24.04.0 was used to inspect the PDF.
+
+\subsection{Core analysis and earlier sensitivity checks}
 \lstinputlisting[caption={Reproduction entry point}]{../main.py}
 \lstinputlisting[caption={Acoustic classification}]{../q1.py}
 \lstinputlisting[caption={Acoustic propagation}]{../q2.py}
@@ -151,6 +160,20 @@ The commands in the repository README reproduce the figures and tables using the
 \lstinputlisting[caption={False Bay sea-state sensitivity}]{../sea_state.py}
 \lstinputlisting[caption={WAVERYS and assumed example deletion}]{../example_sensitivity.py}
 \lstinputlisting[caption={Missing propagation comparisons}]{../missing_propagation.py}
+
+\subsection{Playback behavior analyses}
+\lstinputlisting[caption={Group size and response predictions}]{../group_size.py}
+\lstinputlisting[caption={Vocal counts and contact scenarios}]{../vocal_counts.py}
+\lstinputlisting[caption={First replies and event order}]{../first_reply.py}
+\lstinputlisting[caption={Response frequency and responder composition}]{../behavior_gap.py}
+
+\subsection{Integrated communication analyses}
+\lstinputlisting[caption={Effectiveness and attainment over the supported annulus}]{../spatial_annulus.py}
+\lstinputlisting[caption={Context mix and behavior priorities}]{../context_priority.py}
+\lstinputlisting[caption={Discrete historical recovery scenarios}]{../recovery.py}
+\lstinputlisting[caption={Continuous historical recovery certificate}]{../continuous_recovery.py}
+\lstinputlisting[caption={Control subtraction and cutoff sensitivity}]{../control_subtraction.py}
+\lstinputlisting[caption={Behavior model sensitivity}]{../behavior_ablation.py}
 \end{document}
 
 
