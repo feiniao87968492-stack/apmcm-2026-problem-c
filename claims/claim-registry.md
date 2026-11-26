@@ -153,3 +153,8 @@
 | Pair overlap, arm counts and retained distance support | results/distance_deletion_overlap.csv, results/distance_deletion_training.csv, results/distance_deletion_coverage.csv |
 | Fixed-cutoff predictions, paired margin differences and decisions | results/distance_deletion_points.csv |
 | Monte Carlo precision at the 80\% cutoff | results/distance_deletion_mc.csv |
+
+| Fisher planning for the three Q4 margins | Evidence |
+|---|---|
+| 120-pair allocations | results/q4_fisher_allocations.csv |
+| Delta-method standard errors and gains versus uniform | results/q4_fisher_precision.csv |
