@@ -1,4 +1,4 @@
-\newcommand{\PaperSummary}{We analyze 108 call recordings and 139 paired playback experiments to study at-sea communication in African penguins. Five recording-group folds give macro F1 of 0.314, 0.370 and 0.383 for logistic regression, shallow forest and boosting. Both paired boosting gains have intervals that include zero. We retain the logistic benchmark and recorded labels. Within recording groups, flat calls have higher peak frequency than modulated and two-voice calls. At acoustic fidelity 0.50, estimated ranges are 84.7, 144.6 and 169.7 m. Natural playback elicited responses in 90 of 139 trials versus 18 controls. A pairwise log-linear model improves mask log loss from 1.245 to 1.095 relative to the full multinomial, with similar Brier scores. The full model remains the basis for standardized responses. Under the common effectiveness cutoff, clean radii are 82.4, 139.3 and at least 150 m. At 150 m the greatest modeled losses retaining 80\% of two-voice bootstrap draws are 9.7\% with acoustic loss alone and 5.2\% when the natural response advantage also weakens. These scenarios guide field monitoring.}
+\newcommand{\PaperSummary}{We analyze 108 call recordings and 139 paired playback experiments to study at-sea communication in African penguins. Five recording-group folds give macro F1 of 0.314, 0.370 and 0.383 for logistic regression, shallow forest and boosting. Both paired boosting gains have intervals that include zero. We retain the logistic benchmark and recorded labels. Within recording groups, flat calls have higher peak frequency than modulated and two-voice calls. At acoustic fidelity 0.50, estimated ranges are 84.7, 144.6 and 169.7 m. Natural playback elicited responses in 90 of 139 trials versus 18 controls. A pairwise log-linear model improves mask log loss from 1.245 to 1.095 relative to the full multinomial, with similar Brier scores. The full model remains the basis for standardized responses. Under the common effectiveness cutoff, clean radii are 82.4, 139.3 and at least 150 m. The natural response advantage persists in 49 same-distance pairs. At 150 m, clean two-voice attainment falls from 91.0\% with experiment-pair resampling to 78.7\% with date resampling, below the 80\% rule. These scenarios guide field monitoring.}
 
 \newcommand{\AcousticResults}{Peak frequency was the only acoustic measure reaching 5\% in the Holm-adjusted omnibus tests ($p=0.0130$). The significant pairwise difference was flat versus modulated peak frequency ($p=0.0244$). The corresponding median peak frequencies were 916 and 831 Hz. The historical logistic and majority macro F1 scores of 0.225 and 0.207 came from a different allocation, with one validation fold containing three two-voice recordings and no other class. The five fixed comparison folds each contain at least four recordings of each class.
 
@@ -41,7 +41,7 @@ Two-voice has the longest estimated range at 0.40--0.60 under all tested fits. E
 \par\begin{center}\includegraphics[width=.94\linewidth]{q2_propagation.png}\\{\small Figure 2. Equal-weight fidelity and conditional propagation intervals.}\end{center}}
 
 \newcommand{\BehaviorResults}{
-Natural playback produced 90 responses among 139 trials versus 18 controls, a paired difference of 51.8 percentage points (95\% experiment-pair interval 43.9--60.1). At 50 m and eight birds, the adjusted natural-call increment for flat vocal-only response was 0.134 (0.043--0.276).
+Natural playback produced 90 responses among 139 trials versus 18 controls, a paired difference of 51.8 percentage points (95\% experiment-pair interval 43.9--60.1). Stratifying by natural playback distance relative to control gives gaps of 51.0 points for 49 same-distance pairs (date-block interval 37.5--64.2), 61.5 for 52 nearer pairs (51.7--69.5), and 39.5 for 38 farther pairs (24.3--55.7). All same-distance pairs matched group size. The 27 natural-only and two control-only outcomes in this stratum show that the observed gap persists at a matched distance and group size. At 50 m and eight birds, the adjusted natural-call increment for flat vocal-only response was 0.134 (0.043--0.276).
 
 The five-fold comparison favors the full multinomial over stimulus frequencies for Brier and favors stimulus frequencies for mask log loss. Adding context and group size improves Brier in the nested analysis. The two-stage model worsens both scores. Pairwise interactions improve both scores relative to the no-interaction fit. The pairwise mask-loss gain against unsmoothed stimulus frequencies largely comes from one approach-only trial whose mask was absent from training. With half a count per mask, the gain is 0.0131, with a paired difference interval of $[-0.0644,0.0476]$.
 
@@ -83,22 +83,22 @@ Two-voice, modulated and flat rank from longest to shortest under both radius de
 
 Fidelity augmentation and the fixed smooth gate fail their predictive criteria. Fidelity is derived from call and distance, and the product can compound distance-related decay. The simpler stimulus-and-distance behavior fit also fails its predictive criterion and changes 7 of 90 cutoff decisions. With 20\% coupled loss and a common threshold, its two-voice radius is 86.1 m versus 116.2 m for the full fit, with a bounded paired difference interval of $[-80.6,23.6]$ m.
 
-\begin{center}\begin{minipage}{.90\linewidth}\centering\small
+\begin{center}\begin{minipage}{.93\linewidth}\centering\small
 \begin{tabular}{lrrr}
 \toprule
 Call & 50 m & 100 m & 150 m\\
 \midrule
-Flat      & 18.0 / 10.4 & Fail / Fail & Fail / Fail\\
-Modulated & $\ge20$ / $\ge20$ & 9.0 / 5.0 & Fail / Fail\\
-Two-voice & $\ge20$ / $\ge20$ & $\ge20$ / 16.4 & 9.7 / 5.2\\
+Flat      & 6.0 / 3.3 & Fail & Fail\\
+Modulated & $\ge20$ / $\ge20$ & Fail & Fail\\
+Two-voice & $\ge20$ / $\ge20$ & $\ge20$ / 12.2 & Fail\\
 \bottomrule
 \end{tabular}\\[3pt]
-Table 5. Loss percentages retaining at least 80\% bootstrap support. Cells give acoustic-only / coupled scenarios. Fail denotes insufficient support in clean conditions. The search ends at 20\%.
+Table 5. Loss limits (\%) at 80\% support in both experiment-pair and date resampling. Values give acoustic-only / coupled limits. Fail denotes insufficient clean support under both links. The search ends at 20\%.
 \end{minipage}\end{center}
 
-The 150 m two-voice loss limits vary with the support target and the behavioral curve. Under coupled loss, the full-model limit drops from 8.4\% to 1.2\% as required support rises from 70\% to 90\%. The simpler curve fails the 90\% criterion in clean conditions. Across 45 settings the dual cutoff passes 26 and the product cutoff 19 at 80\% support. The seven disagreements persist at response-excess thresholds of 0.10 and 0.30.
+The joint rule for fidelity and response excess passes 26 of 45 settings at 80\% support, versus 19 for the product. Playback sampling accounts for 99.79--99.97\% of margin variance in the crossed experiment-pair draws. All 18 margin intervals widen with date refits. At 100 m for modulated and 150 m for two-voice, clean support falls from 90.3\% and 91.0\% to 76.0\% and 78.7\%. Hence the experiment-pair-only two-voice limits of 9.7\% and 5.2\% at 150 m give way to clean failure under the intersection. At 50 m for flat, the intersection reduces those limits from 18.0\% and 10.4\% to 6.0\% and 3.3\%. The date analysis covers 12 observed dates with repeated tracks.
 
-Playback sampling accounts for 99.79--99.97\% of margin variance in the crossed experiment-pair draws. With whole-date refits instead, all 18 margin intervals widen. In clean conditions, modulated at 100 m drops from 90.3\% to 76.0\% support and two-voice at 150 m from 91.0\% to 78.7\%. Both lose 80\% attainment, while all 20\% coupled-loss decisions agree. For clean two-voice at 150 m the 95\% margin interval changes from $[-0.031,0.187]$ to $[-0.114,0.242]$. These date sensitivities come from 12 observed dates with repeated tracks.
+Both behavioral weighting schemes preserve the any-response point ranks at the tested distances and for the radii. Clean two-voice support at 150 m falls from 91.0\% to 57.3\% with equal weights and 78.7\% with greater weight on vocalizing and approach. Under 20\% acoustic-only loss, its point radius goes from the 150 m support boundary to 116.5 m and 140.4 m, respectively. The any-response index remains the reference for these sensitivity comparisons.
 
 \par\begin{center}\begin{minipage}{.96\linewidth}\centering\includegraphics[width=\linewidth]{q4_loss_comparison.png}\\{\small Figure 4. The common cutoff and two response assumptions at the same 20\% acoustic loss. Shading shows clean conditional intervals.}\end{minipage}\end{center}}
 

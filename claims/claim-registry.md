@@ -46,3 +46,9 @@
 | Date and natural-track holdout | results/dependence_q3_pooled.csv, results/dependence_q3_folds.csv | Separate holdouts with shared control stimulus |
 | Date-block scenario support | results/dependence_q4_margins.csv | Conditional on 12 sampled dates and reused tracks |
 | Average and cell-specific design precision | results/dependence_q4_trial_summary.csv, results/dependence_q4_trial_cells.csv | Planning under independent cells and working pair covariance |
+
+| Matched sensitivity finding | Supporting artifact | Scope |
+|---|---|---|
+| Observed paired response differences by relative distance | results/matching_q3_strata.csv | Descriptive date-block intervals |
+| Loss limits requiring support under both resampling schemes | results/matching_q4_loss_limits.csv | Conditional scenario on the bounded 0–20% grid |
+| Weighted behavior scores, attainment and radii | results/matching_q4_weighted_points.csv, results/matching_q4_weighted_radii.csv | Illustrative ecological weights and index-specific clean cutoff |
