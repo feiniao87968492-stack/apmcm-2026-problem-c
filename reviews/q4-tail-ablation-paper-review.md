@@ -1,0 +1,23 @@
+# Independent manuscript review of the Q4 extrapolation model comparison
+
+I reviewed `49e03237145b431ba620c70278876ce2b471d5c0` against the frozen paper rubric. I carried forward the previous assessment of Q1–Q3 and the existing Q4 results and checked the two new paragraphs, the protection guidance and the two new source listings. [Rubric](../docs/model-spec.md#frozen-independent-paper-rubric) · [Frozen model comparison](../docs/model-spec.md#q4-monotone-and-bounded-extrapolation-ablation-freeze) · [Previous manuscript review](q4-extrapolation-paper-review.md)
+
+| Dimension | Initial score | Basis |
+|---|---:|---|
+| Numerical and factual accuracy | 30 / 30 | The 139 ordinary pairs and 26 tail pairs over eight held dates, the validation scores, and the five-model 150 m results reported in the body reconcile with the evidence tables. |
+| Traceability | 15 / 15 | The claim registry maps the validation and Q4 claims to their six tables. All seven exported figures retain their CSV and metadata companions. All 40 tracked Python files have one listing each. |
+| Coverage and reasoning | 22.5 / 30 | The battery supports retaining the multinomial, with the alternatives serving as sensitivities. The last sentence states that the tail check pools far pairs. The paper should state directly that the exact standardized 150 m decision extrapolates beyond both arms after deletion, and connect the adoption decision to the two ordinary marginal scores. |
+| Clarity and structure | 15 / 15 | The two new paragraphs are legible on pages 13 and 14. Figure 4 and the following conservation guidance remain readable. The appendix boundaries and new listings render cleanly. |
+| Build and references | 10 / 10 | The independent archive rebuild matches the submitted PDF. The body and references occupy 13 pages, and all team fields and PDF author are blank. |
+
+**Initial score 92.5/100.** The paper correctly reports a lower ordinary mask log loss alongside a higher Brier score for each hurdle alternative. The odds-ratio candidate preserves A's marginal scores, and its paired ordinary joint loss interval includes zero. State explicitly that the frozen rule required both ordinary marginal scores to improve, which is sufficient to explain why the alternatives fail. The tail validation scores both arms of archived pairs with at least one trial at 125 m or farther, pooling call types and measured conditions. Add a sentence clarifying that the standardized two-voice decision at 150 m extrapolates beyond both retained arms after union deletion. This explains why the existing recommendation for additional playbacks at 150 m still follows. [Manuscript](../paper/results.tex) · [Validation evidence](../results/q4_tail_ablation_validation.csv) · [Adoption table](../results/q4_tail_ablation_adoption.csv) · [Margins](../results/q4_tail_ablation_margins.csv) · [Drift limits](../results/q4_tail_ablation_drift.csv)
+
+## Independent archive rebuild
+
+I extracted a separate Git archive and ran `pdflatex -interaction=nonstopmode -halt-on-error main.tex` twice from `paper/` with `SOURCE_DATE_EPOCH=1795731780`. The archive and rebuilt PDF both have SHA-256 `a64f3f812165868f88c7a0fb38a93f183cabb6e86f18c9f9e251927a85d4260f`. Body and references occupy pages 3–15, and the appendices start on page 16. All 116 page headers have an empty team field. I rendered and inspected pages 13–16 and 109–116, which cover the revised results, field guidance and Listings 39 and 40. The final page holds the end of the second listing. [PDF](../paper/main.pdf) · [Claim registry](../claims/claim-registry.md)
+
+## Targeted re-review
+
+Revision `c634d3e6f597bf36043e64822912c9019bb74be8` states that the adoption rule needs gains in both ordinary marginal scores and clarifies that the standardized 150 m decision after union deletion extrapolates for both arms. Its rendered page 14 began with the last two words of the adoption sentence. Revision `83c7d173f5ce21bd471f692265249f9a14384787` ends page 13 with the complete adoption sentence and opens page 14 with the full Q4 paragraph. The final wording correctly ties retention to the failure to improve both ordinary marginal scores and keeps the tail validation scope explicit. [Revised manuscript](../paper/results.tex) · [Final PDF](../paper/main.pdf)
+
+A separate two-pass archive rebuild matches the final PDF SHA-256 `6e2b71ecaed074d1a4635dca541c2770b53ca211d1130ea2daefb89e17cfa783`. The 116 team headers and PDF author field are blank. Body and references occupy 13 pages, the appendices begin on page 16, and Listings 39 and 40 start on pages 109 and 112. The rendered pages 13–14 show the corrected page break and intact Figure 4. Coverage and reasoning earns 30/30. **Final score 100/100, pass.**
