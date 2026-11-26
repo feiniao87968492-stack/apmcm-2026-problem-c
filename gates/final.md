@@ -121,3 +121,9 @@ A detached checkout of `986443c` reproduced the anonymous PDF byte-for-byte with
 The protocol froze at `b0ae1b4` and ran at `6efac25`. A detached checkout reproduced 155 CSVs and seven JSON files byte-for-byte with `python main.py --data "<attachment directory>/date"` and the default 300 draws. All seven PNGs matched by decoded pixels. Independent recomputation verified the no-recovery endpoints, missing counts, all 351 cases and selected-plan intervals and directions. [Results](../docs/recovery-priority.md) · [Numerical review](../reviews/recovery-verification.md)
 
 A detached checkout of `28f2f75` reproduced the anonymous PDF byte-for-byte with two runs of `pdflatex -interaction=nonstopmode -halt-on-error main.tex` from `paper/` and `SOURCE_DATE_EPOCH=1795731780`. SHA-256 is `00da7f8ece08ba9f949cac0915a90a844849be5e3493e76b633ec93c17c50a9d`. Body and references occupy pages 3–13 and appendices begin on page 14 of 74. [Manuscript review](../reviews/recovery-paper-review.md) · [PDF](../paper/main.pdf)
+
+## Continuous recovery verification
+
+The protocol froze at `cff2038` and ran at `49c0545`. A detached checkout reproduced 157 CSVs and seven JSON files byte-for-byte with the default analysis command. All seven PNGs matched by decoded pixels. Independent recomputation checked all four summary rows and 106 breakpoint rows. [Results](../docs/recovery-priority.md#continuous-recovery-certificate) · [Numerical review](../reviews/continuous-recovery-verification.md)
+
+The anonymous manuscript at `ae23f49` was independently rebuilt and reviewed. SHA-256 is `b3ffff73973885fe346b56add74d74968fb8bd0757ed764fc6acdc99fb42910d`. [Manuscript review](../reviews/continuous-recovery-paper-review.md) · [PDF](../paper/main.pdf)
