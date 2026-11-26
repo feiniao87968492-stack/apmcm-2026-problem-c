@@ -28,3 +28,4 @@ The six figures in `results/` each have a same-name CSV and JSON metadata file. 
 - [Playback grouping, date-block uncertainty and trial precision](docs/playback-dependence.md)
 
 - [Matched distance, loss limits and weighted behaviors](docs/matched-sensitivity.md)
+- [Attenuation fits and acquisition-batch sensitivity](docs/physical-attenuation.md)

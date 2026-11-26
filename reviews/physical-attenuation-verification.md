@@ -1,0 +1,5 @@
+﻿# Independent recomputation of attenuation sensitivities
+
+**PASS.** Under 92e3265 I reproduced the outputs at 1284ba2 using independently coded numerical calculations and the archived Q2/Q3 inputs. Profile least squares eliminated the ceiling analytically and used bounded scalar minimization for scale and exponent. The cross-check reproduced 45 held-out predictions, all 12 score rows, the final fit parameters and the adoption decision. I used a separate isotonic implementation and scalar root finding on the expanded batches to verify all 24 resampling rows including interval endpoints, boundary counts and ordering proportions.
+
+I refit all 300 physical bootstrap curves using the same profiling method, calculated 12 radius intervals by numerical crossing and reconstructed all 27 scenario margins, paired difference intervals and attainment decisions. The original behavior draws and the isotonic cutoff were shared between propagation curves. [Validation](../results/physical_q2_validation.csv) · [Resampling](../results/physical_q2_blocks.csv) · [Q4 comparisons](../results/physical_q4_margins.csv)

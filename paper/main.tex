@@ -43,15 +43,12 @@ We compare call types with Kruskal--Wallis tests and use Mann--Whitney tests to 
 \AcousticResults
 
 \section{Propagation, signal fidelity and recognition criteria}
-Let $\bar r_{cm}(d)$ be the available-case mean correlation with the one-metre reference for call type $c$, representation $m$ and distance $d$. The representations are the spectrogram, amplitude spectrum, and amplitude envelope. The equal-weight fidelity combines their means, with monotonicity imposed through a least-squares isotonic fit at the observed distances. Interpolation is linear in $\log d$. In the representation omission analysis, the other two measures each receive weight one half and share the baseline resampled rows.
-
+Let $\bar r_{cm}(d)$ be the available-case mean correlation with the one-metre reference for call type $c$, representation $m$ and distance $d$. The representations are the spectrogram, amplitude spectrum, and amplitude envelope. We clip their equal-weight mean to $[0,1]$ at the seven measured distances. For a positive signal gain in $Y=a(d)X+\epsilon$ with independent additive noise,
 \[
-F_c(d)=\operatorname{Interp}_{\log d}
-       \left(\operatorname{Iso}_{\downarrow}
-       \left[\operatorname{clip}_{[0,1]}\left(\tfrac 13\sum_{m=1}^{3}\bar r_{cm}(d)\right)\right]\right).
+\operatorname{Corr}(X,Y)=
+\left[1+\frac{\operatorname{Var}(\epsilon)}{a(d)^2\operatorname{Var}(X)}\right]^{-1/2}.
 \]
-
-Thresholds of 0.40, 0.50 and 0.60 denote potential recognition, recognition and reliable recognition in the model. The thresholds act as assumptions linking acoustic similarity to recognition. We resample rows intact across distances within each file. Acquisition identifiers are unavailable, so the intervals express sensitivity to the working row resampling model. They do not measure uncertainty over independently identified sound propagation experiments.
+A power law for the variance ratio motivates $F_c(d)=A_c/\sqrt{1+(d/D_c)^g}$. We fit the ceiling $A_c$ and distance scale $D_c$ by call, comparing $g=2$ with a fitted shared exponent. The fitted exponent describes the correlation curves. We hold out each interior distance across all calls and compare predictions with an isotonic fit interpolated in $\log d$. For representation omission, the remaining measures receive equal weight. We compare resampling complete distance rows with sampling hypothetical batches of ten consecutive rows within each file. The acquisition units are unknown, so both intervals condition on a working sampling scheme.
 
 \PropagationResults
 
@@ -75,7 +72,7 @@ Let $p_c(d)$ be the natural-stimulus any-response probability at median group si
 \[
 E_c(d)=F_c(d)p_c(d).
 \]
-The product favors distances where both the available acoustic signal and the behavioral response probability are high. Our operational radius uses a fixed cutoff equal to half the clean-condition effectiveness at the near end of the common range. We find the sustained downward crossing on the common 20--150 m grid and report a lower or upper range bound when a crossing cannot be observed. We repeat the calculation with 40\% and 60\% reference fractions. An additional common cutoff holds all calls to the same index target, equal to half their equally weighted mean clean effectiveness at 20 m, yielding 0.2876. Each bootstrap draw recomputes its clean reference and retains it across the scenarios. We compare clean point indices and paired uncertainty at the same distances as well as comparing radii.
+The archived scenarios use isotonic fidelity. To compare the selected attenuation curve, we hold the playback model and the isotonic common reference fixed, including the reference for each paired draw. The product favors distances where both the available acoustic signal and the behavioral response probability are high. Our operational radius uses a fixed cutoff equal to half the clean-condition effectiveness at the near end of the common range. We find the sustained downward crossing on the common 20--150 m grid and report a lower or upper range bound when a crossing cannot be observed. We repeat the calculation with 40\% and 60\% reference fractions. An additional common cutoff holds all calls to the same index target, equal to half their equally weighted mean clean effectiveness at 20 m, yielding 0.2876. Each bootstrap draw recomputes its clean reference and retains it across the scenarios. We compare clean point indices and paired uncertainty at the same distances as well as comparing radii.
 
 We either gate the index below a fidelity threshold or apply a fractional fidelity loss $L$ of 5--20\%. For the matched loss comparison, the acoustic-only scenario uses $(1-L)F_c p_c$. The coupled scenario subtracts $L\max(p_c-p_{c,\mathrm{ctrl}},0)$ from the natural response probability before multiplication by $(1-L)F_c$. The matched control remains fixed. This assumption reduces the natural-call response advantage and keeps the acoustic loss identical across both scenarios. Neither link is calibrated to measured ambient noise. Expected numbers of responding individuals additionally depend on the assumed share that responds within a group showing a response.
 
@@ -132,6 +129,7 @@ The commands in the repository README reproduce the figures and tables using the
 \lstinputlisting[caption={Playback dependence and trial precision}]{../playback_dependence.py}
 \lstinputlisting[caption={Matched distance, loss limits and weighted behaviors}]{../matched_sensitivity.py}
 
+\lstinputlisting[caption={Attenuation fit and resampling checks}]{../physical_attenuation.py}
 \end{document}
 
 

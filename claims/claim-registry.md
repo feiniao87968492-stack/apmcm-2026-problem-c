@@ -52,3 +52,9 @@
 | Observed paired response differences by relative distance | results/matching_q3_strata.csv | Descriptive date-block intervals |
 | Loss limits requiring support under both resampling schemes | results/matching_q4_loss_limits.csv | Conditional scenario on the bounded 0–20% grid |
 | Weighted behavior scores, attainment and radii | results/matching_q4_weighted_points.csv, results/matching_q4_weighted_radii.csv | Illustrative ecological weights and index-specific clean cutoff |
+
+| Attenuation finding | Supporting artifact | Scope |
+|---|---|---|
+| Shared-exponent fit and adopted Q2 ranges | results/physical_q2_validation.csv, results/physical_q2_parameters.csv, results/physical_q2_radii.csv | Descriptive curve and interior-distance holdout |
+| Ten-row batch intervals and ordering | results/physical_q2_blocks.csv | Hypothetical batch dependence |
+| Q4 propagation-model sensitivity | results/physical_q4_margins.csv | Shared behavior and isotonic common reference, within 20?150 m |
