@@ -153,3 +153,9 @@ The official 2026 essay specifications require software names and all authored s
 The body and references occupy pages 3–14 (12 pages). The appendices start on page 15 and Appendix D starts on page 16. The software list is on page 16 and the ten added listings span pages 75–97. The summary, body and earlier appendix text match the prior PDF after normalizing the page headers. The contents page reflects the new appendix subsections. Modeling sources and outputs match `a8268bd`. The PDF has 97 pages and all team fields and the author field are blank.
 
 Two passes of `pdflatex -interaction=nonstopmode -halt-on-error main.tex` from `paper/`, with `SOURCE_DATE_EPOCH=1795731780`, produce SHA-256 `fd6e50a634c2159bcdf6b349a97f1d9aa989f09a547524066534273629b403c1`. [Independent review](../reviews/source-appendix-review.md) · [PDF](../paper/main.pdf)
+
+## Q4 distance deletion verification
+
+The protocol froze at `ddb3e30` and ran at `61b8151`. Running `python main.py --data "<attachment directory>/date"` with the default 300 draws in a detached checkout reproduced 172 CSVs and seven JSON files byte-for-byte. All seven PNGs matched by decoded pixels. Independent recomputation verified intact-pair selection, the 36 archived baseline rows and every field of the four new tables. All date draws were valid. [Results](../docs/distance-deletion.md) · [Numerical review](../reviews/distance-deletion-verification.md)
+
+The anonymous manuscript at `ec785cf` has PDF SHA-256 `71484041597849721f34b67d5a45af3e29c93ee046bcfa4e6236ced917031e09`. Body and references occupy pages 3–14. Appendices begin on page 15 of 99 and list all 34 tracked Python modules. [Manuscript review](../reviews/distance-deletion-paper-review.md) · [PDF](../paper/main.pdf)
