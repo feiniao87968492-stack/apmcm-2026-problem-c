@@ -96,7 +96,9 @@ def metric_inputs(fold):
         "whole_group_coverage": (fold.all_covered, one),
         "mean_size": (fold.sets_labels, fold.trials),
         "singleton_error_rate": (fold.singleton_errors, fold.size_1),
+        "singleton_error_count": (fold.singleton_errors, None),
         "two_voice_coverage": (fold.two_voice_covered, fold.two_voice_trials),
+        **{f"size_{k}_count": (fold[f"size_{k}"], None) for k in range(len(CALLS) + 1)},
         **{f"size_{k}_share": (fold[f"size_{k}"], fold.trials) for k in range(len(CALLS) + 1)},
     }
 
@@ -108,14 +110,21 @@ def summarize(folds):
     for (rule, level), fold in folds.groupby(["rule", "nominal"], dropna=False, sort=False):
         nominal = None if pd.isna(level) else level
         for metric, (numerator, denominator) in metric_inputs(fold.sort_values("group")).items():
-            num, den = np.asarray(numerator), np.asarray(denominator)
-            boot_den = den[draws].sum(axis=1)
-            boot = np.full(len(draws), np.nan)
-            np.divide(num[draws].sum(axis=1), boot_den, out=boot, where=boot_den > 0)
-            value = num.sum() / den.sum() if den.sum() else np.nan
+            num = np.asarray(numerator)
+            boot_total = num[draws].sum(axis=1)
+            total = num.sum()
+            if denominator is None:
+                boot, value, count = boot_total, total, None
+            else:
+                den = np.asarray(denominator)
+                boot_den = den[draws].sum(axis=1)
+                boot = np.full(len(draws), np.nan)
+                np.divide(boot_total, boot_den, out=boot, where=boot_den > 0)
+                count = den.sum()
+                value = total / count if count else np.nan
             samples[rule, nominal, metric] = (value, boot)
             summary.append(dict(rule=rule, nominal=nominal, metric=metric, value=value,
-                                numerator=num.sum(), denominator=den.sum(), **limits(boot)))
+                                numerator=total, denominator=count, **limits(boot)))
     paired = []
     for (rule, nominal, metric), (value, boot) in samples.items():
         for comparator in (("top_1",) if rule == "top_2" else FIXED if rule in RULES else ()):
