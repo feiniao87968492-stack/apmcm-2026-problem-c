@@ -8,6 +8,7 @@ import creative_q1
 import creative_q3
 import final_analysis
 import matched_sensitivity
+import noise_scenarios
 import onset_analysis
 import physical_attenuation
 import playback_dependence
@@ -57,7 +58,10 @@ def main():
         args.output / "matching_q4_loss_limits.csv", index=False,
     )
     matched_sensitivity.weighted_indices(propagation, behavior, args.output)
-    physical_attenuation.run(args.data, args.output, args.seed + 1, args.bootstrap, propagation, behavior)
+    parameters, sampled_parameters = physical_attenuation.run(
+        args.data, args.output, args.seed + 1, args.bootstrap, propagation, behavior,
+    )
+    noise_scenarios.run(propagation, behavior, date_predictions, parameters, sampled_parameters, args.output)
     onset_analysis.run(args.data, frame, sampled_dates, args.output, args.seed, args.bootstrap)
     print(f"Results written to {args.output.resolve()}")
 

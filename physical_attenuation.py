@@ -191,3 +191,4 @@ def run(data, output, seed, n_boot, propagation, behavior):
     pd.DataFrame(records).to_csv(output / "physical_q2_radii.csv", index=False)
     boot = np.array([curve(propagation["distance"], sample) for sample in boot_parameters])
     q4_comparison(selected, fits[selected], boot, propagation, behavior, output)
+    return fits[selected], boot_parameters
