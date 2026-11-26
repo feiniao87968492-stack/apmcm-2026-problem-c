@@ -133,3 +133,9 @@ The anonymous manuscript at `ae23f49` was independently rebuilt and reviewed. SH
 The protocol froze at `9795561` and ran at `49929bc`. A detached checkout reproduced 159 CSVs and seven JSON files byte-for-byte with the default 300-draw analysis. Seven PNGs matched by decoded pixels. Independent raw-data recomputation checked the archived marginals, all 20 raw rows and all 90 standardized rows. Every date draw was valid for decomposition. [Results](../docs/behavior-gap.md) · [Numerical review](../reviews/behavior-gap-verification.md)
 
 The anonymous manuscript at `1c0b92e` has PDF SHA-256 `7bc15d45c2785eba781128a5b204ab0e0e87bd599a531a2c8a1415dc6cd2b3ac`. Body and references occupy pages 3–14 and appendices begin on page 15 of 75. [Manuscript review](../reviews/behavior-gap-paper-review.md) · [PDF](../paper/main.pdf)
+
+## Q4 control subtraction verification
+
+The protocol froze at `f2d71da` and ran at `7b713f6`. A detached checkout reproduced 164 CSVs and seven JSON files byte-for-byte with the default 300-draw analysis. All seven PNGs matched by decoded pixels. Independent recomputation verified the archived gross baseline and all 225 rows in the five new tables. [Results](../docs/control-subtraction.md) · [Numerical review](../reviews/control-subtraction-verification.md)
+
+The anonymous manuscript at `8f0d913` has SHA-256 `8342503fc4dbdceb445804981c78728527012e2a884d4f91389262c4c93f987a`. Body and references occupy pages 3–14 and appendices begin on page 15 of 75. [Manuscript review](../reviews/control-subtraction-paper-review.md) · [PDF](../paper/main.pdf)
