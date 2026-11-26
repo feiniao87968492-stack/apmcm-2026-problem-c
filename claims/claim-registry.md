@@ -120,3 +120,9 @@
 | Distance and area averages, losses and rankings | results/annulus_scores.csv, results/annulus_score_gaps.csv |
 | Connected intervals and point-radius area comparison | results/annulus_attainment_grid.csv, results/annulus_intervals.csv, results/annulus_attainment.csv |
 | Sharp area-index completion bounds and ranking | results/annulus_completion_scores.csv, results/annulus_completion_gaps.csv |
+
+| Context and behavior priority finding | Evidence |
+|---|---|
+| Context-specific and empirical area averages, ranks and paired gaps | results/context_priority_scores.csv, results/context_priority_gaps.csv |
+| Exact pairwise gap endpoints, vertices and directional robustness | results/context_priority_bounds.csv |
+| Natural trial, date and event coverage | results/context_priority_coverage.csv |
