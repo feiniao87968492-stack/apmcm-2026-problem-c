@@ -145,3 +145,11 @@ The anonymous manuscript at `8f0d913` has SHA-256 `8342503fc4dbdceb445804981c787
 The protocol froze at `aa170ea` and ran at `4adb6e7`. A detached checkout reproduced 168 CSVs and seven JSON files byte-for-byte with the default 300-draw analysis. All seven PNGs matched by decoded pixels. Independent recomputation verified the archived full-model baseline, the gross-minus-net identities and all 252 rows in the four new tables. [Results](../docs/behavior-ablation.md) · [Numerical review](../reviews/behavior-ablation-verification.md)
 
 The anonymous manuscript at `5d58a82` has SHA-256 `4a46e23b571f145376b431481ba79f7f3a447cfd4b5b2e6ed5454a5d41065839`. Body and references occupy pages 3–14 and appendices begin on page 15 of 75. [Manuscript review](../reviews/behavior-ablation-paper-review.md) · [PDF](../paper/main.pdf)
+
+## Contest source appendix verification
+
+The official 2026 essay specifications require software names and all authored source code in the appendix. They limit the body to 25 pages and allow an appendix of any length. The appendix in `8c979da` covers all 33 tracked Python files exactly once, up from 23 in `a8268bd`. Appendix D.1 lists Python, the seven pinned analysis packages, the LaTeX build tool and Poppler.
+
+The body and references occupy pages 3–14 (12 pages). The appendices start on page 15 and Appendix D starts on page 16. The software list is on page 16 and the ten added listings span pages 75–97. The summary, body and earlier appendix text match the prior PDF after normalizing the page headers. The contents page reflects the new appendix subsections. Modeling sources and outputs match `a8268bd`. The PDF has 97 pages and all team fields and the author field are blank.
+
+Two passes of `pdflatex -interaction=nonstopmode -halt-on-error main.tex` from `paper/`, with `SOURCE_DATE_EPOCH=1795731780`, produce SHA-256 `fd6e50a634c2159bcdf6b349a97f1d9aa989f09a547524066534273629b403c1`. [Independent review](../reviews/source-appendix-review.md) · [PDF](../paper/main.pdf)
