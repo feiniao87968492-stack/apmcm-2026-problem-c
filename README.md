@@ -24,3 +24,5 @@ The six figures in `results/` each have a same-name CSV and JSON metadata file. 
 - [Q4 decision rules, variance decomposition and trial design](docs/q4-decision-results.md)
 - [Workflow and milestones](workflow.md)
 - [Verification and evidence](gates/final.md)
+
+- [Playback grouping, date-block uncertainty and trial precision](docs/playback-dependence.md)

@@ -40,3 +40,9 @@
 | Dual and product cutoff decisions | results/decision_q4_dual.csv | Exploratory fixed-distance thresholds and conditional support |
 | Acoustic and behavioral variance shares | results/decision_q4_variance.csv | Independent crossed bootstrap draws and recomputed common reference |
 | Matched-playback allocations and precision | results/decision_q4_trial.csv | Illustrative design under clean marginals and covariance sensitivity |
+
+| Playback dependence finding | Supporting artifact | Scope |
+|---|---|---|
+| Date and natural-track holdout | results/dependence_q3_pooled.csv, results/dependence_q3_folds.csv | Separate holdouts with shared control stimulus |
+| Date-block scenario support | results/dependence_q4_margins.csv | Conditional on 12 sampled dates and reused tracks |
+| Average and cell-specific design precision | results/dependence_q4_trial_summary.csv, results/dependence_q4_trial_cells.csv | Planning under independent cells and working pair covariance |
