@@ -190,3 +190,7 @@ The point margins and shared-exponent contrasts use [checkpoint evidence](../res
 ## Q4 consecutive-distance attainment
 
 The five radii, grid counts, pairwise differences and retained playback ranges are linked from [the consecutive-distance analysis](../docs/q4-consecutive.md).
+
+## Q4 loss limits by target distance
+
+[The target-distance analysis](../docs/q4-target-loss.md) links retention requirements, hypothetical loss boundaries and recovered radii.

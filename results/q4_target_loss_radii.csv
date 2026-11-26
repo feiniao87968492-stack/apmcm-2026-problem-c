@@ -1,0 +1,13 @@
+model,rule,scenario,radius_m,status,count_at_radius
+full,all_four_endpoint,clean,150.0,grid_cap,4468
+full,all_four_endpoint,loss_20_20,97.0,interior,3854
+full,shared_prefix,clean,150.0,grid_cap,4527
+full,shared_prefix,loss_20_20,109.5,interior,3845
+full,all_four_prefix,clean,150.0,grid_cap,4468
+full,all_four_prefix,loss_20_20,96.0,interior,3847
+drop_union,all_four_endpoint,clean,150.0,grid_cap,3858
+drop_union,all_four_endpoint,loss_20_20,85.5,interior,3853
+drop_union,shared_prefix,clean,150.0,grid_cap,3994
+drop_union,shared_prefix,loss_20_20,92.5,interior,3857
+drop_union,all_four_prefix,clean,150.0,grid_cap,3850
+drop_union,all_four_prefix,loss_20_20,84.0,interior,3847

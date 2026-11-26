@@ -60,7 +60,14 @@ def main():
                           help="Compute Q4 boundaries for separate acoustic and response losses")
     analyses.add_argument("--q4-consecutive", action="store_true",
                           help="Compare the five Q4 consecutive-distance grid radii")
+    analyses.add_argument("--q4-target-loss", action="store_true",
+                          help="Compute Q4 loss boundaries for target distances")
     args = parser.parse_args()
+    if args.q4_target_loss:
+        from q4_target_loss import write
+
+        write(args.data, args.output, Path(__file__).resolve().parent / "results")
+        return
     if args.q4_consecutive:
         from q4_consecutive import write
 
