@@ -142,3 +142,8 @@
 |---|---|
 | Gross and net area means and paired rankings | results/control_subtraction_area.csv, results/control_subtraction_area_gaps.csv |
 | Gross and net bounded radii and cutoff decisions | results/control_subtraction_radii.csv, results/control_subtraction_points.csv, results/control_subtraction_decisions.csv |
+
+| Q4 behavior model finding | Evidence |
+|---|---|
+| Area means, pairwise contrasts and shared or model-specific cutoff decisions | results/behavior_ablation_area.csv, results/behavior_ablation_area_gaps.csv, results/behavior_ablation_points.csv |
+| Sparse local sample coverage | results/behavior_ablation_coverage.csv |
