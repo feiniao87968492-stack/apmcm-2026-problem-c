@@ -124,3 +124,4 @@ def run(completions, missing, distance, behavior, draws, output):
                        distance, natural, control, draws, radii, gaps)
     for name, rows in (("plans", plan_rows), ("cases", case_rows), ("radii", radii), ("gaps", gaps)):
         pd.DataFrame(rows).to_csv(output / f"recovery_{name}.csv", index=False)
+    return pd.DataFrame(plan_rows)

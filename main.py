@@ -3,6 +3,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 
 import context_priority
+import continuous_recovery
 
 import creative_gate
 import creative_inverse
@@ -85,8 +86,10 @@ def main():
     )
     spatial_annulus.run(propagation, behavior, date_predictions, parameters,
                         sampled_parameters, completion_curves, args.output)
-    recovery.run(completed_means, missing_counts, propagation["distance"], behavior,
-                 date_predictions, args.output)
+    recovery_plans = recovery.run(completed_means, missing_counts, propagation["distance"], behavior,
+                                  date_predictions, args.output)
+    continuous_recovery.run(completed_means, missing_counts, propagation["distance"],
+                            behavior, recovery_plans, args.output)
     context_priority.run(frame, propagation["distance"], parameters, sampled_parameters,
                          point_masks, date_masks, args.output)
     group_size.run(frame, sampled_dates, propagation, behavior, date_predictions, args.output)
