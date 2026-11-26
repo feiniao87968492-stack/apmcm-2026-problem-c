@@ -1,0 +1,6 @@
+comparison,model,n,mask_log_loss,any_response_brier,pair_log_loss,marginal_brier
+mask,smoothed_stimulus,278,1.1250396184746063,0.17778332065243282,,
+mask,full_multinomial,278,1.299338468827214,0.1697771636490567,,
+mask,pairwise_mask,278,1.141694313507412,0.16809427936208524,,
+pair,independent,139,,,1.0586792753313372,0.1697771636490567
+pair,shared_odds_ratio,139,,,1.0431399270657362,0.1697771636490567

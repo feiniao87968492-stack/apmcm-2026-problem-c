@@ -68,13 +68,15 @@ def date_draws(frame, design, contexts, weights, distances, sampled_dates):
     return np.asarray(predictions)
 
 
-def margin_table(propagation, behavior, date_predictions):
+def margin_table(propagation, behavior, date_predictions, crossed_predictions=None):
     fidelity, draws = propagation["fidelity"], propagation["draws"]
     natural, control = behavior["natural"], behavior["control"]
     point_cutoff = (fidelity[:, 0] * natural[:, 0]).mean() / 2
     records = []
     schemes = (("expID", behavior["natural_draws"], behavior["control_draws"]),
                ("date", date_predictions[:, 0], date_predictions[:, 1]))
+    if crossed_predictions is not None:
+        schemes += (("crossed", crossed_predictions[:, 0], crossed_predictions[:, 1]),)
     for scheme, p, q in schemes:
         cutoff = (draws[:, :, 0] * p[:, :, 0]).mean(axis=1) / 2
         for loss in (0, .20):

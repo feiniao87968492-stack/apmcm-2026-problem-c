@@ -20,6 +20,7 @@ import q3
 import q4
 import q4_decision
 import round2
+import strict_playback
 
 
 def main():
@@ -65,6 +66,7 @@ def main():
     noise_scenarios.run(propagation, behavior, date_predictions, parameters, sampled_parameters, args.output)
     onset_analysis.run(args.data, frame, sampled_dates, args.output, args.seed, args.bootstrap)
     noise_agreement.run(args.output)
+    strict_playback.run(frame, propagation, behavior, date_predictions, args.output, args.seed, args.bootstrap)
     print(f"Results written to {args.output.resolve()}")
 
 
