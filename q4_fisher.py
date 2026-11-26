@@ -26,7 +26,7 @@ def fisher(weights, design, probabilities, contrasts):
     return info.reshape(size, size)
 
 
-def probability_and_gradient(frame, results):
+def design_inputs(frame):
     weights = frame.loc[frame.Type.eq("call"), "Context"].value_counts(normalize=True).sort_index()
     contexts = tuple(weights.index)
     grid = q3.probability_grid(np.array(DISTANCES), contexts, 8)
@@ -39,14 +39,21 @@ def probability_and_gradient(frame, results):
     train_design = np.column_stack((np.ones(len(train)), train))
     design = np.column_stack((np.ones(len(target)), target))
     class_basis = helmert(len(model.classes_), full=False).T
-    zero = np.flatnonzero(model.classes_ == 0).item()
+    return weights, grid, design, train_design, target_p, train_p, class_basis, model.classes_
+
+
+def probability_and_gradient(frame, results, inputs=None):
+    if inputs is None:
+        inputs = design_inputs(frame)
+    weights, grid, design, train_design, target_p, train_p, class_basis, classes = inputs
+    zero = np.flatnonzero(classes == 0).item()
     # d(1-P0)/d(logits) projected into sum-zero class coordinates.
     class_gradient = target_p[:, zero, None] * (target_p @ class_basis - class_basis[zero])
     gradient = (class_gradient[:, :, None] * design[:, None, :]).reshape(len(grid), -1)
-    shape = (len(q3.STIMULI), len(q3.CALLS), len(DISTANCES), len(contexts))
+    shape = (len(q3.STIMULI), len(q3.CALLS), len(DISTANCES), len(weights))
     mixed_p = (1 - target_p[:, zero]).reshape(shape) @ weights.to_numpy()
     mixed_gradient = np.einsum("scdjk,j->scdk", gradient.reshape(*shape, -1), weights)
-    penalty = np.tile(np.r_[0., np.ones(train.shape[1])], class_basis.shape[1])
+    penalty = np.tile(np.r_[0., np.ones(train_design.shape[1] - 1)], class_basis.shape[1])
     current = fisher(np.ones(len(frame)), train_design, train_p, class_basis) + np.diag(penalty)
 
     cell_info = []
