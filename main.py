@@ -7,6 +7,7 @@ import creative_inverse
 import creative_q1
 import creative_q3
 import final_analysis
+import playback_dependence
 import post_hoc
 import q1
 import q2
@@ -43,6 +44,7 @@ def main():
     creative_inverse.loss_limits(propagation, behavior, args.output)
     post_hoc.inverse_sensitivity(propagation, behavior, reduced, reduced_draws, args.output)
     q4_decision.run(propagation, behavior, args.output)
+    playback_dependence.run(args.data, args.output, args.seed, args.bootstrap, propagation, behavior)
     print(f"Results written to {args.output.resolve()}")
 
 

@@ -1,0 +1,7 @@
+scheme,model,folds,min_test_pairs,max_test_pairs,test_rows,test_pairs,test_rows_other_group_seen,test_rows_mask_unseen,test_rows_stimulus_mask_unseen,test_rows_call_unseen,mask_log_loss,any_response_brier
+date,smoothed_stimulus,12,4,20,278,139,238,1,1,0,1.113707864548144,0.17506534761396098
+date,full_multinomial,12,4,20,278,139,238,1,1,0,1.24106345613195,0.16569207170996572
+date,pairwise,12,4,20,278,139,238,1,1,0,1.1180335828535921,0.16545620299511776
+track,smoothed_stimulus,28,1,10,278,139,278,1,1,0,1.1115110006770728,0.17334989963437983
+track,full_multinomial,28,1,10,278,139,278,1,1,0,1.2227133542477107,0.15726675144405755
+track,pairwise,28,1,10,278,139,278,1,1,0,1.0887535855838315,0.15680513296550688
