@@ -69,3 +69,7 @@ The figure and scenario-agreement protocol froze at 12cf2f9. A clean checkout of
 ## Strict playback verification
 
 The protocol was frozen at 9e95367 and run at 5c951ca. Independent recomputation checked holdout coverage, predictive scores and all crossed margins. A clean checkout of b758f4d reproduced 112 CSV/JSON files byte-for-byte, seven PNGs by decoded pixels, and the manuscript's extracted text and all 66 rendered pages. The team fields are blank and the body and references occupy pages 3–11. [Results](../docs/strict-playback.md) · [Verification](../reviews/strict-playback-verification.md)
+
+## False Bay sea-state verification
+
+The protocol and snapshots froze at e86dfe1 and the analysis ran at 7bffe2b. Independent recomputation verified the hourly joins, slopes, strict fold scores and standardized contrasts. A clean checkout of d5c153f reproduced 118 CSV/JSON files byte-for-byte, seven PNGs by decoded pixels and the manuscript's extracted text and all 68 rendered pages. The public team fields are blank, and body and references occupy pages 3–11. [Results](../docs/false-bay.md) · [Verification](../reviews/false-bay-verification.md)
