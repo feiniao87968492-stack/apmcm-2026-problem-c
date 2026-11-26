@@ -257,3 +257,7 @@ The protocol froze at f854f68 and results were published at 82011ee. A detached 
 ## Q4 matched-noise verification
 
 The protocol froze at 5bdf5ae. A detached checkout of 52116da reproduced both CSVs byte-for-byte with the matched-noise flag. Independent fits verified all 16 target and 16 radius rows and 522 clean prefix counts. The maximum noise-limit discrepancy was 5.93e-7 dB. [Results](../docs/q4-matched-noise.md) · [Review](../reviews/q4-matched-noise-verification.md)
+
+## Q4 response sensitivity verification
+
+The protocol froze at 15f0724. A detached checkout of 8e6c959 reproduced the result CSV byte-for-byte with the response-sensitivity flag. Independent signed-score inversion verified all eight rows, all fixed-level, boundary and probe counts, and the archived 6 dB prefix endpoints. [Results](../docs/q4-response-sensitivity.md) · [Review](../reviews/q4-response-sensitivity-verification.md)
