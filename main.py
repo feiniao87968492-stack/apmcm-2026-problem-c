@@ -28,6 +28,7 @@ import post_hoc
 import q1
 import q1_candidate_sets
 import q2
+import q2_envelope_rank
 import q3
 import q4
 import q4_decision
@@ -62,6 +63,7 @@ def main():
     q1.run(args.data, args.output, args.seed, args.bootstrap)
     q1_candidate_sets.run(args.data, args.output)
     propagation = q2.run(args.data, args.output, args.seed + 1, args.bootstrap)
+    q2_envelope_rank.run(propagation["metric_means_and_draws"], args.output)
     behavior = q3.run(args.data, args.output, args.seed + 2, args.bootstrap)
     q4.run(propagation, behavior, args.output)
     round2.run(args.data, args.output, args.seed, args.bootstrap, propagation)

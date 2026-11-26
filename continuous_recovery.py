@@ -11,6 +11,10 @@ from recovery import PAIR, TOL, label
 from spatial_annulus import average
 
 
+def adjacent_blocks(size):
+    return combinations(range(size + 1), 3)
+
+
 def breakpoints(endpoints, knot):
     """Find adjacent-block equalities in either isotonic fit along one axis."""
     low, high = endpoints[:, knot]
@@ -20,7 +24,7 @@ def breakpoints(endpoints, knot):
         offsets[knot] = 0
         slopes = np.zeros_like(data)
         slopes[knot] = 1
-        for start, split, stop in combinations(range(len(data) + 1), 3):
+        for start, split, stop in adjacent_blocks(len(data)):
             slope = slopes[start:split].mean() - slopes[split:stop].mean()
             if slope:
                 offset = offsets[start:split].mean() - offsets[split:stop].mean()

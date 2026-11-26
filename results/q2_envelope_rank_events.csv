@@ -1,0 +1,8 @@
+threshold,left,right,weight,before,at,after,radius_left,radius_right,status_left,status_right
+0.5,mod,tv,0.9951055782170785,-1,0,1.0,82.8083263258684,82.80832632586832,crossing,crossing
+0.6,flat,tv,0.7499809161864428,-1,-1,1.0,32.00403784377484,64.0,crossing,crossing
+0.6,mod,tv,0.6697647855005098,-1,0,1.0,79.89838369497863,79.89838369497859,crossing,crossing
+0.7,flat,tv,0.4045199544553331,-1,-1,1.0,31.3929381715791,64.0,crossing,crossing
+0.7,flat,tv,0.8120564031960973,1,0,0.0,4.0,4.0,crossing,below_support
+0.7,flat,tv,1.0,0,0,,4.0,4.0,below_support,below_support
+0.7,mod,tv,0.34270599008719665,-1,0,1.0,77.03286537443208,77.03286537443206,crossing,crossing
