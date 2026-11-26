@@ -166,3 +166,7 @@
 | 120-pair allocations | results/q4_fisher_allocations.csv |
 | Delta-method standard errors and gains versus uniform | results/q4_fisher_precision.csv |
 | Allocation sensitivity to paired dependence | results/q4_paired_planning_allocations.csv, results/q4_paired_planning_precision.csv, results/q4_paired_planning_summary.csv |
+
+## Q4 envelope-weight attainment
+
+The point margins and shared-exponent contrasts use [checkpoint evidence](../results/q4_envelope_attainment_points.csv). The continuous decisions use [point zeros](../results/q4_envelope_attainment_zeros.csv) and [inclusive draw intervals](../results/q4_envelope_attainment_intervals.csv).

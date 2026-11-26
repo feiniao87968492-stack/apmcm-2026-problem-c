@@ -1,0 +1,6 @@
+model,call,distance_m,link,definition,reference,weight_low,weight_high
+full,tv,100,coupled,net_own,equal_weight,0.8134024908302432,0.8134024908302432
+full,mod,100,clean,gross,equal_weight,0.8282056535100062,0.8282056535100062
+drop_union,tv,150,clean,net_own,equal_weight,0.8425727843732614,0.8425727843732614
+drop_union,tv,100,coupled,net_own,equal_weight,0.6250209179692487,0.6250209179692487
+drop_union,mod,100,clean,gross,equal_weight,0.8225207823655379,0.8225207823655379

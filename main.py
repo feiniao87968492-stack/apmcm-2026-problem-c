@@ -47,9 +47,17 @@ def main():
     parser.add_argument("--output", type=Path, default=Path("results"))
     parser.add_argument("--seed", type=int, default=20261126)
     parser.add_argument("--bootstrap", type=int, default=300)
-    parser.add_argument("--q4-tail-ablation", action="store_true",
-                        help="Run the frozen 4,800-draw tail ablation from archived baseline summaries")
+    analyses = parser.add_mutually_exclusive_group()
+    analyses.add_argument("--q4-tail-ablation", action="store_true",
+                          help="Run the frozen 4,800-draw tail ablation")
+    analyses.add_argument("--q4-envelope-attainment", action="store_true",
+                          help="Run the frozen 4,800-draw Q4 envelope-weight analysis")
     args = parser.parse_args()
+    if args.q4_envelope_attainment:
+        from q4_envelope_attainment import write
+
+        write(args.data, args.output, Path(__file__).resolve().parent / "results")
+        return
     if args.q4_tail_ablation:
         from q4_tail_ablation import write
 

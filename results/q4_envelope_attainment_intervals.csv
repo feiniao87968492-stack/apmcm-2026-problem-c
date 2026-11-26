@@ -1,0 +1,13 @@
+model,call,distance_m,link,definition,reference,status,weight_low,weight_high,count_low,count_high,count_before,count_after
+full,tv,150,clean,net_own,equal_weight,qualifying,0.0,0.8311237884786764,4709,3840,,3839.0
+full,tv,150,clean,net_own,weight_specific,qualifying,0.0,1.0,4643,4317,,
+full,tv,100,coupled,net_own,equal_weight,qualifying,0.0,0.48395832138296985,4606,3840,,3839.0
+full,tv,100,coupled,net_own,weight_specific,qualifying,0.0,0.8578580197873549,4320,3840,,3839.0
+full,mod,100,clean,gross,equal_weight,qualifying,0.0,0.38648829804439827,4456,3840,,3839.0
+full,mod,100,clean,gross,weight_specific,qualifying,0.0,0.5468839441701036,4085,3840,,3839.0
+drop_union,tv,150,clean,net_own,equal_weight,qualifying,0.0,0.4903115584123589,4515,3840,,3839.0
+drop_union,tv,150,clean,net_own,weight_specific,qualifying,0.0,0.7517209963256407,4275,3840,,3839.0
+drop_union,tv,100,coupled,net_own,equal_weight,qualifying,0.0,0.2938375571806363,4414,3840,,3839.0
+drop_union,tv,100,coupled,net_own,weight_specific,qualifying,0.0,0.15424221670676586,3918,3840,,3839.0
+drop_union,mod,100,clean,gross,equal_weight,qualifying,0.0,0.37235742191708565,4485,3840,,3839.0
+drop_union,mod,100,clean,gross,weight_specific,qualifying,0.0,0.4894271534656979,4078,3840,,3839.0

@@ -60,3 +60,4 @@ The seven figures in `results/` each have a same-name CSV and JSON metadata file
 - [Q1 candidate sets for held-out recording groups](docs/q1-candidate-sets.md)
 - [Q2 rank changes along a common envelope-weight path](docs/q2-envelope-rank.md)
 - [Q2 spectral allocation sensitivity](docs/q2-spectral-allocation.md)
+- [Q4 envelope-weight attainment](docs/q4-envelope-attainment.md)
