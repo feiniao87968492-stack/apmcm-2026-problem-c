@@ -10,3 +10,4 @@ Each stem identifies a PNG figure, the plotted CSV and a same-stem metadata JSON
 | 4 | q4_scenarios | Integrated effectiveness under clean and modeled disturbance scenarios |
 | 5 | q3_behavior_masks | Eight grouped response combinations under matched conditions |
 
+| 6 | q4_loss_comparison | Common cutoff, shared acoustic loss and alternate response links |

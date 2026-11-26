@@ -1,8 +1,24 @@
-﻿\newcommand{\PaperSummary}{We analyze 108 calls and 139 paired playback experiments in four linked models. A grouped acoustic classifier using six shared measurements gives macro F1 of 0.225, compared with 0.207 for the fold-majority model. At a fidelity threshold of 0.50, flat, modulated and two-voice calls have acoustic ranges of 84.7, 144.6 and 169.7 m. Natural calls elicited a response in 90 of 139 playbacks, compared with 18 of 139 controls. The observed paired difference was 51.8 percentage points, with a 95\% paired bootstrap interval of 43.9--60.1 points. The integrated clean effectiveness radii are 87.0 m, 131.7 m and at least 150 m, respectively. Under a modeled 20\% fidelity loss, those distances fall to 46.0, 70.4 and 124.3 m. We report the uncertainty and sensitivity of these operational distances and outline a field design for evaluating noise in foraging areas.}
+﻿\newcommand{\PaperSummary}{We analyze 108 call recordings and 139 paired playback experiments to study at-sea communication in African penguins. On five fixed recording-group folds, a shallow random forest raised macro F1 from 0.314 to 0.370 relative to logistic regression, with a paired 95\% interval of $[-0.010,0.100]$ for the gain. We retain the logistic benchmark and use recorded labels in subsequent models. At a fidelity cutoff of 0.50, the acoustic ranges for flat, modulated and two-voice calls are 84.7, 144.6 and 169.7 m. Natural call playbacks elicited responses in 90 of 139 trials, versus 18 of 139 controls. A model with playback covariates improved held-out any-response scores but scored worse on behavior combinations than a stimulus-only comparator. The common clean effectiveness cutoff gives radii of 82.4, 139.3 and at least 150 m within support. Under a 20\% acoustic loss, the two-voice estimate remains at least 150 m if modeled responses stay constant, and falls to 116.2 m if the natural-call response advantage also weakens. These are operational scenario estimates for prioritizing field monitoring.}
 
-\newcommand{\AcousticResults}{Peak frequency was the only acoustic measure reaching 5\% in the Holm-adjusted omnibus tests ($p=0.0130$). The significant pairwise difference was flat versus modulated peak frequency ($p=0.0244$). The grouped macro F1 was 0.225 with a recording-group bootstrap range of 0.145--0.286, versus 0.207 for the majority baseline. Adding median-imputed pulse rate gave 0.259. Pulse rate was absent in all flat calls and missing in some modulated and two-voice calls. Availability of F02 alone gave 0.569 because F02 was recorded only for the two-voice category. Held-out permutation scores did not identify a stable positive contribution from a shared feature. We carry the supplied call labels into propagation and behavior modeling. The peak-frequency result motivates retaining a spectral component in the fidelity measure. The weak grouped classifier supports using measured call labels rather than assigning new labels from acoustic features.
-\par\begin{center}\includegraphics[width=.92\linewidth]{q1_acoustics.png}\\
-{\small Figure 1. Acoustic summaries, grouped classification and held-out permutation importance.}\end{center}}
+\newcommand{\AcousticResults}{Peak frequency was the only acoustic measure reaching 5\% in the Holm-adjusted omnibus tests ($p=0.0130$). The significant pairwise difference was flat versus modulated peak frequency ($p=0.0244$). The corresponding median peak frequencies were 916 and 831 Hz. The historical logistic and majority macro F1 scores of 0.225 and 0.207 came from a different allocation, with one validation fold containing three two-voice recordings and no other class. The five fixed comparison folds each contain at least four recordings of each class.
+
+\begin{center}\begin{minipage}{.96\linewidth}\centering\small
+\begin{tabular}{lrrr}
+\toprule
+Held-out metric & Logistic & Forest & Forest minus logistic (95\% interval)\\
+\midrule
+Macro F1 & 0.314 & 0.370 & $+0.055$ [$-0.010$, $+0.100$]\\
+Flat recall & 0.523 & 0.568 & $+0.045$ [$-0.096$, $+0.154$]\\
+Modulated recall & 0.375 & 0.600 & $+0.225$ [$+0.053$, $+0.317$]\\
+Two-voice recall & 0.083 & 0.042 & $-0.042$ [$-0.147$, $0.000$]\\
+\bottomrule
+\end{tabular}\\[3pt]
+Table 1. Pooled held-out scores with paired recording-group bootstrap intervals.
+\end{minipage}\end{center}
+
+The same-fold majority macro F1 was 0.229. The forest gained most on modulated calls and recovered one of 24 two-voice calls, versus two for logistic regression. Its F1 gain missed the prespecified interval criterion. We retain the logistic benchmark and the supplied call labels. Adding median-imputed pulse rate gave 0.316. Pulse rate was absent in all flat calls and in ten other recordings. Availability of F02 alone gave 0.595 because it marks two-voice calls in this dataset. Permuting peak frequency lowered logistic F1 by 0.052 on average, with permutation standard deviation 0.028. These descriptive and predictive results motivate retaining spectral similarity in the propagation analysis. Differences in call function remain hypotheses to assess with playback behavior.
+\par\begin{center}\begin{minipage}{.92\linewidth}\centering\includegraphics[width=\linewidth]{q1_acoustics.png}\\
+{\small Figure 1. Acoustic summaries, grouped logistic classification and held-out permutation importance.}\end{minipage}\end{center}}
 
 \newcommand{\PropagationResults}{
 \begin{center}\small
@@ -15,13 +31,13 @@ Modulated & 181.7 [180.0,183.9] & 144.6 [142.3,147.1] & 109.2 [106.9,112.0]\\
 Two-voice & 203.9 [202.7,205.1] & 169.7 [168.9,170.6] & 141.3 [140.5,142.0]\\
 \bottomrule
 \end{tabular}\\[3pt]
-Table 1. Propagation ranges in metres, with 95\% conditional bootstrap intervals.
+Table 2. Propagation ranges in metres, with 95\% conditional bootstrap intervals.
 \end{center}
-Two-voice has the longest estimated range at the three primary thresholds under the tested weights. At 0.70, the equal-weight estimate for two-voice is close to that for modulated calls and their uncertainty intervals overlap. Increasing the envelope weight can reverse their ranking at 0.70. Choice of the similarity criterion therefore matters most for claims about very reliable recognition.
+Two-voice has the longest estimated range at 0.40--0.60 under all tested fits. Equal-weight fidelity itself is highest for flat at 16 m, modulated at 64 m and two-voice at 128 m. At a cutoff of 0.70, equal-weight isotonic radii are 35.4, 77.7 and 79.3 m in flat, modulated and two-voice order. The last two marginal intervals overlap with either resampling convention. Giving the envelope half the weight changes those radii to 25.5, 66.8 and 12.1 m, with modulated longest and two-voice shortest. The unconstrained equal-weight curve gives 92.4 m for two-voice at 0.70. At 0.50, sharing resampled row indices across the three representations widens the modulated interval from 142.3--147.1 m to 140.9--148.1 m, with the same point estimate. Matching missingness patterns permit this sensitivity analysis. Establishing actual cross-representation pairing and independent sampling units requires acquisition identifiers.
 \par\begin{center}\includegraphics[width=.94\linewidth]{q2_propagation.png}\\{\small Figure 2. Equal-weight fidelity and conditional propagation intervals.}\end{center}}
 
 \newcommand{\BehaviorResults}{
-There were 74 pairs with a response only to the natural call, two with a response only to control, 16 with both and 47 with neither. The exact McNemar $p$ value was $7.75\times10^{-20}$ for equality of the observed paired marginal response rates. With grouped validation, the multinomial model had a mean mask log loss of 1.245, versus 1.384 for pooled training frequencies. The corresponding Brier scores for any response were 0.154 and 0.238. At 50 m and eight observed birds, the adjusted natural-call increment for the vocal-only response to flat calls was 0.134, with an interval of 0.043--0.276. The full combination distribution includes joint responses and baseline controls.
+There were 74 pairs with a response only to the natural call, two with a response only to control, 16 with both and 47 with neither. The exact McNemar $p$ value was $7.75\times10^{-20}$ for equality of the observed paired marginal response rates. The fold-mean behavior-mask log loss and any-response Brier score were 1.384 and 0.238 for pooled frequencies, 1.177 and 0.172 for stimulus-specific frequencies, and 1.245 and 0.154 for the full model. Relative to stimulus-specific frequencies, the full model raised mask log loss by 0.068 and lowered Brier by 0.017. It improved Brier in all five folds and both scores in one fold, below the joint adoption criterion. We retain it to describe standardized covariate contrasts and as input to the integrated scenarios. At 50 m and eight observed birds, the adjusted natural-call increment for the vocal-only response to flat calls was 0.134, with an interval of 0.043--0.276. The full combination distribution includes joint responses and baseline controls.
 \par\begin{center}\includegraphics[width=.87\linewidth]{q3_response_curve.png}\\{\small Figure 3. Adjusted any-response probabilities. Shading shows paired bootstrap intervals for natural stimuli.}\end{center}
 \begin{center}\small
 \begin{tabular}{lrrr}
@@ -33,25 +49,34 @@ Modulated & 1.81 & 1.91 & 1.96\\
 Two-voice & 2.10 & \TVHundred & \TVFar\\
 \bottomrule
 \end{tabular}\\[3pt]
-Table 2. Predicted median onset of head raising in seconds, conditional on head raising, for natural calls and eight birds.
+Table 3. Predicted median onset of head raising in seconds, conditional on head raising, for natural calls and eight birds.
 \end{center}
-At 150 m, the flat and modulated onset estimates use information pooled from the wider dataset because no observed head-raising onsets occur within 25 m in those call strata. Control stimuli produced no observed approaches, leaving their conditional approach onset unavailable. Tables accompanying the paper contain each behavior's probabilities and latency estimates at all three distances, along with the vocal-count and duration summaries.}
+In the inclusive 25 m windows around 50, 100 and 150 m, there were 37/57, 35/61 and 6/8 natural stimuli with any response, and 4/54, 7/57 and 1/8 controls. Every natural call-by-behavior cell had fewer than five local onsets at 150 m. Flat and modulated head-raising predictions at 150 m draw on the wider dataset, with zero local head-raising events in those strata. Control stimuli produced no observed approaches, so their conditional approach latency is unestimable. Regularized event probabilities can remain positive for unobserved strata. Appendix A reports behavior probabilities and conditional medians separately. No observed response leaves perception unresolved.}
 
 \newcommand{\IntegratedResults}{
-\begin{center}\small
-\begin{tabular}{lrrr}
+\begin{center}\begin{minipage}{.97\linewidth}\centering\small
+\begin{tabular}{llrrr}
 \toprule
-Call & Clean & 20\% loss & Threshold 0.70\\
+Clean cutoff & Scenario & Flat & Modulated & Two-voice\\
 \midrule
-Flat & 87.0 & 46.0 & 35.2\\
-Modulated & 131.7 & 70.4 & 77.6\\
-Two-voice & $\ge 150$ & 124.3 & 79.2\\
+Call-specific & Clean & 87.0 & 131.7 & $\ge 150$\\
+Common & Clean & 82.4 & 139.3 & $\ge 150$\\
+Call-specific & 20\% acoustic loss only & 65.5 & 95.5 & $\ge 150$\\
+Call-specific & 20\% loss with response change & 46.0 & 70.4 & 124.3\\
+Common & 20\% acoustic loss only & 60.1 & 104.2 & $\ge 150$\\
+Common & 20\% loss with response change & 41.8 & 77.2 & 116.2\\
 \bottomrule
 \end{tabular}\\[3pt]
-Table 3. Integrated radii in metres, using the fixed 50\% clean reference.
-\end{center}
-The clean flat radius has a conditional bootstrap range of 64.8--121.0 m. The modulated and two-voice intervals reach the upper study bound. At the same relative criterion, the behavior-only model reaches the support limit for every call. Integrating the acoustic component provides an in-range crossing for flat and modulated calls. The acoustic-only radius for flat calls is 117.3 m and the integrated estimate is 87.0 m. At 100 m, the modeled 20\% loss changes response probabilities from 0.549, 0.590 and 0.662 to 0.457, 0.487 and 0.548 for flat, modulated and two-voice calls, respectively. If half of an eight-bird responding group participates, those three altered probabilities imply mean counts of about 1.83, 1.95 and 2.19. The rank in the clean point estimates is stable across the two alternative acoustic weights, with the two-voice result bounded by support.
-\par\begin{center}\begin{minipage}{.94\linewidth}\centering\includegraphics[width=\linewidth]{q4_scenarios.png}\\{\small Figure 4. Integrated effectiveness by distance. Dotted lines mark the fixed clean reference and shading shows the clean conditional interval.}\end{minipage}\end{center}}
+Table 4. Integrated radii in metres. $\ge 150$ denotes the upper support boundary.
+\end{minipage}\end{center}
+
+The radius point estimates rank two-voice, modulated and flat from longest to shortest under both cutoffs across the tested 5--20\% losses and both response links. The clean conditional intervals under the common cutoff are 57.6--116.6 m for flat, 86.5 m to the 150 m bound for modulated, and 138.8 m to the bound for two-voice. Under the call-specific cutoff, 71 of 300 modulated and 286 of 300 two-voice clean draws reach 150 m. The common cutoff gives 103 and 273 such draws. At a fidelity gate of 0.70 the call-specific radii are 35.2, 77.6 and 79.2 m. The behavior-only comparison reaches 150 m for every call at its own half-clean reference. The integrated flat estimate of 87.0 m is shorter than its acoustic-only half-clean radius of 117.3 m.
+
+On the clean 0.5 m grid, modulated leads through 50.5 m and two-voice leads from 51 to 150 m, with flat lowest throughout. At 50 m, the indices are 0.390, 0.507 and 0.507. At 100 m, they are 0.244, 0.369 and 0.448. The paired two-voice minus modulated interval includes zero at 20, 50, 100 and 150 m. At 100 m the difference is 0.079 with a conditional interval of $[-0.058,0.211]$.
+
+At 20\% loss, flat falls below both cutoffs at 100 m, while two-voice meets both under either response link in the point estimates. Modulated meets the 100 m cutoff only with the common threshold and acoustic loss alone, with 55\% of conditional draws meeting that criterion. At 150 m, two-voice meets both cutoffs with acoustic loss alone and falls below both when its response advantage weakens. Under the coupled model at 100 m, response probabilities decrease from 0.549, 0.590 and 0.662 to 0.457, 0.487 and 0.548. If 25\%, 50\% or 75\% of an eight-bird group participates given a response, the two-voice coupled prediction corresponds to expected counts of 1.10, 2.19 and 3.29 birds. The assumed participation fraction is unmeasured.
+
+\par\begin{center}\begin{minipage}{.96\linewidth}\centering\includegraphics[width=\linewidth]{q4_loss_comparison.png}\\{\small Figure 4. The common cutoff and two response assumptions at the same 20\% acoustic loss. Shading shows clean conditional intervals.}\end{minipage}\end{center}}
 
 \newcommand{\TVHundred}{2.20}
 \newcommand{\TVFar}{2.26}
