@@ -95,3 +95,9 @@
 | 190 of 300 comparisons per representation for two-voice at 128 m | results/missing_q2_cells.csv |
 | Sharp isotonic radius bounds and grid-based quality reversals | results/missing_q2_radius_bounds.csv, results/missing_q2_quality_grid.csv |
 | Q4 completion-dependent decisions with the original date reference | results/missing_q4_attainment.csv |
+
+| Group size finding | Evidence |
+|---|---|
+| Size-stratified contrasts across all pairs and pairs matched on distance and size | results/group_size_pair_contrasts.csv |
+| Out-of-date and track-purged prediction with fixed and estimated size coefficients | results/group_size_strict_folds.csv, results/group_size_strict_scores.csv |
+| Fixed-distance Q4 attainment, responder bounds and local support at 2, 8 and 20 birds | results/group_size_q4.csv, results/group_size_q4_coverage.csv |
