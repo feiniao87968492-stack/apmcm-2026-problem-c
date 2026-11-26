@@ -1,0 +1,3 @@
+﻿# Independent recomputation of strict playback results
+
+**PASS** under 9e95367 and numerical release 5c951ca. I independently reconstructed date exclusions and natural-track purges using set operations. I verified fold memberships, all coverage counts and 36 mask-model fold scores. I solved the four-state table with a bracketed scalar root and used a separate Brent search to recover the 12 training log odds ratios. I reproduced all 24 joint-model fold scores and the date-block paired interval. I independently rebuilt all 300 crossed count vectors, expanded intact pairs and refitted the archived behavior model. All crossed coverage rows, the 18 crossed margin and attainment rows, and the 36 archived reference rows matched. [Results](../docs/strict-playback.md)

@@ -73,3 +73,9 @@
 |---|---|---|
 | Figure 2 adopted curve and threshold crossings | results/physical_q2_curves.csv, results/physical_q2_curves.meta.json, results/physical_q2_radii.csv | Physical fit, archived isotonic comparison and conditional acoustic intervals |
 | Q4 agreement across modeled variants | results/noise_q4_agreement.csv, results/noise_q4_agreement_by_factor.csv, results/noise_q4_points.csv | 80% attainment within each variant and conditional protection implications |
+
+| Strict playback finding | Supporting artifacts | Scope |
+|---|---|---|
+| Date holdout with a natural-track purge | results/strict_q3_coverage.csv, results/strict_q3_scores.csv | All 139 pairs held out once |
+| Joint binary outcomes with fixed margins | results/strict_q3_pair_folds.csv, results/strict_q3_pair_contrast.csv | Fold-specific estimates of a shared association |
+| Crossed playback resampling and fixed-reference Q4 | results/strict_q4_crossed_coverage.csv, results/strict_q4_margins.csv | Conditional on sampled dates and natural tracks |

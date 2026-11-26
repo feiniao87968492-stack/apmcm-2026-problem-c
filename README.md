@@ -35,3 +35,5 @@ The seven figures in `results/` each have a same-name CSV and JSON metadata file
 - [Hypothetical noise power and responder counts](docs/noise-scenarios.md)
 
 - [Final Figure 2 and noise agreement](docs/final-delivery.md)
+
+- [Strict playback holdouts and crossed resampling](docs/strict-playback.md)
