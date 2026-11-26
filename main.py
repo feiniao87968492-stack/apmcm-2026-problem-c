@@ -2,6 +2,8 @@
 from argparse import ArgumentParser
 from pathlib import Path
 
+import context_priority
+
 import creative_gate
 import creative_inverse
 import creative_q1
@@ -57,7 +59,7 @@ def main():
     creative_inverse.loss_limits(propagation, behavior, args.output)
     post_hoc.inverse_sensitivity(propagation, behavior, reduced, reduced_draws, args.output)
     q4_decision.run(propagation, behavior, args.output)
-    frame, sampled_dates, date_predictions = playback_dependence.run(
+    frame, sampled_dates, date_predictions, point_masks, date_masks = playback_dependence.run(
         args.data, args.output, args.seed, args.bootstrap, propagation, behavior,
     )
     matched_sensitivity.stratified_pairs(frame, sampled_dates).to_csv(
@@ -82,6 +84,8 @@ def main():
     )
     spatial_annulus.run(propagation, behavior, date_predictions, parameters,
                         sampled_parameters, completion_curves, args.output)
+    context_priority.run(frame, propagation["distance"], parameters, sampled_parameters,
+                         point_masks, date_masks, args.output)
     group_size.run(frame, sampled_dates, propagation, behavior, date_predictions, args.output)
     vocal_counts.run(frame, sampled_dates, propagation, behavior, date_predictions, args.output)
     first_reply.run(frame, sampled_dates, args.seed, args.output)
