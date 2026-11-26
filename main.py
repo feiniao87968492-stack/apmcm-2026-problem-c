@@ -8,6 +8,7 @@ import creative_q1
 import creative_q3
 import final_analysis
 import matched_sensitivity
+import physical_attenuation
 import playback_dependence
 import post_hoc
 import q1
@@ -55,6 +56,7 @@ def main():
         args.output / "matching_q4_loss_limits.csv", index=False,
     )
     matched_sensitivity.weighted_indices(propagation, behavior, args.output)
+    physical_attenuation.run(args.data, args.output, args.seed + 1, args.bootstrap, propagation, behavior)
     print(f"Results written to {args.output.resolve()}")
 
 
