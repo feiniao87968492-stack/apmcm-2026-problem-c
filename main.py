@@ -8,6 +8,7 @@ import creative_q1
 import creative_q3
 import example_sensitivity
 import final_analysis
+import group_size
 import matched_sensitivity
 import missing_propagation
 import noise_agreement
@@ -74,6 +75,7 @@ def main():
     example_sensitivity.waverys(frame, args.output, args.seed, args.bootstrap)
     example_sensitivity.example_deletion(args.data, args.output, propagation, behavior, date_predictions, parameters)
     missing_propagation.run(args.data, args.output, propagation, behavior, date_predictions)
+    group_size.run(frame, sampled_dates, propagation, behavior, date_predictions, args.output)
     print(f"Results written to {args.output.resolve()}")
 
 
