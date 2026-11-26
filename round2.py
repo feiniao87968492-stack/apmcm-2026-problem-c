@@ -129,12 +129,12 @@ def mask_scores(probabilities, y):
     ))
 
 
-def report_playback_scores(scores, metrics, output, question, seed, n_boot):
+def report_playback_scores(scores, metrics, output, question, seed, n_boot, prefix="round2"):
     """Compute fold means and jointly resample held-out experiments within folds."""
     names = scores.columns.get_level_values("model").unique().tolist()
     observed = scores.groupby(level="fold").mean()
     observed.stack(level="model", future_stack=True).reset_index().to_csv(
-        output / f"round2_{question}_fold_scores.csv", index=False,
+        output / f"{prefix}_{question}_fold_scores.csv", index=False,
     )
     point = observed.mean()
     rng = np.random.default_rng(seed)
@@ -159,7 +159,7 @@ def report_playback_scores(scores, metrics, output, question, seed, n_boot):
         supported = all(row["difference_high"] < 0 for row in records[until:])
         for row in records[until:]:
             row["joint_gain"] = supported
-    pd.DataFrame(records).to_csv(output / f"round2_{question}_comparison.csv", index=False)
+    pd.DataFrame(records).to_csv(output / f"{prefix}_{question}_comparison.csv", index=False)
 
 
 def q3_blocks(frame, matrices, folds, output, seed, n_boot):

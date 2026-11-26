@@ -2,6 +2,7 @@
 from argparse import ArgumentParser
 from pathlib import Path
 
+import final_analysis
 import q1
 import q2
 import q3
@@ -27,6 +28,7 @@ def main():
     behavior = q3.run(args.data, args.output, args.seed + 2, args.bootstrap)
     q4.run(propagation, behavior, args.output)
     round2.run(args.data, args.output, args.seed, args.bootstrap, propagation)
+    final_analysis.run(args.data, args.output, args.seed, args.bootstrap, propagation, behavior)
     print(f"Results written to {args.output.resolve()}")
 
 

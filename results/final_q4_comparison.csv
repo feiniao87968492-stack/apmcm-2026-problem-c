@@ -1,0 +1,3 @@
+baseline,candidate,metric,baseline_score,candidate_score,difference,difference_low,difference_high,joint_gain
+full_multinomial,stimulus_distance,binary_log_loss,0.48360786044931103,0.5091190362730762,0.025511175823765164,-0.0071540628354782075,0.05871037373665925,False
+full_multinomial,stimulus_distance,any_response_brier,0.15415299380301864,0.16631345227010688,0.012160458467088242,-0.0003875044291790308,0.02370934531903941,False
