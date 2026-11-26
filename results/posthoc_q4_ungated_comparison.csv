@@ -1,0 +1,3 @@
+baseline,candidate,metric,baseline_score,candidate_score,difference,difference_low,difference_high,joint_gain
+published_binary,ungated_excess,binary_log_loss,0.49058583882144385,0.4732539780444959,-0.017331860776947927,-0.042514653797269604,0.012070903862944031,False
+published_binary,ungated_excess,any_response_brier,0.1556656126257918,0.1477987488356372,-0.007866863790154582,-0.013556089716593379,-0.0008899477497365642,False

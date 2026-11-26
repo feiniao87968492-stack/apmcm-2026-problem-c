@@ -109,6 +109,9 @@ def run(data, output, seed, n_boot, propagation):
         scores = score_frame(frame, folds, row_scores[:, :, [position, 2]], metrics, variants, supported)
         report_playback_scores(scores, metrics, output, f"gate_vs_{benchmark}", seed + 3, n_boot, prefix="creative")
 
+    direct = score_frame(frame, folds, row_scores[:, :, :2], metrics, names[:2], supported)
+    report_playback_scores(direct, metrics, output, "q4_ungated", seed + 3, n_boot, prefix="posthoc")
+
     grid = q3.probability_grid(np.asarray(q3.REPRESENTATIVE), tuple(contexts.index), 8)
     grid_natural = grid.Type.eq("call").to_numpy()
     grid["fidelity"], grid["gate"] = smooth_gate(grid, propagation)

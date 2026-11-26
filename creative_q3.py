@@ -9,6 +9,7 @@ from sklearn.model_selection import GroupKFold
 from sklearn.preprocessing import StandardScaler
 
 import q3
+from post_hoc import smoothed_masks
 from final_analysis import two_stage
 from round2 import interval, mask_scores, playback_matrices, score_frame
 
@@ -76,6 +77,7 @@ def evaluate(frame, design, seed, n_boot, output):
             fit_structured(train_x, train_y, test_x, interactions=True),
         ), axis=-1)
 
+    smoothed_masks(frame, folds, oof, names, output, seed, n_boot)
     scores = np.stack([mask_scores(oof[:, :, i], y) for i in range(len(names))], axis=-1)
     scores = score_frame(frame, folds, scores, METRICS, names)
     fold_scores = scores.groupby(level="fold").mean()

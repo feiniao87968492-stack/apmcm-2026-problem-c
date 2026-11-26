@@ -1,0 +1,3 @@
+baseline,candidate,metric,baseline_score,candidate_score,difference,difference_low,difference_high,joint_gain
+smoothed_stimulus,pairwise,mask_log_loss,1.1077823468404853,1.0947113342200876,-0.01307101262039767,-0.0644267106186373,0.04756759999795733,False
+smoothed_stimulus,pairwise,any_response_brier,0.1718325880029572,0.15485995488617157,-0.016972633116785624,-0.026645225952047265,-0.004698837653053927,False

@@ -179,3 +179,4 @@ def run(data, output, seed, n_boot, propagation, behavior):
     validate_playback(frame, full, reduced, output, seed, n_boot)
     point, draws = reduced_behavior(frame, reduced, propagation["distance"], seed + 2, n_boot)
     radius_sensitivity(propagation, behavior, point, draws, output)
+    return point, draws
