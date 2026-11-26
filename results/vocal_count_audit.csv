@@ -1,0 +1,3 @@
+Type,trials,paired_counts,before_available,after_available,scored_vocal,count_increased,positive_after,flag_vs_positive,flag_vs_increase
+call,139,139,139,139,76,76,78,2,0
+control,139,139,139,139,5,5,7,2,0
