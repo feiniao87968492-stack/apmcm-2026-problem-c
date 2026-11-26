@@ -29,3 +29,8 @@
 | Pairwise behavior likelihood and ablation | results/creative_q3_comparison.csv, results/creative_q3_interactions.csv | Paired grouped predictive scores and conditional associations |
 | Fixed fidelity gate | results/creative_gate_vs_binary_comparison.csv, results/creative_gate_vs_ungated_comparison.csv, results/creative_gate_representative.csv | Fixed scenario and same-fold prediction within 20–150 m |
 | Inverse loss limits and fixed-distance margins | results/creative_q4_inverse_loss.csv | Operational common-cutoff scenarios with censored loss search |
+
+| Post hoc finding | Supporting artifact | Scope |
+|---|---|---|
+| Sparse mask contribution and smoothed stimulus comparison | results/posthoc_q3_smoothed_comparison.csv, results/posthoc_q3_focal_contribution.csv | Full-sample grouped prediction and additive score decomposition |
+| Inverse limits by support criterion and behavior model | results/posthoc_q4_inverse_sensitivity.csv | Post hoc sensitivity under a fixed common cutoff |
