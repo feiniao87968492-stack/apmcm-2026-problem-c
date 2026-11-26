@@ -107,3 +107,9 @@
 | Paired changes and count/flag concordance | results/vocal_count_pairs.csv, results/vocal_count_audit.csv |
 | Strict holdout comparison of count models | results/vocal_count_folds.csv, results/vocal_count_scores.csv |
 | Contact and any-response decisions under the same thresholds | results/vocal_contact_q4.csv, results/vocal_contact_coverage.csv |
+
+| First reply and event order finding | Evidence |
+|---|---|
+| First reply by stimulus and context, conditional and all-trial denominators | results/first_reply_matrix.csv |
+| Strict reply prediction and same-type matching within dates and contexts | results/first_reply_folds.csv, results/first_reply_scores.csv, results/first_reply_matching.csv |
+| Group vocal and approach onset order and lag | results/first_reply_event_order.csv |
