@@ -1,0 +1,12 @@
+{
+  "sources": [
+    "Data02–Data11",
+    "docs/model-spec.md"
+  ],
+  "support_m": [
+    20,
+    150
+  ],
+  "bands": "95% conditional combined bootstrap interval",
+  "threshold": "50% of clean index at 20 m, per call"
+}

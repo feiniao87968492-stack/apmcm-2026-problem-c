@@ -1,0 +1,16 @@
+call,model,radius_m,status
+flat,acoustics,117.28265616279344,crossing
+flat,behavior,150.0,above_support
+flat,combined,86.99528604381318,crossing
+flat,frequency_first,93.07852792188672,crossing
+flat,envelope_first,81.81469761008735,crossing
+mod,acoustics,150.0,above_support
+mod,behavior,150.0,above_support
+mod,combined,131.66816134678984,crossing
+mod,frequency_first,138.20502196485876,crossing
+mod,envelope_first,125.30715292493649,crossing
+tv,acoustics,150.0,above_support
+tv,behavior,150.0,above_support
+tv,combined,150.0,above_support
+tv,frequency_first,150.0,above_support
+tv,envelope_first,150.0,above_support

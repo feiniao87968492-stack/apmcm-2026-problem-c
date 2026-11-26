@@ -1,0 +1,25 @@
+{
+  "inputs": [
+    "Data03*.csv",
+    "Data04*.csv",
+    "Data05*.csv",
+    "Data06*.csv",
+    "Data07*.csv",
+    "Data08*.csv",
+    "Data09*.csv",
+    "Data10*.csv",
+    "Data11*.csv"
+  ],
+  "distance_unit": "m",
+  "marks": "Points are empirical equal-weight means. Lines are isotonic curves.",
+  "uncertainty": "Pointwise percentiles conditional on wide-row resampling. The original files lack independent experimental identifiers.",
+  "interval": "95% pointwise percentile band",
+  "horizontal_reference_thresholds": [
+    0.4,
+    0.5,
+    0.6
+  ],
+  "seed": 20261127,
+  "bootstrap_draws": 300,
+  "source_data": "q2_propagation.csv"
+}

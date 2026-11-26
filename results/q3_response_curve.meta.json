@@ -1,0 +1,7 @@
+{
+  "source": "Data02",
+  "group_size": 8,
+  "interval": "pointwise 95% paired bootstrap",
+  "draws": 300,
+  "context": "empirical experiment distribution"
+}

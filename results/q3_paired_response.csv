@@ -1,0 +1,2 @@
+pairs,natural_responses,control_responses,both_responses,neither_response,natural_only,control_only,natural_rate,control_rate,raw_paired_difference,bootstrap_lower,bootstrap_upper,mcnemar_exact_p
+139,90,18,16,47,74,2,0.6474820143884892,0.12949640287769784,0.5179856115107914,0.43884892086330934,0.6008992805755394,7.747704489416678e-20

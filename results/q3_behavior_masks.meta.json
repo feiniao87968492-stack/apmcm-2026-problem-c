@@ -1,0 +1,11 @@
+{
+  "source": "Data02",
+  "distance_m": 100,
+  "group_size": 8,
+  "context": "empirical experiment distribution",
+  "mask_bit_order": [
+    "HeadsUp",
+    "Vocal",
+    "Approach"
+  ]
+}
