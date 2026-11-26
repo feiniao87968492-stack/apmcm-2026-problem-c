@@ -61,3 +61,4 @@ The seven figures in `results/` each have a same-name CSV and JSON metadata file
 - [Q2 rank changes along a common envelope-weight path](docs/q2-envelope-rank.md)
 - [Q2 spectral allocation sensitivity](docs/q2-spectral-allocation.md)
 - [Q4 envelope-weight attainment](docs/q4-envelope-attainment.md)
+- [Q3 response direction in discordant playback pairs](docs/q3-direction.md)

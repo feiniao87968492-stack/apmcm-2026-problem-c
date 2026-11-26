@@ -170,3 +170,7 @@
 ## Q4 envelope-weight attainment
 
 The point margins and shared-exponent contrasts use [checkpoint evidence](../results/q4_envelope_attainment_points.csv). The continuous decisions use [point zeros](../results/q4_envelope_attainment_zeros.csv) and [inclusive draw intervals](../results/q4_envelope_attainment_intervals.csv).
+
+## Q3 discordant-pair direction
+
+[Raw counts](../results/q3_direction_counts.csv), [purged fold counts](../results/q3_direction_folds.csv), [conditional scores](../results/q3_direction_scores.csv), [paired differences](../results/q3_direction_contrasts.csv), and [equal-distance standardized predictions](../results/q3_direction_standardized.csv) support the direction comparison.

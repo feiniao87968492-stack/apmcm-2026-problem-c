@@ -1,0 +1,9 @@
+sample,call,pairs,natural_only,control_only,both,neither,dates,discordant_dates,direction
+equal_size,all,137,74,2,16,45,12,12,0.9736842105263158
+equal_size,flat,47,23,0,6,18,10,9,1.0
+equal_size,mod,33,18,1,3,11,8,8,0.9473684210526315
+equal_size,tv,57,33,1,7,16,10,8,0.9705882352941176
+matched,all,49,27,2,6,14,12,10,0.9310344827586207
+matched,flat,16,9,0,3,4,9,6,1.0
+matched,mod,4,3,1,0,0,4,4,0.75
+matched,tv,29,15,1,3,10,9,4,0.9375
