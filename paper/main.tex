@@ -50,6 +50,8 @@ Let $\bar r_{cm}(d)$ be the available-case mean correlation with the one-metre r
 \]
 A power law for the variance ratio motivates $F_c(d)=A_c/\sqrt{1+(d/D_c)^g}$. We fit the ceiling $A_c$ and distance scale $D_c$ by call, comparing $g=2$ with a fitted shared exponent. The fitted exponent describes the correlation curves. We hold out each interior distance across all calls and compare predictions with an isotonic fit interpolated in $\log d$. For representation omission, the remaining measures receive equal weight. We compare resampling complete distance rows with sampling hypothetical batches of ten consecutive rows within each file. The files omit example identifiers. We therefore refit after assuming consecutive 100-row groups, removing one per call type in all 27 combinations. For Q4 each deletion curve is held fixed against the original date-block behavior draws and the archived common reference.
 
+For each propagation cell we take 300 nominal comparisons and bound every missing correlation by $[-1,1]$. We propagate both endpoints through equal weighting, clipping, nonincreasing isotonic fitting and log-distance interpolation. Each step preserves order, so the extremal completions attain the radius bounds within 4--256 m. A separate scenario fills each missing score with $q$ times its cell's available mean and refits both models at $q=0,0.01,\ldots,1$.
+
 \PropagationResults
 
 \section{Paired playback responses}
@@ -86,6 +88,8 @@ The stimulus-and-distance comparison holds the eight-bird reference, propagation
 
 For a second decision rule we require both fidelity of at least 0.50 and a natural-minus-control response probability of at least 0.20 after loss. We test differences of 0.10 and 0.30 as sensitivities. We evaluate both the joint rule and the product cutoff in the same draws, and classify a setting as passing when at least 80\% of draws attain its criterion. We also cross all propagation and playback draws in clean conditions and under 20\% coupled loss. For each draw pair we recompute the clean common cutoff and partition the variance of the product-minus-cutoff margin into propagation, behavior, and their interaction. A separate sensitivity resamples all 12 observed dates as blocks, refits the behavior model and reuses the same propagation draws with a recomputed common cutoff. The inverse analysis takes the largest loss with 80\% attainment under each sampling scheme and requires both schemes to pass. For crossed resampling, we instead multiply independent date and natural-track counts for each intact experiment pair. As an ecological sensitivity, we multiply fidelity by the expected additive behavior score from the fitted eight masks. We use equal weights and weights of 0.2, 0.4 and 0.4 for head raising, vocalizing and approach. Each index uses half its own equal-call clean mean at 20 m.
 
+For the missing-score analysis we evaluate the available-value and extremal isotonic curves at 50, 100 and 150 m in clean and 20\% coupled scenarios. Curves are fixed across draws, and all three use the same original draw-specific clean reference. With nonnegative response probability, attainment increases with fidelity, so the endpoint shares bound the 80\% decision.
+
 \IntegratedResults
 
 Prioritize monitoring across dates and playback tracks at foraging sites, with measured noise and acquisition identifiers. Test candidate quiet periods or route changes using randomized noise regimes and counterbalanced natural/control order. The 120-pair illustration assigns ten pairs to each noise arm in each call-by-distance cell at 100 and 150 m. Under the clean planning marginals and independent cells, the normal 95\% half-width for the equal-weight mean noise contrast is 0.199 at zero within-pair covariance, versus 0.502 for the widest cell. With paired correlation from $-0.25$ to $+0.25$ the mean half-width ranges from 0.219 to 0.179. A planning target of 0.20 in every cell requires at least 724 matched pairs at zero correlation with cell-specific allocation (768 with equal allocation), or 582--870 across the covariance sensitivities. The average and cell-specific contrasts answer different monitoring questions.
@@ -93,6 +97,7 @@ Prioritize monitoring across dates and playback tracks at foraging sites, with m
 \section{Limitations and reproducibility}
 Sparse responses limit precision for behavior combinations and onset times. The integrated index combines separate propagation and playback experiments. Its noise scenarios depend on the stated assumptions. The repository supplies Python code, result tables and figure data. The default analysis uses 300 resamples.
 
+\begin{samepage}
 \begin{thebibliography}{9}
 \bibitem{problem} APMCM Organizing Committee. 2026 APMCM Problem C, \emph{Acoustic Communication and Playback Responses of African Penguins at Sea}. Contest statement and attachments, 2026.
 \bibitem{archive} \emph{African penguin acoustic and playback study, associated data and supplementary material}. Zenodo record 21376649, \url{https://zenodo.org/records/21376649}, accessed November 26, 2026.
@@ -100,6 +105,7 @@ Sparse responses limit precision for behavior combinations and onset times. The 
 \bibitem{era5} Copernicus Climate Change Service. ERA5 hourly data on single levels, accessed through Open-Meteo on November 26, 2026. \url{https://doi.org/10.24381/cds.adbb2d47}.
 \bibitem{waverys} Copernicus Marine Service. Global Ocean Waves Reanalysis (WAVERYS), product GLOBAL\_MULTIYEAR\_WAV\_001\_032.
 \end{thebibliography}
+\end{samepage}
 \clearpage
 \appendix
 \section{Full representative-condition onset table}
@@ -141,6 +147,7 @@ The commands in the repository README reproduce the figures and tables using the
 \lstinputlisting[caption={Strict playback and crossed resampling}]{../strict_playback.py}
 \lstinputlisting[caption={False Bay sea-state sensitivity}]{../sea_state.py}
 \lstinputlisting[caption={WAVERYS and assumed example deletion}]{../example_sensitivity.py}
+\lstinputlisting[caption={Missing propagation comparisons}]{../missing_propagation.py}
 \end{document}
 
 

@@ -89,3 +89,9 @@
 |---|---|
 | WAVERYS daily slopes and strict validation | results/waverys_slopes.csv, results/waverys_validation.csv |
 | Example deletion radii and attainment | results/example_deletion_radii.csv, results/example_deletion_q4_summary.csv |
+
+| Missing propagation finding | Evidence |
+|---|---|
+| 190 of 300 comparisons per representation for two-voice at 128 m | results/missing_q2_cells.csv |
+| Sharp isotonic radius bounds and grid-based quality reversals | results/missing_q2_radius_bounds.csv, results/missing_q2_quality_grid.csv |
+| Q4 completion-dependent decisions with the original date reference | results/missing_q4_attainment.csv |

@@ -41,3 +41,4 @@ The seven figures in `results/` each have a same-name CSV and JSON metadata file
 - [False Bay sea-state sensitivity](docs/false-bay.md)
 
 - [WAVERYS and assumed propagation example deletions](docs/example-sensitivity.md)
+- [Missing propagation comparisons](docs/missing-propagation.md)
