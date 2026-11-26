@@ -41,3 +41,7 @@ The post hoc checks froze at 43c39e6 and ran at 1ac4bbd. A clean checkout of the
 ## Q4 decision verification
 
 The decision analyses were frozen at d18ff9a and computed at c1e1ee8. Independent calculations reproduced the decision counts, crossed variance shares and exact integer optimum. A clean checkout of 2e8fe9b reproduced 77 CSV/JSON files byte-for-byte, six PNGs by decoded pixels, and the English PDF's text and all 50 rendered pages. The public team fields are blank. Body and references occupy pages 3–11. [Decision results](../docs/q4-decision-results.md) · [Independent recomputation](../reviews/q4-decision-verification.md)
+
+## Playback dependence verification
+
+The analysis was frozen at fa1b026 and computed at 4c1b3a3. Independent refits verified both holdout schemes, 36 margin rows and the trial precision results. A clean checkout of 1b20cd6 reproduced 82 CSV/JSON files byte-for-byte, six PNGs by decoded pixels and all 51 rendered PDF pages. The public team fields are blank. Body and references occupy pages 3–10, one page shorter than the previous release. [Results](../docs/playback-dependence.md) · [Independent recomputation](../reviews/playback-dependence-verification.md)
