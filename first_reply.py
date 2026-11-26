@@ -12,30 +12,46 @@ def interval(draws):
 
 
 def matrix(frame, vocal, date_indices, samples, output):
+    contexts = sorted(frame.Context.unique())
+    arms = [
+        (dict(stimulus=stimulus, context=context),
+         frame.Type.eq(stimulus) & frame.Context.eq(context))
+        for stimulus in STIMULI for context in contexts
+    ]
+    natural = frame.Type.eq("call")
+    detail = [
+        (dict(played_call=call, context=context),
+         natural & frame.assigned_call.eq(call) & frame.Context.eq(context))
+        for call in CALLS for context in contexts
+    ]
+    for name, cells in (("matrix", arms), ("by_played_call", detail)):
+        rows = matrix_rows(frame, vocal, date_indices, samples, cells)
+        pd.DataFrame(rows).to_csv(output / f"first_reply_{name}.csv", index=False)
+
+
+def matrix_rows(frame, vocal, date_indices, samples, cells):
     rows = []
-    for stimulus in STIMULI:
-        for context in sorted(frame.Context.unique()):
-            cell = frame.Type.eq(stimulus) & frame.Context.eq(context)
-            replied = cell & vocal
-            trials = np.bincount(date_indices[cell], minlength=samples.shape[1])
-            responses = np.bincount(date_indices[replied], minlength=samples.shape[1])
-            for label in CALLS:
-                matches = replied & frame.VR1.eq(label)
-                counts = np.bincount(date_indices[matches], minlength=samples.shape[1])
-                row = dict(stimulus=stimulus, context=context, first_reply=label,
-                           count=counts.sum(), unrecognized=(replied & ~frame.VR1.isin(CALLS)).sum(),
-                           dates_with_trials=np.count_nonzero(trials),
-                           dates_with_responses=np.count_nonzero(responses))
-                draw_num = counts[samples].sum(axis=1)
-                for name, den in (("response", responses), ("trial", trials)):
-                    totals = den[samples].sum(axis=1)
-                    keep = totals > 0
-                    low, high = interval(draw_num[keep] / totals[keep])
-                    row.update({f"{name}_denominator": den.sum(), f"{name}_draws": keep.sum(),
-                                f"{name}_share": counts.sum() / den.sum() if den.sum() else np.nan,
-                                f"{name}_low95": low, f"{name}_high95": high})
-                rows.append(row)
-    pd.DataFrame(rows).to_csv(output / "first_reply_matrix.csv", index=False)
+    for labels, cell in cells:
+        replied = cell & vocal
+        trials = np.bincount(date_indices[cell], minlength=samples.shape[1])
+        responses = np.bincount(date_indices[replied], minlength=samples.shape[1])
+        for label in CALLS:
+            matches = replied & frame.VR1.eq(label)
+            counts = np.bincount(date_indices[matches], minlength=samples.shape[1])
+            row = dict(labels, first_reply=label,
+                       count=counts.sum(), unrecognized=(replied & ~frame.VR1.isin(CALLS)).sum(),
+                       dates_with_trials=np.count_nonzero(trials),
+                       dates_with_responses=np.count_nonzero(responses))
+            draw_num = counts[samples].sum(axis=1)
+            for name, den in (("response", responses), ("trial", trials)):
+                totals = den[samples].sum(axis=1)
+                keep = totals > 0
+                low, high = interval(draw_num[keep] / totals[keep])
+                row.update({f"{name}_denominator": den.sum(), f"{name}_draws": keep.sum(),
+                            f"{name}_share": counts.sum() / den.sum() if den.sum() else np.nan,
+                            f"{name}_low95": low, f"{name}_high95": high})
+            rows.append(row)
+    return rows
 
 
 def validation(natural, date_indices, samples, output):
