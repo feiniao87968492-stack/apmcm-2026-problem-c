@@ -8,3 +8,11 @@
 
 Natural and control stimuli differ within 90 pairs in distance and within two pairs in observed group size. Date and context agree within every pair. Raw paired differences are descriptive and modeled comparisons use identical covariate grids.
 
+
+## Public archive coverage
+
+The field paper lists the Zenodo concept DOI 10.5281/zenodo.21376648 for underlying data and record DOI 10.5281/zenodo.21376649 for extended data. Both resolve to the same deposit, which had one public version on 2026-11-27. All 20 files match the contest attachments by the deposit's MD5 checksums, allowing for the filename change in Supplementary 4. The deposit contains 11 CSVs, two R scripts, three PDFs, one example playback video and three example call WAVs. [Field paper](https://doi.org/10.12688/openreseurope.24618.1) · [Archive metadata](https://zenodo.org/api/records/21376649) · [Versions](https://zenodo.org/api/records/21376649/versions)
+
+The field paper reports broadcast levels of 82–86 dB SPL at 1 m for the marine playback trials and 84 dB SPL at 1 m for the dam propagation experiment. Data02 records the trial identifiers, playback tracks, distances and responses. The deposit lacks background sound levels linked to those trials and lacks a calibrated recording series from which to reconstruct them. [Field methods](https://doi.org/10.12688/openreseurope.24618.1) · [Data02 and example media](https://zenodo.org/records/21376649)
+
+Recovering the missing 128 m propagation correlations would require the original 1 m and 128 m recordings or the omitted correlation values, with the calls and repetitions identified. The deposit supplies the processed correlation tables. The prioritization analysis measures the conditional benefit if those observations become available. [Recovery analysis](recovery-priority.md)
