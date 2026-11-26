@@ -29,3 +29,5 @@ The six figures in `results/` each have a same-name CSV and JSON metadata file. 
 
 - [Matched distance, loss limits and weighted behaviors](docs/matched-sensitivity.md)
 - [Attenuation fits and acquisition-batch sensitivity](docs/physical-attenuation.md)
+
+- [Acoustic transformations and recorded onset](docs/acoustic-onset.md)

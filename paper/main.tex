@@ -63,7 +63,7 @@ Softmax over the eight scores gives the mask probabilities. We fit unit L2 penal
 
 The adjusted covariate grid also illustrates variation with context and group size. For a natural two-voice call at 100 m and eight birds, the fitted response probabilities are 0.600 when commuting, 0.784 when searching and 0.645 in the after category. In the searching context they are 0.869, 0.784 and 0.706 for group sizes of 3, 8 and 15. These are conditional contrasts under the fitted model.
 
-We model onset conditional on observing the corresponding behavior and report the response probability alongside its conditional time. Conditional modeling distinguishes a stimulus that produces infrequent behavior from one that produces slow behavior among the responders. We fit ridge regression ($\alpha=5$) to log-transformed onset time, $\log(1+t)$, among observed responders. We model Gaussian residuals on the log scale and compute a mixture median across contexts, weighting each context by its empirical frequency times its modeled event probability. For the representative scenarios we use eight birds, the median group size, and distances of 50, 100 and 150 m. We count local trials and onsets in inclusive 25 m windows and flag fewer than five local onsets. The conditional model pools information across distances. Duration and vocal count describe the intensity of behavior after onset.
+We model onset conditional on observing the corresponding behavior and report the response probability alongside its conditional time. Conditional modeling distinguishes a stimulus that produces infrequent behavior from one that produces slow behavior among the responders. We fit ridge regression ($\alpha=5$) to log-transformed onset time, $\log(1+t)$, among observed responders. We model Gaussian residuals on the log scale and compute a mixture median across contexts, weighting each context by its empirical frequency times its modeled event probability. For the representative scenarios we use eight birds, the median group size, and distances of 50, 100 and 150 m. We count local trials and onsets in inclusive 25 m windows and flag fewer than five local onsets. The conditional model pools information across distances. Duration and vocal count describe the intensity of behavior after onset. We compare ridge with a training median on observed onset times, and assess multinomial first-onset bins against half-count stimulus frequencies. Both comparisons hold out experiment pairs and, separately, entire dates.
 
 \BehaviorResults
 
@@ -130,6 +130,7 @@ The commands in the repository README reproduce the figures and tables using the
 \lstinputlisting[caption={Matched distance, loss limits and weighted behaviors}]{../matched_sensitivity.py}
 
 \lstinputlisting[caption={Attenuation fit and resampling checks}]{../physical_attenuation.py}
+\lstinputlisting[caption={Acoustic feature transformations and recorded onset validation}]{../onset_analysis.py}
 \end{document}
 
 

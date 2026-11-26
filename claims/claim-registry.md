@@ -58,3 +58,8 @@
 | Shared-exponent fit and adopted Q2 ranges | results/physical_q2_validation.csv, results/physical_q2_parameters.csv, results/physical_q2_radii.csv | Descriptive curve and interior-distance holdout |
 | Ten-row batch intervals and ordering | results/physical_q2_blocks.csv | Hypothetical batch dependence |
 | Q4 propagation-model sensitivity | results/physical_q4_margins.csv | Shared behavior and isotonic common reference, within 20?150 m |
+
+| Acoustic and timing finding | Supporting artifacts | Scope |
+|---|---|---|
+| Same-fold acoustic transformations | results/onset_q1_acoustic.csv | Fixed recording-group validation |
+| Conditional latency and first recorded onset | results/onset_q3_latency.csv, results/onset_q3_timing_scores.csv, results/onset_q3_cumulative.csv | Observed onsets and date-block intervals |
