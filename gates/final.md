@@ -61,3 +61,7 @@ The analysis froze at 195a5af and ran at 4130bdd. Independent calculations verif
 ## Noise power scenario verification
 
 The scenarios were frozen at 5a0c8c0 and computed at c5fd3fd. Independent calculations verified the matched losses, radius intervals, attainment and responder count bounds. A clean checkout of 9d01ca5 reproduced 101 CSV/JSON files byte-for-byte, six PNGs by decoded pixels and all 61 PDF pages by extracted text and raster comparison. Body and references occupy pages 3–10 and the public team fields are blank. [Results](../docs/noise-scenarios.md) · [Independent recomputation](../reviews/noise-scenarios-verification.md)
+
+## Final delivery verification
+
+The figure and scenario-agreement protocol froze at 12cf2f9. A clean checkout of 012ee10 reproduced all 112 outputs with 105 CSV/JSON files identical byte-for-byte and seven PNGs identical by decoded pixels. The pagination-only revision 4ce9bf3 rebuilt in a clean checkout with identical extracted text and all 62 rendered pages. Both references appear on page 10, the appendices begin on page 11, and the public team fields and author metadata are blank. The independent review scored the revised manuscript 100/100 under the frozen rubric. [Results](../docs/final-delivery.md) · [Independent review](../reviews/delivery-paper-review.md)

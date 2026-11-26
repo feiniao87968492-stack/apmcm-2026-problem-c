@@ -33,3 +33,5 @@ The seven figures in `results/` each have a same-name CSV and JSON metadata file
 - [Acoustic transformations and recorded onset](docs/acoustic-onset.md)
 
 - [Hypothetical noise power and responder counts](docs/noise-scenarios.md)
+
+- [Final Figure 2 and noise agreement](docs/final-delivery.md)
