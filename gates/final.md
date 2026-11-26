@@ -171,3 +171,9 @@ A separate archived build of manuscript `c48f091` reproduced the PDF byte-for-by
 The planning protocol froze at `2fc20af` and ran at `bfd73f9`. In a detached checkout of `2a7e971`, `python q4_fisher.py --data "<attachment directory>/date" --output regenerated` reproduced both planning tables byte-for-byte. Independent verification used a different parameterization and numerical gradients and recovered all 60 allocation rows and 15 precision rows. [Results](../docs/q4-fisher.md) · [Numerical review](../reviews/q4-fisher-verification.md)
 
 The anonymous PDF at `dddc541` has SHA-256 `fc872aad7a9b3cf241ffb5315cd43e0e9f631f5ddda020f26e6f3de4b2efe055`. Body and references occupy pages 3–14. Appendices begin on page 15 of 103 and list all 36 tracked Python modules. [Manuscript review](../reviews/q4-fisher-paper-review.md) · [PDF](../paper/main.pdf)
+
+## Paired allocation verification
+
+The protocol froze at `2bdbc6f` and ran at `b47db32`. In a detached checkout, `python q4_paired_planning.py --data "<attachment directory>/date" --output regenerated` reproduced all three planning tables byte-for-byte. The updated Fisher entry point also reproduced its two archived tables byte-for-byte. Independent enumeration of joint mask outcomes confirmed the preserved marginals and independent meat identity. All 48 allocation counts matched exactly, and the largest numerical discrepancy across the precision and summary tables was 1.18e-13. [Results](../docs/q4-paired-planning.md) · [Numerical review](../reviews/q4-paired-planning-verification.md)
+
+The anonymous manuscript at `7b0bc15` has PDF SHA-256 `f6a3f138598510c75ac8a84a7460d06a8632bfb1d423cfac0105b9cdd11b884c`. The body and references occupy pages 3–14. The appendices start on page 15 of 105 and list all 37 tracked Python modules. [Manuscript review](../reviews/q4-paired-planning-paper-review.md) · [PDF](../paper/main.pdf)
