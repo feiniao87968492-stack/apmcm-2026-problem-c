@@ -100,4 +100,4 @@ def run(data, output, propagation, behavior, date_predictions):
                                 quality=quality))
     pd.DataFrame(rows).to_csv(output / "missing_q2_quality_grid.csv", index=False)
     q4_margins(curves, propagation, behavior, date_predictions, output)
-    return curves
+    return curves, completions, missing

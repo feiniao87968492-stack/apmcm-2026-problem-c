@@ -25,6 +25,7 @@ import q2
 import q3
 import q4
 import q4_decision
+import recovery
 import round2
 import sea_state
 import spatial_annulus
@@ -79,11 +80,13 @@ def main():
     sea_state.run(frame, args.output, args.seed, args.bootstrap)
     example_sensitivity.waverys(frame, args.output, args.seed, args.bootstrap)
     example_sensitivity.example_deletion(args.data, args.output, propagation, behavior, date_predictions, parameters)
-    completion_curves = missing_propagation.run(
+    completion_curves, completed_means, missing_counts = missing_propagation.run(
         args.data, args.output, propagation, behavior, date_predictions,
     )
     spatial_annulus.run(propagation, behavior, date_predictions, parameters,
                         sampled_parameters, completion_curves, args.output)
+    recovery.run(completed_means, missing_counts, propagation["distance"], behavior,
+                 date_predictions, args.output)
     context_priority.run(frame, propagation["distance"], parameters, sampled_parameters,
                          point_masks, date_masks, args.output)
     group_size.run(frame, sampled_dates, propagation, behavior, date_predictions, args.output)
