@@ -12,6 +12,7 @@ import q1
 import q2
 import q3
 import q4
+import q4_decision
 import round2
 
 
@@ -41,6 +42,7 @@ def main():
     creative_gate.run(args.data, args.output, args.seed, args.bootstrap, propagation)
     creative_inverse.loss_limits(propagation, behavior, args.output)
     post_hoc.inverse_sensitivity(propagation, behavior, reduced, reduced_draws, args.output)
+    q4_decision.run(propagation, behavior, args.output)
     print(f"Results written to {args.output.resolve()}")
 
 
