@@ -38,12 +38,12 @@ def training_counts(frame, eligible, model):
                        min_m=part.Distance.min(), max_m=part.Distance.max())
 
 
-def refit(frame, eligible, sampled_dates, weights):
+def refit(frame, eligible, sampled_dates, weights, distances=q3.REPRESENTATIVE):
     contexts = tuple(weights.index)
     design = q3.features(frame, contexts)
-    target = q3.features(q3.probability_grid(np.array(q3.REPRESENTATIVE), contexts, 8), contexts)
+    target = q3.features(q3.probability_grid(np.asarray(distances), contexts, 8), contexts)
     masks = frame["mask"].to_numpy()
-    shape = (len(q3.STIMULI), len(q3.CALLS), len(q3.REPRESENTATIVE), len(contexts))
+    shape = (len(q3.STIMULI), len(q3.CALLS), len(distances), len(contexts))
 
     def predict(rows):
         zero = q3.fit_masks(design[rows], masks[rows], target)[:, 0].reshape(shape)
