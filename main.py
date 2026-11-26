@@ -5,6 +5,7 @@ from pathlib import Path
 import behavior_gap
 import context_priority
 import continuous_recovery
+import control_subtraction
 
 import creative_gate
 import creative_inverse
@@ -88,6 +89,8 @@ def main():
     )
     spatial_annulus.run(propagation, behavior, date_predictions, parameters,
                         sampled_parameters, completion_curves, args.output)
+    control_subtraction.run(propagation, behavior, date_predictions,
+                            parameters, sampled_parameters, args.output)
     recovery_plans = recovery.run(completed_means, missing_counts, propagation["distance"], behavior,
                                   date_predictions, args.output)
     continuous_recovery.run(completed_means, missing_counts, propagation["distance"],
