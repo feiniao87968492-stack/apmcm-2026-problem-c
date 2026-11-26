@@ -147,3 +147,8 @@
 |---|---|
 | Area means, pairwise contrasts and shared or model-specific cutoff decisions | results/behavior_ablation_area.csv, results/behavior_ablation_area_gaps.csv, results/behavior_ablation_points.csv |
 | Sparse local sample coverage | results/behavior_ablation_coverage.csv |
+
+| Q4 distance deletion finding | Evidence |
+|---|---|
+| Pair overlap, arm counts and retained distance support | results/distance_deletion_overlap.csv, results/distance_deletion_training.csv, results/distance_deletion_coverage.csv |
+| Fixed-cutoff predictions, paired margin differences and decisions | results/distance_deletion_points.csv |
