@@ -152,3 +152,4 @@
 |---|---|
 | Pair overlap, arm counts and retained distance support | results/distance_deletion_overlap.csv, results/distance_deletion_training.csv, results/distance_deletion_coverage.csv |
 | Fixed-cutoff predictions, paired margin differences and decisions | results/distance_deletion_points.csv |
+| Monte Carlo precision at the 80\% cutoff | results/distance_deletion_mc.csv |
