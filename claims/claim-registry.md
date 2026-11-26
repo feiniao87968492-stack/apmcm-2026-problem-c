@@ -63,3 +63,8 @@
 |---|---|---|
 | Same-fold acoustic transformations | results/onset_q1_acoustic.csv | Fixed recording-group validation |
 | Conditional latency and first recorded onset | results/onset_q3_latency.csv, results/onset_q3_timing_scores.csv, results/onset_q3_cumulative.csv | Observed onsets and date-block intervals |
+
+| Noise scenario finding | Supporting artifact | Scope |
+|---|---|---|
+| Matched uniform and local attenuation | results/noise_q4_losses.csv, results/noise_q4_points.csv, results/noise_q4_radii.csv | Hypothetical variance changes, fixed isotonic reference |
+| Expected count bounds and assumptions | results/noise_q4_responders.csv | Eight-bird standardized predictions |

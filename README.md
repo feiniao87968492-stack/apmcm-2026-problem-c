@@ -31,3 +31,5 @@ The six figures in `results/` each have a same-name CSV and JSON metadata file. 
 - [Attenuation fits and acquisition-batch sensitivity](docs/physical-attenuation.md)
 
 - [Acoustic transformations and recorded onset](docs/acoustic-onset.md)
+
+- [Hypothetical noise power and responder counts](docs/noise-scenarios.md)

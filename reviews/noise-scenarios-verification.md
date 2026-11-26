@@ -1,0 +1,3 @@
+﻿# Independent recomputation of noise scenarios
+
+**PASS.** I independently reconstructed the 45 loss rows, 162 point margins and attainment decisions, 54 radii and 324 count rows at c5fd3fd under 5a0c8c0. I rebuilt inputs with the published propagation and behavior routines, including date refits, then computed attenuation from the closed-form variance-ratio expression and derived the draw-specific mean at 100 m. Scalar root finding on each final grid segment reproduced all crossings, percentile bounds and boundary counts. Computing expected counts directly from the group probabilities reproduced all point values and conditional intervals. [Results](../docs/noise-scenarios.md)
