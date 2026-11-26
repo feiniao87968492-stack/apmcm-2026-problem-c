@@ -77,3 +77,9 @@ The protocol and snapshots froze at e86dfe1 and the analysis ran at 7bffe2b. Ind
 ## WAVERYS and example-deletion verification
 
 The protocol froze at ea42111 and the computations ran at a81e3ec. Independent recomputation verified WAVERYS interpolation, date slopes, strict validation, 336 radius rows and 504 Q4 rows. A clean checkout of 53f6f7c reproduced 125 CSV/JSON files byte-for-byte, seven PNGs by decoded pixels and all 70 PDF pages by text and raster comparison. Body and references occupy pages 3–11 and the public team fields are blank. [Results](../docs/example-sensitivity.md) · [Verification](../reviews/example-sensitivity-verification.md)
+
+## Missing propagation comparison verification
+
+The completion protocol was frozen at `87748d6`. In a detached checkout of `7150087`, `python main.py --data "<attachment directory>/date"` with the pinned requirements and default 300 draws reproduced 122 CSVs and seven JSON files byte-for-byte. All seven PNGs matched by decoded pixels. The independent numerical review checked every row of the four new tables, including exact Q4 attainment counts and decisions. [Results](../docs/missing-propagation.md) · [Numerical review](../reviews/missing-propagation-verification.md)
+
+A detached checkout of `99dad78` built the anonymous manuscript with two runs of `pdflatex -interaction=nonstopmode -halt-on-error main.tex` from `paper/` and `SOURCE_DATE_EPOCH=1795731780`. The rebuilt and delivered PDF have SHA-256 `0abe1b4f4307790c26454a4b362f3884d108e31c45826862a657542752aba020`. Body and references occupy pages 3–12. Appendices begin on page 13 of 73, with the public team field and author metadata blank. [Manuscript review](../reviews/missing-propagation-paper-review.md) · [PDF](../paper/main.pdf)
