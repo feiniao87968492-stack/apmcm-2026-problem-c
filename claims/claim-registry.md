@@ -114,3 +114,9 @@
 | Directed reply counts and natural played-call-by-context detail | results/first_reply_by_played_call.csv |
 | Strict reply prediction and same-type matching within dates and contexts | results/first_reply_folds.csv, results/first_reply_scores.csv, results/first_reply_matching.csv |
 | Group vocal and approach onset order and lag | results/first_reply_event_order.csv |
+
+| Supported annulus finding | Evidence |
+|---|---|
+| Distance and area averages, losses and rankings | results/annulus_scores.csv, results/annulus_score_gaps.csv |
+| Connected intervals and point-radius area comparison | results/annulus_attainment_grid.csv, results/annulus_intervals.csv, results/annulus_attainment.csv |
+| Sharp area-index completion bounds and ranking | results/annulus_completion_scores.csv, results/annulus_completion_gaps.csv |

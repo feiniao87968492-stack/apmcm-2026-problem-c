@@ -45,3 +45,4 @@ The seven figures in `results/` each have a same-name CSV and JSON metadata file
 - [Group size in playback and Q4](docs/group-size.md)
 - [Vocal counts and contact scenarios](docs/vocal-counts.md)
 - [First vocal replies and group event order](docs/first-reply.md)
+- [Q4 averages and attainment over the supported annulus](docs/spatial-annulus.md)
