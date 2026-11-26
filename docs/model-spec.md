@@ -211,3 +211,9 @@ Reference 11260b2. The study analyzed the first vocal reply (DOI 10.12688/openre
 
 Independently recompute and check the manuscript under the frozen rubric before publishing.
 
+
+## First-reply detail by played call
+
+Reference 2221807. Preliminary data audit found 26, 16 and 34 natural vocal responses to flat, modulated and two-voice playback, with 12, 8 and 4 same-type first replies respectively. These marginal counts were known before freezing the detail.
+
+For natural trials only, cross the played call with recorded context and the three recognized first-reply types. Export all 27 cells using the frozen VR1 eligibility, both denominators and the same 300 date draws and percentile rules as the arm matrix. Sum counts across played calls to reconstruct the natural arm for each context and reply. Sum denominators once per played-call and context cell. Retain the 18-row arm matrix and the frozen prediction, permutation and event-order comparisons. Use a compact played-to-reply count table in the paper and independently verify both denominators, intervals and reconciliation with the arm matrix.
