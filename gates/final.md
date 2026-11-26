@@ -109,3 +109,9 @@ The played-call detail froze at `8de62a4` and ran at `abce327`. Independent reco
 The protocol froze at `a844b4d` and ran at `05bd6e8`. A detached checkout reproduced 146 CSVs and seven JSON files byte-for-byte using the default analysis command and 300 draws. All seven PNGs matched by decoded pixels. Independent recomputation checked all seven new tables, including 7,047 grid counts and 28 connected intervals. [Results](../docs/spatial-annulus.md) · [Numerical review](../reviews/spatial-annulus-verification.md)
 
 A detached checkout of `1018047` reproduced the anonymous PDF byte-for-byte with two passes of `pdflatex -interaction=nonstopmode -halt-on-error main.tex` and `SOURCE_DATE_EPOCH=1795731780`. SHA-256 is `125f0236c896377d214a616beeb849d84ff9a85b075b337cbf3e2044561eed2b`. Body and references occupy pages 3–13 and appendices begin on page 14 of 74. [Manuscript review](../reviews/spatial-annulus-paper-review.md) · [PDF](../paper/main.pdf)
+
+## Context and behavior priority verification
+
+The protocol froze at `a2e82e9` and ran at `094fad4`. A detached checkout reproduced 150 CSVs and seven JSON files byte-for-byte with `python main.py --data "<attachment directory>/date"` and the default 300 draws. Seven PNGs matched by decoded pixels. Independent recomputation verified all four new tables and reproduced the archived clean empirical annulus point scores and intervals within 2.22e-16. [Results](../docs/context-priority.md) · [Numerical review](../reviews/context-priority-verification.md)
+
+A detached checkout of `986443c` reproduced the anonymous PDF byte-for-byte with two runs of `pdflatex -interaction=nonstopmode -halt-on-error main.tex` from `paper/` and `SOURCE_DATE_EPOCH=1795731780`. SHA-256 is `53f6c961c1e19e136e9656d22a524d43b86122dc502db2a6ae29c5d168439536`. Body and references occupy pages 3–13 and appendices begin on page 14 of 74. [Manuscript review](../reviews/context-priority-paper-review.md) · [PDF](../paper/main.pdf)
