@@ -43,12 +43,12 @@ We compare call types with Kruskal--Wallis tests and use Mann--Whitney tests to 
 \AcousticResults
 
 \section{Propagation, signal fidelity and recognition criteria}
-Let $\bar r_{cm}(d)$ be the available-case mean correlation with the one-metre reference for call type $c$, representation $m$ and distance $d$. The representations are the spectrogram, amplitude spectrum, and amplitude envelope. We clip their equal-weight mean to $[0,1]$ at the seven measured distances. For a positive signal gain in $Y=a(d)X+\epsilon$ with independent additive noise,
+Let $\bar r_{cm}(d)$ be the available-case mean correlation with the one-metre reference for call type $c$, representation $m$ and distance $d$. The representations are the spectrogram, amplitude spectrum, and amplitude envelope. Propagation was measured at Brandvlei Dam in December 2021 under calm conditions \cite{fieldstudy}. For each call type, three examples contributed up to $10\times10$ comparisons of reference and distant repetitions per example. We clip their equal-weight mean to $[0,1]$ at the seven measured distances. For a positive signal gain in $Y=a(d)X+\epsilon$ with independent additive noise,
 \[
 \operatorname{Corr}(X,Y)=
 \left[1+\frac{\operatorname{Var}(\epsilon)}{a(d)^2\operatorname{Var}(X)}\right]^{-1/2}.
 \]
-A power law for the variance ratio motivates $F_c(d)=A_c/\sqrt{1+(d/D_c)^g}$. We fit the ceiling $A_c$ and distance scale $D_c$ by call, comparing $g=2$ with a fitted shared exponent. The fitted exponent describes the correlation curves. We hold out each interior distance across all calls and compare predictions with an isotonic fit interpolated in $\log d$. For representation omission, the remaining measures receive equal weight. We compare resampling complete distance rows with sampling hypothetical batches of ten consecutive rows within each file. The acquisition units are unknown, so both intervals condition on a working sampling scheme.
+A power law for the variance ratio motivates $F_c(d)=A_c/\sqrt{1+(d/D_c)^g}$. We fit the ceiling $A_c$ and distance scale $D_c$ by call, comparing $g=2$ with a fitted shared exponent. The fitted exponent describes the correlation curves. We hold out each interior distance across all calls and compare predictions with an isotonic fit interpolated in $\log d$. For representation omission, the remaining measures receive equal weight. We compare resampling complete distance rows with sampling hypothetical batches of ten consecutive rows within each file. The files omit example identifiers. We therefore refit after assuming consecutive 100-row groups, removing one per call type in all 27 combinations. For Q4 each deletion curve is held fixed against the original date-block behavior draws and the archived common reference.
 
 \PropagationResults
 
@@ -65,7 +65,7 @@ The adjusted covariate grid also illustrates variation with context and group si
 
 We model onset conditional on observing the corresponding behavior and report the response probability alongside its conditional time. Conditional modeling distinguishes a stimulus that produces infrequent behavior from one that produces slow behavior among the responders. We fit ridge regression ($\alpha=5$) to log-transformed onset time, $\log(1+t)$, among observed responders. We model Gaussian residuals on the log scale and compute a mixture median across contexts, weighting each context by its empirical frequency times its modeled event probability. For the representative scenarios we use eight birds, the median group size, and distances of 50, 100 and 150 m. We count local trials and onsets in inclusive 25 m windows and flag fewer than five local onsets. The conditional model pools information across distances. Duration and vocal count describe the intensity of behavior after onset. We compare ridge with a training median on observed onset times, and assess multinomial first-onset bins against half-count stimulus frequencies. Both comparisons hold out experiment pairs and, separately, entire dates.
 
-In False Bay, field playbacks took place on 12 days in June 2022 between 07:48 and 13:15 in wind below 10 knots \cite{fieldstudy}. We joined Data02 by date to six local hourly values (08:00--13:00) from ERA5 via Open-Meteo \cite{era5}. Wind at 10 m uses $34.25^\circ$S, $18.50^\circ$E and significant offshore wave height uses $34.50^\circ$S, $18.50^\circ$E. We fit separate slopes for daily paired response differences, repeated the analysis in same-distance pairs, and tested each weather term and its interaction with natural stimulus in strict date-and-track holdouts.
+In False Bay, field playbacks took place on 12 days in June 2022 between 07:48 and 13:15 in wind below 10 knots \cite{fieldstudy}. We joined Data02 by date to six local hourly values (08:00--13:00) from ERA5 via Open-Meteo \cite{era5}. Wind at 10 m uses $34.25^\circ$S, $18.50^\circ$E and significant offshore wave height uses $34.50^\circ$S, $18.50^\circ$E. We fit separate slopes for daily paired response differences, repeated the analysis in same-distance pairs, and tested each weather term and its interaction with natural stimulus in strict date-and-track holdouts. We repeat these checks with nearshore and offshore WAVERYS cells, interpolating the three-hourly heights to the same six local hours \cite{waverys}.
 
 \BehaviorResults
 
@@ -98,6 +98,7 @@ Sparse responses limit precision for behavior combinations and onset times. The 
 \bibitem{archive} \emph{African penguin acoustic and playback study, associated data and supplementary material}. Zenodo record 21376649, \url{https://zenodo.org/records/21376649}, accessed November 26, 2026.
 \bibitem{fieldstudy} Thiebault, A., et al. Contact and recruit: the importance of acoustic communication in the foraging strategy of a flightless seabird. \emph{Open Research Europe}, 2026. \url{https://doi.org/10.12688/openreseurope.24618.1}.
 \bibitem{era5} Copernicus Climate Change Service. ERA5 hourly data on single levels, accessed through Open-Meteo on November 26, 2026. \url{https://doi.org/10.24381/cds.adbb2d47}.
+\bibitem{waverys} Copernicus Marine Service. Global Ocean Waves Reanalysis (WAVERYS), product GLOBAL\_MULTIYEAR\_WAV\_001\_032.
 \end{thebibliography}
 \clearpage
 \appendix
@@ -139,6 +140,7 @@ The commands in the repository README reproduce the figures and tables using the
 \lstinputlisting[caption={Agreement across noise scenarios}]{../noise_agreement.py}
 \lstinputlisting[caption={Strict playback and crossed resampling}]{../strict_playback.py}
 \lstinputlisting[caption={False Bay sea-state sensitivity}]{../sea_state.py}
+\lstinputlisting[caption={WAVERYS and assumed example deletion}]{../example_sensitivity.py}
 \end{document}
 
 

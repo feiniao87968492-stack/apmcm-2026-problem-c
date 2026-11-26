@@ -39,3 +39,5 @@ The seven figures in `results/` each have a same-name CSV and JSON metadata file
 - [Strict playback holdouts and crossed resampling](docs/strict-playback.md)
 
 - [False Bay sea-state sensitivity](docs/false-bay.md)
+
+- [WAVERYS and assumed propagation example deletions](docs/example-sensitivity.md)

@@ -1,0 +1,3 @@
+﻿# Independent recomputation
+
+**PASS.** I reconstructed the daily WAVERYS means as a weighted sum of the 08:00, 11:00 and 14:00 values with weights 2/6, 3/6 and 1/6. A separate polynomial least-squares calculation reproduced the four slopes and intervals. Explicit training-fold scaling and logistic refits reproduced the strict validation scores. I refitted the full curve and all 27 deletion curves using profiled scalar minimizations, evaluated crossings by scalar roots, and reproduced 336 radius rows and 504 Q4 rows including percentile limits and attainment. [Results](../docs/example-sensitivity.md)

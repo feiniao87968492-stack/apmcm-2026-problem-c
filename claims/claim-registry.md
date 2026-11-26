@@ -84,3 +84,8 @@
 |---|---|---|
 | Observed date-level slopes and strict prediction comparisons | results/sea_state_daily.csv, results/sea_state_slopes.csv, results/sea_state_validation.csv | Exploratory comparison across 12 observed dates |
 | Standardized weather contrasts | results/sea_state_standardized.csv, sources/false-bay/README.md | Reanalysis proxies and date-block intervals |
+
+| WAVERYS and propagation finding | Evidence |
+|---|---|
+| WAVERYS daily slopes and strict validation | results/waverys_slopes.csv, results/waverys_validation.csv |
+| Example deletion radii and attainment | results/example_deletion_radii.csv, results/example_deletion_q4_summary.csv |
