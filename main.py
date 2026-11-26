@@ -7,6 +7,7 @@ import behavior_gap
 import context_priority
 import continuous_recovery
 import control_subtraction
+import distance_deletion
 
 import creative_gate
 import creative_inverse
@@ -92,6 +93,8 @@ def main():
                         sampled_parameters, completion_curves, args.output)
     control_subtraction.run(propagation, behavior, date_predictions,
                             parameters, sampled_parameters, args.output)
+    distance_deletion.run(frame, sampled_dates, propagation, behavior, date_predictions,
+                          parameters, sampled_parameters, args.output)
     behavior_ablation.run(frame, sampled_dates, propagation, behavior, date_predictions,
                           parameters, sampled_parameters, args.output)
     recovery_plans = recovery.run(completed_means, missing_counts, propagation["distance"], behavior,
