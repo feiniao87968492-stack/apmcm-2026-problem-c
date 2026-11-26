@@ -25,6 +25,7 @@ import q4
 import q4_decision
 import round2
 import sea_state
+import spatial_annulus
 import strict_playback
 import vocal_counts
 
@@ -76,7 +77,11 @@ def main():
     sea_state.run(frame, args.output, args.seed, args.bootstrap)
     example_sensitivity.waverys(frame, args.output, args.seed, args.bootstrap)
     example_sensitivity.example_deletion(args.data, args.output, propagation, behavior, date_predictions, parameters)
-    missing_propagation.run(args.data, args.output, propagation, behavior, date_predictions)
+    completion_curves = missing_propagation.run(
+        args.data, args.output, propagation, behavior, date_predictions,
+    )
+    spatial_annulus.run(propagation, behavior, date_predictions, parameters,
+                        sampled_parameters, completion_curves, args.output)
     group_size.run(frame, sampled_dates, propagation, behavior, date_predictions, args.output)
     vocal_counts.run(frame, sampled_dates, propagation, behavior, date_predictions, args.output)
     first_reply.run(frame, sampled_dates, args.seed, args.output)
