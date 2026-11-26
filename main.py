@@ -64,7 +64,14 @@ def main():
                           help="Compute Q4 loss boundaries for target distances")
     analyses.add_argument("--q4-matched-noise", action="store_true",
                           help="Compare local and matched uniform Q4 noise")
+    analyses.add_argument("--q4-response-sensitivity", action="store_true",
+                          help="Invert the Q4 response-retention scenario at 6 dB")
     args = parser.parse_args()
+    if args.q4_response_sensitivity:
+        from q4_response_sensitivity import write
+
+        write(args.data, args.output, Path(__file__).resolve().parent / "results")
+        return
     if args.q4_matched_noise:
         from q4_matched_noise import write
 

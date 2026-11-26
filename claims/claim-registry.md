@@ -198,3 +198,7 @@ The five radii, grid counts, pairwise differences and retained playback ranges a
 ## Q4 local and matched uniform noise
 
 [Target counts and limits](../results/q4_matched_noise_targets.csv) and [grid radii](../results/q4_matched_noise_radii.csv) support the hypothetical net-prefix noise comparison.
+
+## Q4 response sensitivity at 6 dB
+
+[Checkpoint counts, fitted limits and prefix contrasts](../results/q4_response_sensitivity.csv) support the 100 m response sensitivity analysis.
