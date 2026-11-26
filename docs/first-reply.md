@@ -11,7 +11,7 @@ The protocol froze at `19ae12e` and ran at `2221807`. We use the first reply amo
 | Control | Commuting | 0 | 1 | 0 | 1 | 65 |
 | Control | Searching | 0 | 2 | 0 | 2 | 38 |
 
-For example, modulated first replies while searching account for 56.3% of natural vocal responses (95% date interval 36.0–72.7%) and occur in 47.4% of all corresponding natural trials (29.0–64.5%). The control cells describe five responses across five dates. Conditional shares use 212–263 draws with nonzero response denominators in the control cells. [Full matrix with both denominators and intervals](../results/first_reply_matrix.csv)
+For example, modulated first replies while searching account for 56.3% of natural vocal responses (95% date interval 36.0–72.7%) and occur in 47.4% of all corresponding natural trials (29.0–64.5%). The control cells describe five responses across four dates. Conditional shares use 212–263 draws with nonzero response denominators in the control cells. [Full matrix with both denominators and intervals](../results/first_reply_matrix.csv)
 
 | Strict natural-responder prediction | Cross-entropy | Summed Brier |
 |---|---:|---:|
