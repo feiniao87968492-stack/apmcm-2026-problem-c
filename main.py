@@ -8,6 +8,7 @@ import creative_q1
 import creative_q3
 import example_sensitivity
 import final_analysis
+import first_reply
 import group_size
 import matched_sensitivity
 import missing_propagation
@@ -78,6 +79,7 @@ def main():
     missing_propagation.run(args.data, args.output, propagation, behavior, date_predictions)
     group_size.run(frame, sampled_dates, propagation, behavior, date_predictions, args.output)
     vocal_counts.run(frame, sampled_dates, propagation, behavior, date_predictions, args.output)
+    first_reply.run(frame, sampled_dates, args.seed, args.output)
     print(f"Results written to {args.output.resolve()}")
 
 
