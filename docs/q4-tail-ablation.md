@@ -38,12 +38,30 @@ The full-data fits, paired differences from A and 95% intervals are in the same 
 
 Each feasible drift maximum is approximate and set by the 80% draw rule. The exact reported boundary has 3,840 qualifying draws, decreasing to 3,839 immediately above it. B starts below the rule even though its zero-drift point margin is positive. E holds each arm at its last fitted probability by construction. Its greater tolerance quantifies the effect of that assumption on the decision. [Nominal tail changes and intervals](../results/q4_tail_ablation_tail.csv) · [Drift limits, odds factors and boundary counts](../results/q4_tail_ablation_drift.csv)
 
+## Scoring by actual playback distance
+
+The 26 tail-test pairs contain 33 trials at 125 m or farther across eight dates and 19 shorter partners across seven dates. Each band has 4,800 valid whole-date draws. The table gives trial-weighted changes from A with paired 95% percentile intervals.
+
+| Actual distance | Model | Mask log-loss change | Brier change |
+|---|---|---:|---:|
+| At least 125 m | B | +0.11733 [−0.10797, +0.36759] | +0.02028 [−0.01101, +0.04272] |
+| At least 125 m | C | +0.09431 [−0.10837, +0.31972] | +0.01453 [−0.00886, +0.03834] |
+| At least 125 m | E | −0.06243 [−0.28364, +0.20914] | −0.03427 [−0.06729, +0.00871] |
+| Below 125 m | B | +0.19276 [+0.05114, +0.42157] | +0.00616 [−0.00939, +0.02935] |
+| Below 125 m | C | +0.23250 [+0.05364, +0.43670] | +0.02431 [+0.00415, +0.04272] |
+| Below 125 m | E | +0.23558 [+0.05785, +0.36194] | +0.01497 [−0.00698, +0.04078] |
+
+E's Brier point gain is larger on actual long trials, and its paired interval includes zero. Its mask log loss also improves in point estimate there, while the shorter partners drive the increase in pooled mask loss. Weighting the split deltas by 33/52 and 19/52 reproduces the released pooled deltas to 1e-12. D shares A's marginal predictions. The original adoption rule retains A. [Absolute scores, deltas and reconciliation](../results/q4_tail_distance_scores.csv)
+
+From 125 to 175 m inclusive, two-voice natural playback contributes two trials across two dates with two responses. Control contributes one trial with zero responses. All three trials were at 150 m. This limits what the pooled long-trial scores establish about two-voice playback at that distance. [Coverage by arm](../results/q4_tail_distance_coverage.csv)
+
 ## Reproduction
 
 Run from a clean checkout with the pinned dependencies and the supplied attachment CSVs.
 
 ```sh
 python main.py --data "/path/to/C-attachments/date" --q4-tail-ablation
+python q4_tail_distance.py --data "/path/to/C-attachments/date"
 ```
 
 The ablation uses the archived point summaries in the checkout and regenerates the acoustic and date streams from the attachments.

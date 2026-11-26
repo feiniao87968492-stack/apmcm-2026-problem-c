@@ -156,6 +156,7 @@
 | Adverse extrapolation drift at 150 m, probability shifts and the binding draw criterion | results/q4_extrapolation_drift.csv |
 | Five-model ordinary and tail validation, overlap, failure counts and adoption | results/q4_tail_ablation_folds.csv, results/q4_tail_ablation_validation.csv, results/q4_tail_ablation_adoption.csv |
 | Five-model comparison of Q4 margins, tail changes and limits under adverse drift | results/q4_tail_ablation_margins.csv, results/q4_tail_ablation_tail.csv, results/q4_tail_ablation_drift.csv |
+| Held-out trial scores by actual playback distance, pooled reconciliation and two-voice coverage | results/q4_tail_distance_scores.csv, results/q4_tail_distance_coverage.csv |
 
 | Fisher planning for the three Q4 margins | Evidence |
 |---|---|

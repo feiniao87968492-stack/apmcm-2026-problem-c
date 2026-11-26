@@ -139,6 +139,18 @@ class Design:
         return np.column_stack((np.ones(len(x)), scale.transform(x[:, self.nondistance]), slopes))
 
 
+def validation_folds(design, tail_only):
+    for date in np.unique(design.dates):
+        held = design.dates == date
+        tracks = np.unique(design.tracks[held])
+        purged = ~held & np.isin(design.tracks, tracks)
+        train = ~held & ~purged
+        if tail_only:
+            train &= ~design.tail
+        test = held & design.tail if tail_only else held
+        yield date, held, tracks, purged, train, test
+
+
 def validate(design, sampled_dates):
     """Compute pooled held-out scores and paired whole-date intervals."""
     dates = np.unique(design.dates)
@@ -148,14 +160,8 @@ def validate(design, sampled_dates):
         counts = np.zeros((len(MODELS), len(dates)), dtype=int)
         failed = np.zeros_like(counts, dtype=bool)
         empty = np.zeros(len(dates), dtype=bool)
-        for fold, date in enumerate(dates):
-            held = design.dates == date
-            tracks = np.unique(design.tracks[held])
-            purged = ~held & np.isin(design.tracks, tracks)
-            train = ~held & ~purged
-            if assessment == "tail":
-                train &= ~design.tail
-            test = held if assessment == "ordinary" else held & design.tail
+        folds_for_assessment = validation_folds(design, tail_only=assessment == "tail")
+        for fold, (date, held, tracks, purged, train, test) in enumerate(folds_for_assessment):
             rows = np.flatnonzero(np.repeat(train, 2))
             test_rows = np.flatnonzero(np.repeat(test, 2))
             test_y = design.y[test_rows]
