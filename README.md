@@ -49,3 +49,4 @@ The seven figures in `results/` each have a same-name CSV and JSON metadata file
 - [Q4 ranking by context and behavior priority](docs/context-priority.md)
 - [Historical correlation recovery priorities](docs/recovery-priority.md)
 - [Q3 response-gap decomposition](docs/behavior-gap.md)
+- [Q4 control subtraction and cutoff sensitivity](docs/control-subtraction.md)

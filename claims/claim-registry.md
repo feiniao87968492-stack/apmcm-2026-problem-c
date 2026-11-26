@@ -137,3 +137,8 @@
 |---|---|
 | Response frequency and responder composition in all and matched pairs | results/behavior_gap_raw.csv |
 | Standardized decomposition and local support by call and distance | results/behavior_gap_standardized.csv |
+
+| Q4 control subtraction finding | Evidence |
+|---|---|
+| Gross and net area means and paired rankings | results/control_subtraction_area.csv, results/control_subtraction_area_gaps.csv |
+| Gross and net bounded radii and cutoff decisions | results/control_subtraction_radii.csv, results/control_subtraction_points.csv, results/control_subtraction_decisions.csv |

@@ -153,6 +153,8 @@ Using the isotonic missing-score bounds, the clean area averages range from 0.12
 
 For hypothetical historical recovery, an equal-cost unit covers one call type and distance across representations. The clean two-voice minus modulated area-gap width is 0.457. Allowing recovered clipped knots to range continuously, two-voice at 128 m reduces that width by at least 41.45\%, and adding modulated at 128 m gives 73.51\%. Both match the three-value minima. Each exceeds all competing three-value upper bounds for its budget. Isotonic block-mean equalities give the breakpoints of the affine widths, and the two-call widths add. At 20\% coupled loss, the same plans narrow the gap by at least 41.48\% and 73.43\%.
 
+We also subtract the fixed control probability before multiplying by attenuated fidelity. For positive net scores, a 20\% loss scales the clean score by 0.80 with acoustic loss alone and by 0.64 with coupling. The clean area means for flat, modulated and two-voice fall from 0.259, 0.381 and 0.435 to 0.210, 0.328 and 0.370. All three scenarios preserve this point order. Under coupling, the number of fixed-distance settings meeting the 80\% draw rule is two with the gross score, zero with the net score at the original cutoff of 0.288, and three with the net score at its own clean isotonic reference of 0.194. These changes reflect both the descriptive contrast and its reference.
+
 \par\begin{center}\begin{minipage}{.96\linewidth}\centering\includegraphics[width=\linewidth]{q4_loss_comparison.png}\\{\small Figure 4. The common cutoff and two response assumptions at the same 20\% acoustic loss. Shading shows clean conditional intervals.}\end{minipage}\end{center}}
 
 \newcommand{\TVHundred}{2.20}
