@@ -19,5 +19,6 @@ The six figures in `results/` each have a same-name CSV and JSON metadata file. 
 - [Round-one comparisons and model decisions](docs/round1-results.md)
 - [Round-two ablations and paired intervals](docs/round2-results.md)
 - [Final behavior comparisons and recording-group influence](docs/final-followup-results.md)
+- [Creative modeling comparisons and inverse loss limits](docs/creative-results.md)
 - [Workflow and milestones](workflow.md)
 - [Verification and evidence](gates/final.md)
