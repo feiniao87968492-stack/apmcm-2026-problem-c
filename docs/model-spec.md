@@ -1,4 +1,4 @@
-﻿# Formal analysis specification
+# Formal analysis specification
 
 Frozen before the integrated production run. Earlier Q1–Q3 component smoke runs used the real data, so this is a versioned analysis freeze following feasibility checks. The six-feature decision follows the attachment's missingness pattern. The analysis uses the approved baseline and evaluates the listed sensitivities without selecting them by their results.
 
@@ -322,7 +322,7 @@ Evaluate uniform, the archived constrained Fisher allocation, greedy at the midp
 
 ## Q4 extrapolation drift freeze
 
-Reference 3f8cca2. The released zero-drift count is 4,002 of 4,800. No new drift calculations were run before freezing. Evaluate the clean two-voice net margin at 150 m after union deletion relative to the two-voice full-data clean cutoff. Reproduce the published 4,800 paired draws at acoustic seed 20261130 and whole-date seed 20261201 in their original order, with distances 20, 100 and 150 m. Retain the released intact-pair filters, multinomial refits, original eight-bird empirical context mix, shared-exponent fidelity and each full-data clean 20 m isotonic own-net cutoff, including in the point fit.
+Reference 3f8cca2. The released zero-drift count is 4,002 of 4,800. No new drift calculations were run before freezing. Evaluate the clean two-voice net margin at 150 m after union deletion relative to the released full-data clean own-net cutoff. The cutoff is half the equal-call mean of the 20 m net index and is shared across calls. Own-net refers to the reference scale of the net index. Reproduce the published 4,800 paired draws at acoustic seed 20261130 and whole-date seed 20261201 in their original order, with distances 20, 100 and 150 m. Retain the released intact-pair filters, multinomial refits, original eight-bird empirical context mix, shared-exponent fidelity and each full-data clean 20 m isotonic own-net cutoff, including in the point fit.
 
 Use the retained two-voice arm maxima of 100 m for natural and 120 m for control as fixed anchors for point and draw predictions. Apply additive drift to the logit of each already context-standardized probability. Beyond the anchor the maximum absolute drift is lambda times log2(distance / anchor) and at or below it the drift is zero. Evaluate the adverse signs, lower natural odds and higher control odds, for natural alone, control alone and both, and include zero drift as the baseline. This bounds departures from the fitted extrapolation on the log-odds scale.
 
