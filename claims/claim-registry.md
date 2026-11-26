@@ -68,3 +68,8 @@
 |---|---|---|
 | Matched uniform and local attenuation | results/noise_q4_losses.csv, results/noise_q4_points.csv, results/noise_q4_radii.csv | Hypothetical variance changes, fixed isotonic reference |
 | Expected count bounds and assumptions | results/noise_q4_responders.csv | Eight-bird standardized predictions |
+
+| Final release finding | Supporting artifact | Scope |
+|---|---|---|
+| Figure 2 adopted curve and threshold crossings | results/physical_q2_curves.csv, results/physical_q2_curves.meta.json, results/physical_q2_radii.csv | Physical fit, archived isotonic comparison and conditional acoustic intervals |
+| Q4 agreement across modeled variants | results/noise_q4_agreement.csv, results/noise_q4_agreement_by_factor.csv, results/noise_q4_points.csv | 80% attainment within each variant and conditional protection implications |

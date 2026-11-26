@@ -11,7 +11,7 @@ python -m pip install -r requirements.txt
 python main.py --data "/path/to/C-attachments"
 ```
 
-The six figures in `results/` each have a same-name CSV and JSON metadata file. To compile the English paper, run `pdflatex -halt-on-error main.tex` twice from `paper/`. Set the team number locally by defining `\TeamNumber` in `paper/team-local.tex` when preparing a team copy.
+The seven figures in `results/` each have a same-name CSV and JSON metadata file. To compile the English paper, run `pdflatex -halt-on-error main.tex` twice from `paper/`. Set the team number locally by defining `\TeamNumber` in `paper/team-local.tex` when preparing a team copy.
 
 - [English paper](paper/main.pdf)
 - [Frozen analysis assumptions and rationale](docs/model-spec.md)
