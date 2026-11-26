@@ -20,6 +20,7 @@ import q3
 import q4
 import q4_decision
 import round2
+import sea_state
 import strict_playback
 
 
@@ -67,6 +68,7 @@ def main():
     onset_analysis.run(args.data, frame, sampled_dates, args.output, args.seed, args.bootstrap)
     noise_agreement.run(args.output)
     strict_playback.run(frame, propagation, behavior, date_predictions, args.output, args.seed, args.bootstrap)
+    sea_state.run(frame, args.output, args.seed, args.bootstrap)
     print(f"Results written to {args.output.resolve()}")
 
 
