@@ -51,7 +51,7 @@ def summarize(rows):
         yield result
 
 
-def run(data, output):
+def paired_responses(data):
     frame = load_playbacks(data)
     if not frame.ResponseYesNo.isin((0, 1)).all():
         raise ValueError("Expected binary response outcomes")
@@ -59,8 +59,12 @@ def run(data, output):
                          values=["Distance", "Npenguins", "ResponseYesNo"]).sort_index()
     matched = fields.Distance.call.eq(fields.Distance.control) & fields.Npenguins.call.eq(fields.Npenguins.control)
     pairs = fields.ResponseYesNo.astype(int)
+    return (("matched", pairs.loc[matched]), ("all", pairs))
+
+
+def run(data, output):
     bounds, summary = [], []
-    for name, sample in (("matched", pairs.loc[matched]), ("all", pairs)):
+    for name, sample in paired_responses(data):
         rows = list(endpoints(sample, name))
         bounds.extend(rows)
         summary.extend(summarize(rows))

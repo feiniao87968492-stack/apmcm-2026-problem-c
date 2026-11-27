@@ -78,7 +78,14 @@ def main():
                           help="Evaluate ideal manual review in the frozen Q4 scenario")
     analyses.add_argument("--q3-first-playback", action="store_true",
                           help="Bound Q3 first-playback response differences")
+    analyses.add_argument("--q3-carryover", action="store_true",
+                          help="Bound Q3 contrasts under hypothetical playback carryover")
     args = parser.parse_args()
+    if args.q3_carryover:
+        from q3_carryover import run
+
+        run(args.data, args.output)
+        return
     if args.q3_first_playback:
         from q3_first_playback import run
 
