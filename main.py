@@ -88,7 +88,14 @@ def main():
                           help="Test cost-sensitive Q1-to-Q4 monitoring decisions")
     analyses.add_argument("--q1-q4-prevalence", action="store_true",
                           help="Benchmark archived monitoring rules against training prevalence")
+    analyses.add_argument("--q4-score-review", action="store_true",
+                          help="Compare score-guided Q4 manual review queues")
     args = parser.parse_args()
+    if args.q4_score_review:
+        from q4_score_review import write
+
+        write(args.output, Path(__file__).resolve().parent / "results")
+        return
     if args.q1_q4_prevalence:
         from q1_q4_prevalence import write
 
