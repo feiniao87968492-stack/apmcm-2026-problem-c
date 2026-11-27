@@ -1,7 +1,6 @@
 {
   "data": "core_figure1.csv",
   "model": "physical_balanced",
-  "units": "held-out recordings",
-  "rows": "recorded class",
-  "columns": "predicted class"
+  "distribution": "Observed medians and quartiles on a common scale within each feature",
+  "confusion": "Counts of held-out recordings by recorded and predicted class"
 }
