@@ -325,3 +325,9 @@ Two independent Git archives of fed6993 produced identical PDFs after two pdflat
 ## Cost-sensitive Q1-to-Q4 monitoring verification
 
 The protocol froze at a0abae4 and ran at 715934a. The main entry point reproduced all four CSVs byte-for-byte from a Git archive, and an independent refit verified the held-out probabilities and decisions. No probability model met the frozen primary improvement criterion. [Results and reproduction command](../docs/q1-q4-cost.md) · [Independent verification](../reviews/q1-q4-cost-verification.md)
+
+## Q1-to-Q4 monitoring without acoustic features verification
+
+The protocol froze at 7f8568a and the comparison ran at 8ba6707. The main entry point reproduced all four CSVs byte-for-byte from a Git archive. The independent numerical review verified the ten training prevalences, 48 decisions, 30 paired contrasts and eight probability score rows. No acoustic rule met the frozen improvement criterion against training prevalence. [Results and reproduction](../docs/q1-q4-prevalence.md) · [Independent numerical review](../reviews/q1-q4-prevalence-verification.md)
+
+Two independent archive builds of manuscript source 46f183c produced the same PDF after two pdflatex passes with SOURCE_DATE_EPOCH=1795731780. Its SHA-256 is 72ca2b42e5ab69d0ffe08051250a94ce4ade42a4bd300577e71de9592a08c919. Body and references occupy pages 3–19 of 167. Team and author fields are blank. [Independent manuscript review](../reviews/q1-q4-prevalence-paper-review.md) · [PDF](../paper/main.pdf)
