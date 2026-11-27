@@ -8,7 +8,8 @@ import q2
 import q3
 from control_subtraction import reference
 from distance_deletion import pair_filters
-from q4_envelope_attainment import DRAWS, REQUIRED
+from distance_deletion_mc import ACOUSTIC_SEED, DATE_SEED
+from q4_envelope_attainment import DRAWS, MODELS, REQUIRED
 from q4_intermittent_noise import EXCESS_POWER, DISTANCES, LEVELS
 from q4_shape_propagation import acoustic_fidelities, behavior_probabilities
 
@@ -87,18 +88,23 @@ def coverage(frame, eligible, model):
                            observed_min_m=part.Distance.min(), observed_max_m=part.Distance.max())
 
 
-def prefix_indicators(data, archive):
+def prefix_indicators(data, archive=None, *, acoustic_seed=ACOUSTIC_SEED,
+                      date_seed=DATE_SEED, models=MODELS):
     weights = np.array(WEIGHTS, dtype=float)
-    curves, shared = acoustic_fidelities(data, distances=DISTANCES, include_shared=True)
+    curves, shared = acoustic_fidelities(data, distances=DISTANCES, include_shared=True,
+                                        seed=acoustic_seed)
     tv = q2.CALLS.index("tv")
     _, scale, exponent = shared[1:, tv].T
     u = (DISTANCES / scale[:, None])**exponent[:, None]
     squared_ratio = (1 + u) / (1 + (1 + EXCESS_POWER)*u)
     weakest = np.minimum.reduce([curve[1:, tv] for curve in curves.values()])
-    prior = pd.read_csv(archive / "q4_intermittent_noise_checks.csv").query(
-        "rule == 'state_indicators' and f in [0, 1]"
-    ).set_index(["model", "f"]).count_or_expected
-    for model, probabilities in behavior_probabilities(data, distances=DISTANCES, context_specific=True):
+    if archive is not None:
+        prior = pd.read_csv(archive / "q4_intermittent_noise_checks.csv").query(
+            "rule == 'state_indicators' and f in [0, 1]"
+        ).set_index(["model", "f"]).count_or_expected
+    for model, probabilities in behavior_probabilities(
+        data, distances=DISTANCES, context_specific=True, seed=date_seed, models=models,
+    ):
         standardized = probabilities @ weights
         if model == "full":
             cutoff = reference(curves["isotonic"], standardized[:, 0] - standardized[:, 1])[1:, None]
@@ -107,7 +113,8 @@ def prefix_indicators(data, archive):
         old = pass_indicators(
             weakest * (standardized[1:, 0, tv] - standardized[1:, 1, tv]), cutoff, squared_ratio,
         )
-        assert tuple(old.sum(axis=0)) == tuple(prior.loc[model, f] for f in (0., 1.))
+        if archive is not None:
+            assert tuple(old.sum(axis=0)) == tuple(prior.loc[model, f] for f in (0., 1.))
         states = np.stack([pass_indicators(weakest * response, cutoff, squared_ratio)
                            for response in excess.transpose(2, 0, 1)], axis=1)
         yield model, states, old

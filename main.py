@@ -100,7 +100,14 @@ def main():
                           help="Bound context-dependent Q4 intermittent exposure")
     analyses.add_argument("--q4-context-mc", action="store_true",
                           help="Audit Monte Carlo precision of the bounded context extrema")
+    analyses.add_argument("--q4-context-followup", action="store_true",
+                          help="Run the fixed 38,400-draw full-fit context precision follow-up")
     args = parser.parse_args()
+    if args.q4_context_followup:
+        from q4_context_followup import write
+
+        write(args.data, args.output, Path(__file__).resolve().parent / "results")
+        return
     if args.q4_context_mc:
         from q4_context_mc import write
 

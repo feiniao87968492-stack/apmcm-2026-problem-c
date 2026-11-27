@@ -14,9 +14,9 @@ from q2_shape_rank import fit_all
 from q4_envelope_attainment import DISTANCES, DRAWS, MODELS, REQUIRED
 
 
-def acoustic_fidelities(data, distances=DISTANCES, *, include_shared=False):
+def acoustic_fidelities(data, distances=DISTANCES, *, include_shared=False, seed=ACOUSTIC_SEED):
     tables = q2.load_tables(data)
-    rng = np.random.default_rng(ACOUSTIC_SEED)
+    rng = np.random.default_rng(seed)
     samples = []
     for call in q2.CALLS:
         values = tables[call]
@@ -34,13 +34,14 @@ def acoustic_fidelities(data, distances=DISTANCES, *, include_shared=False):
     return (curves, np.stack(shared_parameters)) if include_shared else curves
 
 
-def behavior_probabilities(data, distances=DISTANCES, *, context_specific=False):
+def behavior_probabilities(data, distances=DISTANCES, *, context_specific=False,
+                           seed=DATE_SEED, models=MODELS):
     frame = q3.load_playbacks(data)
     weights = frame.loc[frame.Type.eq("call"), "Context"].value_counts(normalize=True).sort_index()
     n_dates = frame.Date.nunique()
-    dates = np.random.default_rng(DATE_SEED).integers(n_dates, size=(DRAWS, n_dates))
+    dates = np.random.default_rng(seed).integers(n_dates, size=(DRAWS, n_dates))
     filters, _ = pair_filters(frame)
-    for model in MODELS:
+    for model in models:
         point, draws = refit(frame, filters[model], dates, weights, distances=distances,
                              context_specific=context_specific)
         yield model, np.concatenate((point[None], draws))
