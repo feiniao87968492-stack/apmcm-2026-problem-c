@@ -254,3 +254,7 @@ The five radii, grid counts, pairwise differences and retained playback ranges a
 ## Q4 score-guided manual review
 
 [Expected review yields and paired contrasts](../docs/q4-score-review.md) support the comparison under fixed scores, scenario labels and ideal confirmation.
+
+## Q2 forward-distance validation
+
+[Prediction errors, conditional paired intervals and representation support](../docs/q2-forward.md) support predictions using only shorter measured distances.

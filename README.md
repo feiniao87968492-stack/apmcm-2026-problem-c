@@ -93,3 +93,5 @@ The seven figures in `results/` each have a same-name CSV and JSON metadata file
 - [Q1-to-Q4 monitoring without acoustic features](docs/q1-q4-prevalence.md)
 
 - [Score-guided manual review for Q4](docs/q4-score-review.md)
+
+- [Q2 forward-distance validation](docs/q2-forward.md)
