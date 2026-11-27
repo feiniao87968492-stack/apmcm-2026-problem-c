@@ -18,9 +18,9 @@ WEIGHTS = tuple(Fraction(n, 139) for n in (36, 65, 38))
 RULES = ("uniform", "minimum", "maximum")
 
 
-def pass_counts(score, cutoff, squared_ratio):
+def pass_indicators(score, cutoff, squared_ratio):
     noisy = score * np.where(score > 0, squared_ratio, np.sqrt(squared_ratio))
-    return tuple(int((state >= cutoff).all(axis=1).sum()) for state in (score, noisy))
+    return np.column_stack([(state >= cutoff).all(axis=1) for state in (score, noisy)])
 
 
 def allocate(fraction, rule, losses):
@@ -87,12 +87,8 @@ def coverage(frame, eligible, model):
                            observed_min_m=part.Distance.min(), observed_max_m=part.Distance.max())
 
 
-def write(data, output, archive):
-    frame = q3.load_playbacks(data)
-    counts_by_context = frame.loc[frame.Type.eq("call"), "Context"].value_counts().reindex(CONTEXTS)
-    assert tuple(counts_by_context) == (36, 65, 38)
+def prefix_indicators(data, archive):
     weights = np.array(WEIGHTS, dtype=float)
-    filters, _ = pair_filters(frame)
     curves, shared = acoustic_fidelities(data, distances=DISTANCES, include_shared=True)
     tv = q2.CALLS.index("tv")
     _, scale, exponent = shared[1:, tv].T
@@ -102,18 +98,30 @@ def write(data, output, archive):
     prior = pd.read_csv(archive / "q4_intermittent_noise_checks.csv").query(
         "rule == 'state_indicators' and f in [0, 1]"
     ).set_index(["model", "f"]).count_or_expected
-    counts, checks, limits, support = [], [], [], []
     for model, probabilities in behavior_probabilities(data, distances=DISTANCES, context_specific=True):
         standardized = probabilities @ weights
         if model == "full":
             cutoff = reference(curves["isotonic"], standardized[:, 0] - standardized[:, 1])[1:, None]
             assert np.all(np.isfinite(cutoff) & (cutoff > 0))
         excess = probabilities[1:, 0, tv] - probabilities[1:, 1, tv]
-        old = pass_counts(weakest * (standardized[1:, 0, tv] - standardized[1:, 1, tv]),
-                          cutoff, squared_ratio)
-        assert old == tuple(prior.loc[model, f] for f in (0., 1.))
-        state = [pass_counts(weakest * excess[:, :, i], cutoff, squared_ratio)
-                 for i in range(len(CONTEXTS))]
+        old = pass_indicators(
+            weakest * (standardized[1:, 0, tv] - standardized[1:, 1, tv]), cutoff, squared_ratio,
+        )
+        assert tuple(old.sum(axis=0)) == tuple(prior.loc[model, f] for f in (0., 1.))
+        states = np.stack([pass_indicators(weakest * response, cutoff, squared_ratio)
+                           for response in excess.transpose(2, 0, 1)], axis=1)
+        yield model, states, old
+
+
+def write(data, output, archive):
+    frame = q3.load_playbacks(data)
+    counts_by_context = frame.loc[frame.Type.eq("call"), "Context"].value_counts().reindex(CONTEXTS)
+    assert tuple(counts_by_context) == (36, 65, 38)
+    filters, _ = pair_filters(frame)
+    counts, checks, limits, support = [], [], [], []
+    for model, states, standardized in prefix_indicators(data, archive):
+        state = [tuple(map(int, pair)) for pair in states.sum(axis=0)]
+        old = tuple(map(int, standardized.sum(axis=0)))
         for context, weight, (clean, noisy) in zip(CONTEXTS, WEIGHTS, state):
             counts.append(dict(model=model, context=context, weight=float(weight),
                                clean_count=clean, noisy_count=noisy, A0=clean/DRAWS, A6=noisy/DRAWS))

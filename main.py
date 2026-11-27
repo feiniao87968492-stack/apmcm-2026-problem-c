@@ -98,7 +98,14 @@ def main():
                           help="Compare intermittent and continuous Q4 noise")
     analyses.add_argument("--q4-context-exposure", action="store_true",
                           help="Bound context-dependent Q4 intermittent exposure")
+    analyses.add_argument("--q4-context-mc", action="store_true",
+                          help="Audit Monte Carlo precision of the bounded context extrema")
     args = parser.parse_args()
+    if args.q4_context_mc:
+        from q4_context_mc import write
+
+        write(args.data, args.output, Path(__file__).resolve().parent / "results")
+        return
     if args.q4_context_exposure:
         from q4_context_exposure import write
 
