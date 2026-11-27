@@ -162,3 +162,25 @@ output = Path("generated")
 output.mkdir(exist_ok=True)
 summarize(pd.read_csv(archive / "q4_context_followup_profiles.csv"), archive, output)
 ```
+
+
+## Sensitivity to behavioral loss under +6 dB
+
+At 100 m and 50% total noisy exposure, each context remains within 30–70%. The noisy score multiplies the positive clean net score by acoustic retention `r` and behavioral retention `r^lambda`. Nonpositive excess keeps its sign and receives only acoustic attenuation. Each critical exponent is the smallest node-wise exponent at which the draw still passes the four-curve prefix. The weighted pass fractions below use the 4,800 archived paired draws for each fit. [Frozen specification](model-spec.md#q4-bounded-context-behavioral-noise-sensitivity-freeze)
+
+| Behavioral exponent | Full minimum / uniform / maximum | Union-deleted minimum / uniform / maximum |
+|---:|---:|---:|
+| 0 | 93.02% / 93.71% / 94.41% | 86.53% / 87.77% / 89.01% |
+| 0.5 | 88.06% / 89.34% / 90.62% | 79.12% / 81.40% / 83.68% |
+| 1 | 80.34% / 82.08% / 83.81% | 70.81% / 73.79% / 76.78% |
+| 1.5 | 70.20% / 72.21% / 74.22% | 62.08% / 64.44% / 66.80% |
+| 2 | 60.40% / 61.68% / 62.95% | 55.13% / 56.27% / 57.41% |
+
+| Fit | Largest exponent for all allocations to pass | Largest exponent for any allocation to pass |
+|---|---:|---:|
+| Full | 1.018319 | 1.222731 |
+| Union-deleted | 0.444471 | 0.779165 |
+
+All four limits occur at interior breakpoints. At each exact breakpoint the relevant bound meets the inclusive 80% rule, and the right limit falls below it. The CSV records the attaining vertex, shares and right-limit value. At exponent 1 both fits reproduce the archived indicators and bounds. The full-fit point minimum of 80.343945% sits near the line. The original projected simulation interval was 79.707497%–80.980393%, and the independent precision follow-up gave 79.980878%–80.439857%. Both leave the full-fit all-pass decision at exponent 1 unresolved. The crossing estimates condition on the fixed draws. The behavioral exponents describe hypothetical loss, with field exposure and response calibration outside the comparison. [Checkpoint counts and shares](../results/q4_context_lambda_checks.csv) · [Breakpoint locations and attaining allocations](../results/q4_context_lambda_crossings.csv) · [Independent verification](../reviews/q4-context-lambda-verification.md)
+
+    python main.py --data "<attachment directory>/date" --output generated --q4-context-lambda
