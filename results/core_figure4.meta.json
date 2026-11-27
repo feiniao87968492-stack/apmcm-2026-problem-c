@@ -1,0 +1,14 @@
+{
+  "data": "core_figure4.csv",
+  "x": "distance_m",
+  "y": "score",
+  "groups": [
+    "call",
+    "scenario"
+  ],
+  "thresholds": [
+    0.28759819888730354,
+    0.5
+  ],
+  "pointwise_interval": null
+}

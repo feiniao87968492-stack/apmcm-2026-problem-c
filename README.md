@@ -4,16 +4,17 @@ Reproducible analysis of acoustic communication and playback responses in Africa
 
 ## Reproduce
 
-Use Python 3.10 in a virtual environment and the contest attachment folder containing Data01 through Data11. The default run uses 300 draws with the seeds recorded in the specification.
+Use Python 3.10 in a virtual environment and the contest attachment folder containing Data01 through Data11. The default run reproduces the core model comparisons, the selected Q2-to-Q4 route and Figures 2?4 with the frozen seeds. The same route is available with `--core`. Use `--archived` for the previous full pipeline and its original outputs, or `--help` for named analyses.
 
 ```sh
 python -m pip install -r requirements.txt
 python main.py --data "/path/to/C-attachments"
 ```
 
-The seven figures in `results/` each have a same-name CSV and JSON metadata file. To compile the English paper, run `pdflatex -halt-on-error main.tex` twice from `paper/`. Set the team number locally by defining `\TeamNumber` in `paper/team-local.tex` when preparing a team copy.
+Both the core and archived figures in `results/` have corresponding CSV and metadata files. To compile the English paper, run `pdflatex -halt-on-error main.tex` twice from `paper/`. Set the team number locally by defining `\TeamNumber` in `paper/team-local.tex` when preparing a team copy.
 
 - [English paper](paper/main.pdf)
+- [Core Q1](docs/core-q1.md) ? [Core Q2](docs/core-q2.md) ? [Core Q3](docs/core-q3.md) ? [Core Q4 and reproduction](docs/core-q4.md)
 - [Frozen analysis assumptions and rationale](docs/model-spec.md)
 - [Data audit](docs/data-audit.md)
 - [Round-one comparisons and model decisions](docs/round1-results.md)

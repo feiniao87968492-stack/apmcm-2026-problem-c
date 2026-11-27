@@ -1,0 +1,14 @@
+{
+  "data": "core_figure3.csv",
+  "x": "window_s",
+  "y": "probability",
+  "display_rows": {
+    "distance_m": 100,
+    "call": "tv"
+  },
+  "estimand": "Stimulus-level timing pooled across calls and distances",
+  "groups": [
+    "endpoint",
+    "stimulus"
+  ]
+}
