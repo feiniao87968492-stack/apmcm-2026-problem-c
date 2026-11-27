@@ -91,3 +91,5 @@ The seven figures in `results/` each have a same-name CSV and JSON metadata file
 - [Cost-sensitive Q1-to-Q4 monitoring](docs/q1-q4-cost.md)
 
 - [Q1-to-Q4 monitoring without acoustic features](docs/q1-q4-prevalence.md)
+
+- [Score-guided manual review for Q4](docs/q4-score-review.md)

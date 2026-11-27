@@ -250,3 +250,7 @@ The five radii, grid counts, pairwise differences and retained playback ranges a
 ## Monitoring without acoustic features
 
 [Fold prevalence, fixed-action references and paired costs](../docs/q1-q4-prevalence.md) support the monitoring comparison under the archived gross scenarios.
+
+## Q4 score-guided manual review
+
+[Expected review yields and paired contrasts](../docs/q4-score-review.md) support the comparison under fixed scores, scenario labels and ideal confirmation.
