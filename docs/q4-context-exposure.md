@@ -23,3 +23,74 @@ Run the analysis with the contest CSV directory.
     python main.py --data "<attachment directory>/date" --output generated --q4-context-exposure
 
 [Independent verification](../reviews/q4-context-exposure-verification.md)
+
+## Bounded context imbalance at 50% overall exposure
+
+Let each context's noisy-opportunity share lie within `0.50 ± δ`, preserving the weighted overall share of 0.50. Each feasible allocation is the uniform allocation plus `2δ` times a feasible deviation at the unrestricted endpoint. Since the pass fraction is affine in the allocation, both sharp bounds interpolate linearly. The archived context counts are sufficient for this calculation. [Frozen specification](model-spec.md#q4-bounded-context-imbalance-at-half-exposure-freeze)
+
+| Maximum context displacement (percentage points) | Full fit pass bounds | Union-deleted fit pass bounds |
+|---:|---:|---:|
+| 0 | 82.08–82.08% | 73.79–73.79% |
+| 10 | 81.21–82.94% | 72.30–75.29% |
+| **20** | **80.34–83.81%** | **70.81–76.78%** |
+| 30 | 79.48–84.68% | 69.31–78.27% |
+| 40 | 78.61–85.54% | 67.82–79.77% |
+| 50 | 77.74–86.41% | 66.33–81.26% |
+
+In the full fit, the minimum first equals 80% at `δ = 13859/57821`, or **23.9688003 percentage points**. An attaining allocation, in after-feeding, commuting and searching order, is `(74065/231284, 85539/115642, 30103/115642)`. Equality passes the inclusive rule. A failing allocation exists for every strictly larger displacement through 50 points.
+
+In the union-deleted fit, the maximum first equals 80% at `δ = 82833/199268`, or **41.5686412 percentage points**. An attaining allocation is `(16801/199268, 1577636/3238105, 182467/199268)`. This allocation passes at equality, and all allocations fail at smaller displacements.
+
+The illustrative ±20-point cap keeps every context between 30% and 70% noisy. Every allocation passes in the full fit and every allocation fails in the union-deleted fit. The cap is a scenario assumption about playback opportunities. [Independent vertex verification](../reviews/q4-context-imbalance-verification.md)
+
+Run the following Python code from the repository root to recover the archived extrema as exact fractions, rescale the allocations and invert the two bounds.
+
+```python
+from csv import DictReader
+from fractions import Fraction as F
+from pathlib import Path
+
+contexts = ("after", "commuting", "searching")
+sizes = (36, 65, 38)
+weights = [F(n, 139) for n in sizes]
+half, target = F(1, 2), F(4, 5)
+root = Path("results")
+
+with (root / "q4_context_exposure_counts.csv").open(newline="") as source:
+    counts = {(r["model"], r["context"]): (int(r["clean_count"]), int(r["noisy_count"]))
+              for r in DictReader(source)}
+with (root / "q4_context_exposure_checks.csv").open(newline="") as source:
+    endpoints = {(r["model"], r["rule"]): r for r in DictReader(source)
+                 if F(r["f"]) == half}
+
+for fit, crossing_rule in (("full", "minimum"), ("drop_union", "maximum")):
+    cells = [counts[fit, context] for context in contexts]
+
+    def attainment(shares):
+        return sum(w * ((1 - f) * a + f * b)
+                   for w, f, (a, b) in zip(weights, shares, cells)) / 4800
+
+    uniform = attainment([half] * len(contexts))
+    extremes = {}
+    for rule in ("minimum", "maximum"):
+        archived = endpoints[fit, rule]
+        witness = [F(archived[f"f_{c}"]).limit_denominator(2 * n)
+                   for c, n in zip(contexts, sizes)]
+        assert sum(w * f for w, f in zip(weights, witness)) == half
+        assert abs(float(attainment(witness)) - float(archived["share"])) < 1e-14
+        extremes[rule] = witness
+
+    def allocation(rule, delta):
+        return [half + 2 * delta * (f - half) for f in extremes[rule]]
+
+    print(fit)
+    for step in range(6):
+        delta = F(step, 10)
+        print(str(delta), *(f"{float(100 * attainment(allocation(rule, delta))):.5f}%"
+                            for rule in extremes))
+    extreme = attainment(extremes[crossing_rule])
+    crossing = (target - uniform) / (2 * (extreme - uniform))
+    witness = allocation(crossing_rule, crossing)
+    assert attainment(witness) == target
+    print("crossing", crossing, f"{float(100 * crossing):.7f} pp", list(map(str, witness)))
+```
