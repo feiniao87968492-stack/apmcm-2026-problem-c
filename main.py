@@ -66,7 +66,14 @@ def main():
                           help="Compare local and matched uniform Q4 noise")
     analyses.add_argument("--q4-response-sensitivity", action="store_true",
                           help="Invert the Q4 response-retention scenario at 6 dB")
+    analyses.add_argument("--appendix5-noise", action="store_true",
+                          help="Simulate matched-power noise on the Supplementary 5 WAVs")
     args = parser.parse_args()
+    if args.appendix5_noise:
+        from appendix5_noise import run
+
+        run(args.data, args.output)
+        return
     if args.q4_response_sensitivity:
         from q4_response_sensitivity import write
 

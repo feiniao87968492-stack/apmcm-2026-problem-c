@@ -1,0 +1,4 @@
+clip,sample_rate_hz,samples,spectrogram_loss,spectrum_loss,envelope_loss,composite
+flat,12000,14535,1.22124532709e-15,1.11022302463e-16,5.55111512313e-16,1
+modulated,12000,12000,0,0,0,1
+two-voice,12000,12000,0,0,2.22044604925e-16,1

@@ -202,3 +202,7 @@ The five radii, grid counts, pairwise differences and retained playback ranges a
 ## Q4 response sensitivity at 6 dB
 
 [Checkpoint counts, fitted limits and prefix contrasts](../results/q4_response_sensitivity.csv) support the 100 m response sensitivity analysis.
+
+## Appendix 5 matched-power noise simulation
+
+[Representation losses and composites](../results/appendix5_noise_summary.csv), [paired band contrasts](../results/appendix5_noise_contrasts.csv), [rank frequencies](../results/appendix5_noise_ranks.csv), and [noiseless checks](../results/appendix5_noise_zero.csv) support the three-clip simulation.
