@@ -383,3 +383,10 @@ The design froze at 4a20fd4. A clean archive of e777db8 ran the full fixed batch
 The design froze at 3192ea6. A clean Git archive of d140d12 regenerated both tables from the contest attachments using the archived paired draws. At exponent one the analysis verified every indexed context and standardized indicator as well as both bounded extrema. Independent direct scoring verified all ten checkpoint rows and four inclusive crossings. The union-deleted fit changes from all-pass under acoustic loss alone to all-fail under the archived coupling. [Results and reproduction](../docs/q4-context-exposure.md#sensitivity-to-behavioral-loss-under-6-db) · [Independent numerical review](../reviews/q4-context-lambda-verification.md)
 
 Two independent two-pass builds from Git archives of 252c104 used SOURCE_DATE_EPOCH=1795731780. PDF SHA-256 is 3dd232a0a98f01b42b748dce57c4e8d0a7f6c2ef3db7ad21bc4ceac404ef1722. The body and references occupy pages 3 through 20 of 177, with the revision on page 17 and blank team and author fields. [Independent manuscript review](../reviews/q4-context-lambda-paper-review.md) · [PDF](../paper/main.pdf)
+
+
+## Anonymous paper source appendix repair
+
+Source commit b26bd5d adds the three Q4 context listings alongside the existing context-exposure listing. The 72 listing paths match all 72 Git-tracked Python paths exactly. A comparison against 7b0b621 confirms that the analysis text and numbers are preserved. Poppler renders of page 17 and pages 164–169 confirm legibility. The anonymous PDF contains 182 pages, with the body and references on pages 3–20.
+
+Two separate Git archive builds each ran two pdflatex passes with SOURCE_DATE_EPOCH=1795731780 and produced the same PDF SHA-256, 93a74ff2c7133088d791d8ad17b0b39a3780e9a32064eeafad33d8f5626aad0e. [Independent manuscript review](../reviews/source-appendix-repair-review.md) · [Anonymous PDF](../paper/main.pdf)
