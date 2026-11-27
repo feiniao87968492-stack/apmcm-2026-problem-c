@@ -238,3 +238,7 @@ The five radii, grid counts, pairwise differences and retained playback ranges a
 ## Q4 draw rematching
 
 [Endpoint counts](../results/q4_draw_rematching.csv) and [attaining permutations](../results/q4_draw_rematching_witnesses.csv) support the dependence sensitivity at fixed empirical draw marginals.
+
+## Q4 consecutive-radius draw rematching
+
+[Boundary counts](../results/q4_prefix_rematching.csv) and [attaining permutations](../results/q4_prefix_rematching_witnesses.csv) support the sharp consecutive-grid radius bounds at fixed empirical draw marginals.

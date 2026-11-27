@@ -1,0 +1,9 @@
+model,scenario,original_radius_m,original_count_at_radius,archived_endpoint_witness_prefix_150,bound,radius_m,status,bound_count_at_radius,bound_count_next,next_distance_m,witness_count_at_radius,witness_count_next
+full,clean,150.0,4468,,minimum,150.0,grid_cap,4451,,,4451,
+full,clean,150.0,4468,,maximum,150.0,grid_cap,4489,,,4489,
+full,loss_20_20,96.0,3847,,minimum,94.5,interior,3843,3827.0,95.0,3876,3827.0
+full,loss_20_20,96.0,3847,,maximum,98.0,interior,3844,3832.0,98.5,3844,3802.0
+drop_union,clean,150.0,3850,3810.0,minimum,149.0,interior,3842,3823.0,149.5,3874,3823.0
+drop_union,clean,150.0,3850,3810.0,maximum,150.0,grid_cap,3890,,,3890,
+drop_union,loss_20_20,84.0,3847,,minimum,82.5,interior,3866,3838.0,83.0,3905,3838.0
+drop_union,loss_20_20,84.0,3847,,maximum,85.0,interior,3850,3827.0,85.5,3850,3772.0
