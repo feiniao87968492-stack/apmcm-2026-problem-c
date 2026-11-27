@@ -222,3 +222,7 @@ The five radii, grid counts, pairwise differences and retained playback ranges a
 ## Q1 label errors in Q4 monitoring
 
 [Row-normalized confusions](../results/q1_q4_label_confusion.csv) and [fixed-curve monitoring scenarios](../results/q1_q4_label_monitoring.csv) support the score biases and threshold errors conditional on transferring FalseBay holdout confusions.
+
+## Q4 monitoring review budget
+
+[Per-row queues](../results/q4_review_budget_ranks.csv) and [residual error budgets](../results/q4_review_budget_results.csv) support the comparison under ideal correction and fixed held-out scores.
