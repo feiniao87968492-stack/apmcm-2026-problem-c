@@ -297,3 +297,7 @@ Two separate Git archives of source commit 279e64a produced the same PDF byte-fo
 ## Playback design and stimulus order in the English manuscript
 
 The read-only data audit froze at aaaff78. Independent review verified the field protocol and the limits of stimulus-order recovery from Data02. Two separate Git archives of manuscript source ee183d3 produced the same PDF byte-for-byte after two pdflatex passes with SOURCE_DATE_EPOCH=1795731780. SHA-256 is 1b855e4a8afd1a1a6c815770f261db300b734510b6a5763bf7a8fd8482196a68. Body and references occupy pages 3–18 of 156. The team number and PDF author fields are blank. [Data audit](../docs/data-audit.md#playback-design-and-order-recoverability) · [Independent review](../reviews/playback-design-paper-review.md) · [PDF](../paper/main.pdf)
+
+## Q3 first-playback response bound verification
+
+The protocol froze at 59bb01a and ran at ab2b923. Both CSVs reproduced byte-for-byte from a Git archive through the main entry point. Independent enumeration of the four response cells checked each fixed-m endpoint and its allocation witness. [Results and reproduction](../docs/q3-first-playback.md) · [Independent verification](../reviews/q3-first-playback-verification.md)

@@ -226,3 +226,7 @@ The five radii, grid counts, pairwise differences and retained playback ranges a
 ## Q4 monitoring review budget
 
 [Per-row queues](../results/q4_review_budget_ranks.csv) and [residual error budgets](../results/q4_review_budget_results.csv) support the comparison under ideal correction and fixed held-out scores.
+
+## Q3 first-playback response bounds
+
+[Exact bounds by natural-first count](../results/q3_first_playback_bounds.csv) and [assumption summaries](../results/q3_first_playback_summary.csv) support attainable endpoints and sign checks for the observed first-playback contrast.
