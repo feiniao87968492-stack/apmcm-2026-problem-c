@@ -269,3 +269,7 @@ The protocol froze at b2080f4. A detached checkout of 4fad996 regenerated all fo
 ## Supplementary 2 background audio audit
 
 Two local inspections of the example video agreed on the low-level pre-playback candidates and the timing of the three playback bursts. Source attribution remains unresolved. The video audit adds an eligibility decision for a mixed-source soundtrack and leaves the Q4 response calibration dependent on trial-linked noise measurements. [Timestamped audit and reproduction command](../docs/data-audit.md#supplementary-2-background-audio) · [Independent audit](../reviews/appendix2-background-verification.md)
+
+## Q4 noise evidence in the English manuscript
+
+Two separate two-pass builds from Git archives of b091890 used pdflatex with SOURCE_DATE_EPOCH=1795731780 and produced the released PDF byte-for-byte. SHA-256 is 08b39c0540952ea5a5ac7181c2094f2017fd715acd0002a7c8067cfc409444d6. The body and references occupy pages 3–18. The appendices begin on page 19 of 149 and include all 54 tracked Python modules. The team and author fields are blank. The manuscript review checked the gross and net estimands, the 100 m response sensitivity, the 150 m grid criterion, the noise-band experiment and the video data gaps under the frozen rubric. [Independent manuscript review](../reviews/q4-noise-integration-paper-review.md) · [PDF](../paper/main.pdf)
