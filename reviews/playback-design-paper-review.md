@@ -1,0 +1,17 @@
+# Independent review of the playback design and manuscript
+
+**Pass, 100/100.** I reviewed the version 1 field protocol, the frozen data audit at `aaaff78` and the manuscript at `ee183d3` under the frozen rubric. [Field paper v1](https://doi.org/10.12688/openreseurope.24618.1) · [Frozen data audit](../docs/data-audit.md#playback-design-and-order-recoverability) · [Rubric](../docs/model-spec.md#frozen-independent-paper-rubric)
+
+I parsed Data02 independently with the Python standard-library CSV reader. Its MD5 is `f936555cb0af178dcb749ec9b51adab5`. There are 40 columns and 278 stimulus rows in 139 adjacent `expID` pairs. Each pair contains one call and one control record with matching date and context. Playback distances differ in 90 pairs. Across the file, 81 pairs store the call first and 58 store the control first. Data02 lacks a presentation-order field and playback timestamps, and the field paper, Code1 and Supplementary 3 provide no documented chronological interpretation of those row positions. Latencies are measured from each stimulus onset. The data support pairing and an audit of realized track use by context. Recovering presentation order, the random draws without replacement or the separation between encounters requires additional field records. [Versioned data deposit](https://zenodo.org/records/21376649)
+
+The field paper reports group-level observations, one natural call and one broadcast sea-wave recording for each paired group, randomized stimulus order and natural-track draws without replacement within context. It describes keeping the new group more than 300 m away during previous playback. With the boat stationary, the researchers applied the distance requirement together with a minimum five-minute gap between experiments. The alternate procedure moved the boat more than 1 km in a direction different from the previous group's route. The data audit records both procedures. The manuscript limits its design summary to the pairing, stimuli and randomization, and states that presentation-order and carryover effects are unestimated. [Field paper v1](https://doi.org/10.12688/openreseurope.24618.1) · [Manuscript source](../paper/main.tex)
+
+| Frozen rubric dimension | Score | Verification |
+|---|---:|---|
+| Numerical and factual accuracy | 30/30 | The pair count, distance mismatches, stimulus definition, randomization, observation unit and spacing match the source evidence. |
+| Traceability | 15/15 | PDF annotations point to the field paper's version-specific DOI and the audit pinned to `aaaff78`. All seven figures have their CSV and metadata companions. |
+| Coverage and reasoning | 30/30 | The audit separates field design from recorded variables. The manuscript identifies the unestimated order and carryover effects. |
+| Clarity and structure | 15/15 | I inspected the rendered methods and limitations on pages 7–8 and 18. The new passages, links, adjacent figure and page turns are legible. |
+| Build and references | 10/10 | The anonymous PDF contains 156 pages. The body and references occupy pages 3–18, and the appendices start on page 19. Every team header and the PDF author field are blank. All 58 source listings are present. |
+
+I ran `pdflatex -interaction=nonstopmode -halt-on-error main.tex` twice in the `paper/` directory of a fresh Git archive of `ee183d3`, with `SOURCE_DATE_EPOCH=1795731780`. The independently rebuilt PDF has SHA-256 `1b855e4a8afd1a1a6c815770f261db300b734510b6a5763bf7a8fd8482196a68`. [PDF](../paper/main.pdf)
