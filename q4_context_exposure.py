@@ -88,8 +88,8 @@ def coverage(frame, eligible, model):
                            observed_min_m=part.Distance.min(), observed_max_m=part.Distance.max())
 
 
-def prefix_indicators(data, archive=None, *, acoustic_seed=ACOUSTIC_SEED,
-                      date_seed=DATE_SEED, models=MODELS):
+def prefix_scores(data, *, acoustic_seed=ACOUSTIC_SEED,
+                  date_seed=DATE_SEED, models=MODELS):
     weights = np.array(WEIGHTS, dtype=float)
     curves, shared = acoustic_fidelities(data, distances=DISTANCES, include_shared=True,
                                         seed=acoustic_seed)
@@ -98,10 +98,6 @@ def prefix_indicators(data, archive=None, *, acoustic_seed=ACOUSTIC_SEED,
     u = (DISTANCES / scale[:, None])**exponent[:, None]
     squared_ratio = (1 + u) / (1 + (1 + EXCESS_POWER)*u)
     weakest = np.minimum.reduce([curve[1:, tv] for curve in curves.values()])
-    if archive is not None:
-        prior = pd.read_csv(archive / "q4_intermittent_noise_checks.csv").query(
-            "rule == 'state_indicators' and f in [0, 1]"
-        ).set_index(["model", "f"]).count_or_expected
     for model, probabilities in behavior_probabilities(
         data, distances=DISTANCES, context_specific=True, seed=date_seed, models=models,
     ):
@@ -110,13 +106,25 @@ def prefix_indicators(data, archive=None, *, acoustic_seed=ACOUSTIC_SEED,
             cutoff = reference(curves["isotonic"], standardized[:, 0] - standardized[:, 1])[1:, None]
             assert np.all(np.isfinite(cutoff) & (cutoff > 0))
         excess = probabilities[1:, 0, tv] - probabilities[1:, 1, tv]
-        old = pass_indicators(
-            weakest * (standardized[1:, 0, tv] - standardized[1:, 1, tv]), cutoff, squared_ratio,
-        )
+        scores = weakest[:, :, None] * excess
+        standard = weakest * (standardized[1:, 0, tv] - standardized[1:, 1, tv])
+        yield model, scores, standard, cutoff, squared_ratio
+
+
+def prefix_indicators(data, archive=None, *, acoustic_seed=ACOUSTIC_SEED,
+                      date_seed=DATE_SEED, models=MODELS):
+    if archive is not None:
+        prior = pd.read_csv(archive / "q4_intermittent_noise_checks.csv").query(
+            "rule == 'state_indicators' and f in [0, 1]"
+        ).set_index(["model", "f"]).count_or_expected
+    for model, scores, standard, cutoff, squared_ratio in prefix_scores(
+        data, acoustic_seed=acoustic_seed, date_seed=date_seed, models=models,
+    ):
+        old = pass_indicators(standard, cutoff, squared_ratio)
         if archive is not None:
             assert tuple(old.sum(axis=0)) == tuple(prior.loc[model, f] for f in (0., 1.))
-        states = np.stack([pass_indicators(weakest * response, cutoff, squared_ratio)
-                           for response in excess.transpose(2, 0, 1)], axis=1)
+        states = np.stack([pass_indicators(score, cutoff, squared_ratio)
+                           for score in scores.transpose(2, 0, 1)], axis=1)
         yield model, states, old
 
 
