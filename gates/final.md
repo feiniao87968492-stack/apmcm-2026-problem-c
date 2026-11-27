@@ -351,3 +351,9 @@ The specification froze at 61405b4 and the comparison ran at ae5f218. From a Git
 The specification froze at 8eeb687 and the comparison ran at 14277df. The main entry point reproduced both CSVs byte-for-byte from a Git archive. Independent analytic inversion verified all 30 checkpoints, six limits, archived endpoints and the equal-mean-power ordering. [Results and reproduction](../docs/q4-intermittent-noise.md) · [Independent numerical review](../reviews/q4-intermittent-noise-verification.md)
 
 Two independent Git archive builds of 7e4dfb2 produced identical PDFs after two pdflatex passes with SOURCE_DATE_EPOCH=1795731780. SHA-256 is e46cb528c291fcc546d4a3fa1bdbd813c06972a59f0b0883bd219f0f33229b13. Body and references occupy pages 3 through 20 of 174. Team and author fields are blank. [Independent manuscript review](../reviews/q4-intermittent-noise-paper-review.md) · [PDF](../paper/main.pdf)
+
+## Q4 context-dependent opportunity exposure
+
+The protocol froze at 1950d7c. The main entry point regenerated the four result CSVs byte-for-byte from the archive of implementation 2105296. Independent linear programming verified the context counts, exposure bounds, attaining allocations and local support against the results at 287e65d. Aggregating the responses before thresholding recovered the published clean and noisy endpoint counts in both fits. [Results and reproduction](../docs/q4-context-exposure.md) · [Independent numerical review](../reviews/q4-context-exposure-verification.md)
+
+Independent two-pass builds from Git archives of 9681ef2 with SOURCE_DATE_EPOCH=1795731780 produced the same anonymous PDF. SHA-256 is 4c10c1de385459aa77b65b322e50c85bcc7cd000c7dbac2a8254832f581e9bc9. The body and references occupy pages 3–20 of 176. The PDF includes all 69 source listings. [Independent manuscript review](../reviews/q4-context-exposure-paper-review.md) · [PDF](../paper/main.pdf)
