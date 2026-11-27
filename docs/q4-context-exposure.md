@@ -94,3 +94,37 @@ for fit, crossing_rule in (("full", "minimum"), ("drop_union", "maximum")):
     assert attainment(witness) == target
     print("crossing", crossing, f"{float(100 * crossing):.7f} pp", list(map(str, witness)))
 ```
+
+
+## Monte Carlo precision at 30–70% context exposure
+
+The 4,800 paired draws reproduce all archived context and standardized counts and the exact bounded extrema. Each of the six feasible allocations has one score per draw, formed by weighting the paired clean and noisy prefix indicators. The sample covariance across vertices divided by 4,800 estimates the covariance of their Monte Carlo means. Across 10,000 paired draw-index resamples (seed 20261205), the 95th percentile of the centered maximum absolute deviation gives a common half-width of 0.63645 percentage points for the full fit and 0.65458 for union deletion. Taking minima and maxima of the simultaneous limits projects the band onto the allocation extrema. [Frozen specification](model-spec.md#q4-bounded-context-monte-carlo-precision-freeze)
+
+| Fit | Bound | Point estimate | MC SE at attaining vertex (pp) | Projected 95% interval |
+|---|---|---:|---:|---:|
+| Full | Minimum | 80.343945% | 0.31150 | 79.707497%–80.980393% |
+| Full | Maximum | 83.810432% | 0.28693 | 83.173984%–84.446879% |
+| Union deletion | Minimum | 70.805860% | 0.30790 | 70.151283%–71.460438% |
+| Union deletion | Maximum | 76.779122% | 0.30255 | 76.124544%–77.433699% |
+
+The full-fit all-pass decision is unresolved at this simulation precision because its minimum interval crosses 80%. The union-deletion all-fail decision survives because its maximum interval lies below 80%. These intervals measure conditional Monte Carlo error with the available data, model and exposure scenario fixed. [Draw indicators](../results/q4_context_mc_indicators.csv) · [Vertex means, SEs, covariance and band](../results/q4_context_mc_vertices.csv) · [Projected bounds](../results/q4_context_mc_bounds.csv)
+
+Regenerate the paired indicators and tables from the contest attachments.
+
+    python main.py --data "<attachment directory>/date" --output generated --q4-context-mc
+
+To reproduce just the precision tables from the published indicators, run this from the repository root.
+
+```python
+from pathlib import Path
+
+import pandas as pd
+
+from q4_context_mc import indicator_columns, summarize
+
+archive = Path("results")
+draws = pd.read_csv(archive / "q4_context_mc_indicators.csv")
+masks = {fit: draws[indicator_columns(fit)].to_numpy(dtype=bool)
+         for fit in ("full", "drop_union")}
+summarize(masks, archive, Path("generated"))
+```
