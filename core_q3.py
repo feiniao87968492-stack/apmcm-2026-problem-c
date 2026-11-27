@@ -15,8 +15,12 @@ from round2 import mask_scores
 
 
 MASK_MODELS = ("smoothed_stimulus", "full_multinomial", "pairwise_mask", "shrunken_hurdle",
-               "rank_one_tilt", "nested_pool")
+               "rank_one_tilt", "nested_pool", "rank_one_distance_penalty",
+               "call_aware_hurdle")
 TIMING_MODELS = ("stimulus_time", "discrete_hazard", "finite_window")
+ANY_TIMING_MODELS = (*TIMING_MODELS, "weibull_aft")
+FACTOR_TIME = "factorized_time"
+MASK_LIMITS = dict(ordinary_logloss=0., ordinary_brier=.01, tail_logloss=.10, tail_brier=.02)
 ENDPOINTS = ("Any", *q3.BEHAVIORS)
 EDGES = np.array([0, 5, 15, 30, 60])
 INTEGRATION_WEIGHTS = np.diff(EDGES) / EDGES[-1]
@@ -64,18 +68,17 @@ def logistic_probability(x, event, prediction):
     return model.fit(x, event).predict_proba(prediction)[:, 1]
 
 
-def hurdle(frame, evaluation, contexts):
+def hurdle(frame, evaluation, contexts, design=compact_design):
     y = frame["mask"].to_numpy()
     positive = y > 0
-    p = logistic_probability(compact_design(frame, contexts), positive,
-                             compact_design(evaluation, contexts))
+    p = logistic_probability(design(frame, contexts), positive, design(evaluation, contexts))
     pooled = np.bincount(y[positive] - 1, minlength=7) + .5
     composition = stimulus_counts(frame.loc[positive], y[positive]-1, 7, evaluation,
                                   8 * pooled / pooled.sum())
     return np.column_stack((1-p, p[:, None] * composition))
 
 
-def rank_one(frame, evaluation, contexts):
+def rank_one(frame, evaluation, contexts, distance_penalty=1.):
     y = frame["mask"].to_numpy()
     burden = q3.BITS.sum(axis=1)
     train = compact_design(frame, contexts)
@@ -83,11 +86,14 @@ def rank_one(frame, evaluation, contexts):
     x = np.column_stack((np.ones(len(train)), scaler.transform(train)))
     offset = np.log(stimulus_counts(frame, y, 8, frame))
     observed = (np.arange(len(y)), y)
+    penalty = np.ones(x.shape[1])
+    penalty[2] = distance_penalty
 
     def objective(beta):
         logits = offset + (x @ beta)[:, None] * burden
-        loss = (logsumexp(logits, axis=1) - logits[observed]).sum() + beta @ beta / 2
-        gradient = x.T @ (softmax(logits, axis=1) @ burden - burden[y]) + beta
+        regularization = penalty * beta
+        loss = (logsumexp(logits, axis=1) - logits[observed]).sum() + beta @ regularization / 2
+        gradient = x.T @ (softmax(logits, axis=1) @ burden - burden[y]) + regularization
         return loss, gradient
 
     fitted = minimize(objective, np.zeros(x.shape[1]), jac=True, method="L-BFGS-B",
@@ -120,8 +126,12 @@ def predict_mask(frame, evaluation, model, contexts, pool_weight=None):
         return stimulus_counts(frame, y, 8, evaluation)
     if model == "shrunken_hurdle":
         return hurdle(frame, evaluation, contexts)
+    if model == "call_aware_hurdle":
+        return hurdle(frame, evaluation, contexts, design=q3.features)
     if model == "rank_one_tilt":
         return rank_one(frame, evaluation, contexts)
+    if model == "rank_one_distance_penalty":
+        return rank_one(frame, evaluation, contexts, distance_penalty=8.)
     if model == "nested_pool":
         weight = nested_weight(frame, contexts) if pool_weight is None else pool_weight
         frequency = stimulus_counts(frame, y, 8, evaluation)
@@ -147,12 +157,79 @@ def time_cells(onset):
     return np.searchsorted(EDGES, onset, side="left")
 
 
-def predict_timing(frame, evaluation, model, contexts, endpoint="Any", bins=None):
+def weibull_probabilities(training, evaluation, onset):
+    """Fit an observed zero atom and a Weibull model for the positive waiting time."""
+    def features(frame):
+        return np.column_stack((frame.Type.eq("call"), np.log1p(frame.Distance)))
+
+    keep = onset > 0
+    event = np.isfinite(onset[keep])
+    time = np.log(np.minimum(onset[keep], EDGES[-1]))
+    scaler = StandardScaler().fit(features(training.loc[keep]))
+    x = np.column_stack((np.ones(keep.sum()), scaler.transform(features(training.loc[keep]))))
+
+    def objective(params):
+        shift = time - x @ params[:3]
+        shape = np.exp(params[3])
+        log_hazard = shape * shift
+        # The cap prevents overflow during line search far from the optimum.
+        hazard = np.exp(np.minimum(log_hazard, 500.))
+        density_term = params[3] + log_hazard - time
+        penalty = params[1:]
+        loss = hazard.sum() - density_term[event].sum() + penalty @ penalty / 2
+        residual = np.where(log_hazard <= 500., hazard, 0.) - event
+        gradient = np.r_[-shape * x.T @ residual, residual @ log_hazard - event.sum()]
+        gradient[1:] += penalty
+        return loss, gradient
+
+    fitted = minimize(objective, np.array([np.log(60.), 0., 0., 0.]), jac=True, method="L-BFGS-B",
+                      bounds=[(None, None), (None, None), (0., None), (-3., 3.)],
+                      options={"maxiter": 1000, "ftol": 1e-12, "gtol": 1e-7})
+    if not fitted.success:
+        raise RuntimeError(f"Weibull AFT fit failed: {fitted.message}")
+    design = scaler.transform(features(evaluation))
+    log_scale = fitted.x[0] + design @ fitted.x[1:3]
+    log_hazard = np.exp(fitted.x[3]) * (np.log(EDGES[1:]) - log_scale[:, None])
+    survival = np.exp(-np.exp(np.minimum(log_hazard, 500.)))
+    atom = stimulus_counts(training, (onset == 0).astype(int), 2, evaluation)[:, 1]
+    positive_cells = np.column_stack((1-survival[:, 0], -np.diff(survival, axis=1), survival[:, -1]))
+    return np.column_stack((atom, (1-atom[:, None])*positive_cells))
+
+
+def responder_timing(frame, bins, evaluation):
+    event = bins < 5
+    return stimulus_counts(frame.loc[event], bins[event], 5, evaluation, pseudocount=0.)
+
+
+def conditional_rate_table(frame):
+    arms = pd.DataFrame({"Type": q3.STIMULI})
+    bins = time_cells(recorded_onset(frame)[:, 0])
+    rates = responder_timing(frame, bins, arms).cumsum(axis=1)
+    return pd.DataFrame({"stimulus": np.repeat(q3.STIMULI, len(EDGES)),
+                         "window_s": np.tile(EDGES, len(arms)),
+                         "conditional_probability": rates.ravel()})
+
+
+def factorized_probabilities(frame, evaluation, contexts, bins, mask_model):
+    """Combine observable response by 60 s and the empirical timing among responders."""
+    p = 1-predict_mask(frame, evaluation, mask_model, contexts)[:, 0]
+    composition = responder_timing(frame, bins, evaluation)
+    return np.column_stack((p[:, None] * composition, 1-p))
+
+
+def predict_timing(frame, evaluation, model, contexts, endpoint="Any", bins=None,
+                   onset=None, mask_model=None):
     """Return probabilities for five onset cells and no event by 60 s."""
+    if onset is None and (bins is None or model == "weibull_aft"):
+        onset = recorded_onset(frame)[:, ENDPOINTS.index(endpoint)]
     if bins is None:
-        bins = time_cells(recorded_onset(frame)[:, ENDPOINTS.index(endpoint)])
+        bins = time_cells(onset)
     if model == "stimulus_time":
         return stimulus_counts(frame, bins, 6, evaluation)
+    if model == "weibull_aft":
+        return weibull_probabilities(frame, evaluation, onset)
+    if model == FACTOR_TIME:
+        return factorized_probabilities(frame, evaluation, contexts, bins, mask_model)
     x = q3.features(frame, contexts)
     target = q3.features(evaluation, contexts)
     if model == "finite_window":
@@ -182,7 +259,7 @@ def timing_scores(probability, test, onset, bins):
 
 def conditional_times(training, evaluation, probability, model, onset, bins):
     responders = np.isfinite(onset)
-    if model == "stimulus_time":
+    if model in ("stimulus_time", FACTOR_TIME):
         pooled = np.median(onset[responders])
         times = []
         for arm in q3.STIMULI:
@@ -219,15 +296,17 @@ def validate_masks(frame, contexts):
     return pd.DataFrame(rows), pd.DataFrame(coverage)
 
 
-def validate_timing(frame, contexts):
+def validate_timing(frame, contexts, mask_model):
     rows = []
     all_onsets = recorded_onset(frame)
     for date, train, test in purged_folds(frame):
         training, validation = frame.iloc[train], frame.iloc[test]
         for endpoint, onset in zip(ENDPOINTS, all_onsets.T):
             bins = time_cells(onset)
-            for model in TIMING_MODELS:
-                p = predict_timing(training, validation, model, contexts, endpoint, bins[train])
+            models = (*ANY_TIMING_MODELS, FACTOR_TIME) if endpoint == "Any" else TIMING_MODELS
+            for model in models:
+                p = predict_timing(training, validation, model, contexts, endpoint, bins[train],
+                                   onset=onset[train], mask_model=mask_model)
                 scores = timing_scores(p, test, onset, bins)
                 times = conditional_times(training, validation, p, model, onset[train], bins[train])
                 error = np.where(np.isfinite(onset[test]), np.abs(onset[test] - times), np.nan)
@@ -265,26 +344,49 @@ def pool_scores(scores, strata, metrics, references):
     return pd.DataFrame(rows), pd.DataFrame(differences)
 
 
-def model_selection(mask_summary, mask_delta, time_summary, time_delta):
-    mask_candidates = mask_delta.loc[mask_delta.scheme.eq("ordinary")
-                                     & mask_delta.model.isin(MASK_MODELS[3:])]
-    qualifying_masks = mask_candidates.groupby("model").ci_high.max().loc[lambda s: s < 0].index
+def select_mask(mask_summary, mask_delta):
+    incumbent = "full_multinomial"
+    candidates = MASK_MODELS[2:]
+    differences = mask_delta.loc[mask_delta.reference.eq(incumbent)].set_index(
+        ["scheme", "model", "metric"])
+    rows = []
+    for model in candidates:
+        ordinary_loss = differences.loc[("ordinary", model, "mask_log_loss"), "ci_high"]
+        ordinary_brier = differences.loc[("ordinary", model, "any_response_brier"), "ci_high"]
+        tail_loss = max(differences.loc[(scheme, model, "mask_log_loss"), "difference"]
+                        for scheme in ("tail", "actual_long"))
+        tail_brier = max(differences.loc[(scheme, model, "any_response_brier"), "difference"]
+                         for scheme in ("tail", "actual_long"))
+        rows.append(dict(model=model, ordinary_logloss_upper=ordinary_loss,
+                         ordinary_brier_upper=ordinary_brier, worst_tail_logloss=tail_loss,
+                         worst_tail_brier=tail_brier,
+                         logloss_pass=ordinary_loss < MASK_LIMITS["ordinary_logloss"],
+                         brier_pass=ordinary_brier <= MASK_LIMITS["ordinary_brier"],
+                         tail_pass=(tail_loss <= MASK_LIMITS["tail_logloss"]
+                                    and tail_brier <= MASK_LIMITS["tail_brier"])))
+    decisions = pd.DataFrame(rows)
+    eligible = decisions.loc[decisions[["logloss_pass", "brier_pass", "tail_pass"]].all(axis=1), "model"]
     loss = mask_summary.query("scheme == 'ordinary' and metric == 'mask_log_loss'").set_index("model")
-    selected_mask = loss.loc[qualifying_masks].estimate.idxmin() if len(qualifying_masks) else "full_multinomial"
+    selected = loss.loc[eligible].estimate.idxmin() if len(eligible) else incumbent
+    decisions["selected"] = decisions.model.eq(selected)
+    return selected, decisions
+
+
+def select_timing(time_summary, time_delta):
     selected_timing = {}
     for endpoint in ENDPOINTS:
-        result = time_delta.query("endpoint == @endpoint")
+        result = time_delta.query("endpoint == @endpoint and model != @FACTOR_TIME")
         log_loss = result.query("metric == 'censored_log_loss'").set_index("model")
         brier = result.query("metric == 'integrated_brier'").set_index("model")
         valid = (log_loss.ci_high < 0) & (brier.difference <= 0)
         candidates = log_loss.loc[valid].index
         losses = time_summary.query("endpoint == @endpoint and metric == 'censored_log_loss'").set_index("model")
         selected_timing[endpoint] = losses.loc[candidates].estimate.idxmin() if len(candidates) else "stimulus_time"
-    return selected_mask, selected_timing
+    return selected_timing
 
 
 def prediction_table(frame, contexts, weights, mask_model, timing_models):
-    rows = []
+    rows, masks = [], []
     median_size = float(frame.Npenguins.median())
     for endpoint in ENDPOINTS:
         distances = np.arange(20., 150.5, .5) if endpoint == "Any" else q3.REPRESENTATIVE
@@ -292,21 +394,32 @@ def prediction_table(frame, contexts, weights, mask_model, timing_models):
         grid_columns = grid.iloc[::len(contexts)].rename(columns={"Type": "stimulus",
                           "assigned_call": "call", "Distance": "distance_m",
                           "Npenguins": "group_size"}).drop(columns="Context")
-        for model in TIMING_MODELS:
-            probs = predict_timing(frame, grid, model, contexts, endpoint)
+        models = (*ANY_TIMING_MODELS, FACTOR_TIME) if endpoint == "Any" else TIMING_MODELS
+        planning_model = timing_models[endpoint]
+        if endpoint == "Any" and planning_model == "stimulus_time":
+            planning_model = FACTOR_TIME
+        for model in models:
+            probs = predict_timing(frame, grid, model, contexts, endpoint, mask_model=mask_model)
             agg = weights @ probs.reshape(-1, len(contexts), 6)
             cumulative = agg[:, :5].cumsum(axis=1)
             for i, edge in enumerate(EDGES):
                 rows.append(grid_columns.assign(family="timing", endpoint=endpoint,
                            model=model, window_s=edge, probability=cumulative[:, i],
-                           selected=model == timing_models[endpoint]))
+                           selected=model == planning_model,
+                           validated_selection=model == timing_models[endpoint]))
         if endpoint == "Any":
             for model in dict.fromkeys(("full_multinomial", mask_model)):
-                p = 1-predict_mask(frame, grid, model, contexts)[:, 0]
+                p = predict_mask(frame, grid, model, contexts)
+                mean = np.einsum("c,rcm->rm", weights, p.reshape(-1, len(contexts), 8))
                 rows.append(grid_columns.assign(family="mask", endpoint=endpoint, model=model,
-                           window_s=60, probability=p.reshape(-1, len(contexts)) @ weights,
-                           selected=model == mask_model))
-    return pd.concat(rows, ignore_index=True)
+                           window_s=60, probability=1-mean[:, 0], selected=model == mask_model,
+                           validated_selection=model == mask_model))
+                if model == mask_model:
+                    mask_rows = grid_columns.assign(model=model)
+                    for i in q3.MASKS:
+                        mask_rows[f"mask_{i}"] = mean[:, i]
+                    masks.append(mask_rows[mask_rows.distance_m.isin(q3.REPRESENTATIVE)])
+    return pd.concat(rows, ignore_index=True), pd.concat(masks, ignore_index=True)
 
 
 def representative_latency(frame, timing_models):
@@ -345,17 +458,19 @@ def run(data, output):
     context_weights = frame.loc[frame.Type.eq("call"), "Context"].value_counts(normalize=True).sort_index()
     contexts = tuple(context_weights.index)
     mask, coverage = validate_masks(frame, contexts)
-    timing = validate_timing(frame, contexts)
     mask_long = mask.query("scheme == 'tail' and distance_m >= 125").assign(scheme="actual_long")
     mask = pd.concat((mask, mask_long), ignore_index=True)
     mask_metrics = ["mask_log_loss", "any_response_brier"]
     timing_metrics = ["censored_log_loss", "integrated_brier", "conditional_mae_s"]
     mask_scores_table, mask_delta = pool_scores(mask, ["scheme"], mask_metrics,
                                                 MASK_MODELS[:2])
+    selected_mask, decisions = select_mask(mask_scores_table, mask_delta)
+    timing = validate_timing(frame, contexts, selected_mask)
     timing_scores_table, time_delta = pool_scores(timing, ["endpoint"], timing_metrics,
                                                   TIMING_MODELS[:1])
-    selected_mask, selected_timing = model_selection(mask_scores_table, mask_delta,
-                                                      timing_scores_table, time_delta)
+    selected_timing = select_timing(timing_scores_table, time_delta)
+    predictions, representative_masks = prediction_table(
+        frame, contexts, context_weights.to_numpy(), selected_mask, selected_timing)
     tables = {
         "coverage": coverage,
         "mask_scores": mask_scores_table,
@@ -364,8 +479,10 @@ def run(data, output):
         "timing_scores": timing_scores_table,
         "timing_deltas": time_delta,
         "timing_date_scores": timing.groupby(["endpoint", "date", "model"])[timing_metrics].mean().reset_index(),
-        "predictions": prediction_table(frame, contexts, context_weights.to_numpy(),
-                                        selected_mask, selected_timing),
+        "predictions": predictions,
+        "representative_masks": representative_masks,
+        "conditional_rates": conditional_rate_table(frame),
+        "mask_decision": decisions,
         "support": support_table(frame),
         "representative_latency": representative_latency(frame, selected_timing),
     }
