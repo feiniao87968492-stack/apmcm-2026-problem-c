@@ -84,7 +84,14 @@ def main():
                           help="Stress-test Q4 by rematching acoustic and behavior draws")
     analyses.add_argument("--q4-prefix-rematching", action="store_true",
                           help="Bound the Q4 consecutive radius under draw rematching")
+    analyses.add_argument("--q1-q4-cost", action="store_true",
+                          help="Test cost-sensitive Q1-to-Q4 monitoring decisions")
     args = parser.parse_args()
+    if args.q1_q4_cost:
+        from q1_q4_cost import write
+
+        write(args.data, args.output, Path(__file__).resolve().parent / "results")
+        return
     if args.q4_prefix_rematching:
         from q4_prefix_rematching import write
 
