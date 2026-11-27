@@ -114,8 +114,7 @@ def validation(observed, alpha):
         for j, target in enumerate(targets):
             training = q2.KNOTS != target if design == "interior" else q2.KNOTS < target
             training_distances = q2.KNOTS[training]
-            selected_fits = []
-    for i, draw in enumerate(observed):
+            for i, draw in enumerate(observed):
                 fits = fit_models(training_distances, draw[:, training], alpha)
                 for k, model in enumerate(MODELS):
                     estimates[i, k, :, j] = evaluate(
