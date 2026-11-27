@@ -12,7 +12,7 @@
     "Data11*.csv"
   ],
   "distance_unit": "m",
-  "selected_model": "pool_0.0025",
+  "selected_model": "pool_0.0025_absorption_q50",
   "thresholds": {
     "0.4": "Potential",
     "0.5": "Standard",

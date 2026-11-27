@@ -13,9 +13,12 @@ from q2_partial_pooling import PENALTIES, pooled_fit
 from q2_shape_rank import MODELS as ARCHIVED_SHAPES, fit_all
 
 
-ABSORPTION = "pool_0.01_absorption"
-ABLATION = "pool_0.01"
-MODELS = (*ARCHIVED_SHAPES, *PENALTIES, ABSORPTION)
+ABSORPTION_MODELS = {
+    "pool_0.01_absorption": ("pool_0.01", "Fpeak"),
+    "pool_0.0025_absorption": ("pool_0.0025", "Fpeak"),
+    "pool_0.0025_absorption_q50": ("pool_0.0025", "Q50"),
+}
+MODELS = (*ARCHIVED_SHAPES, *PENALTIES, *ABSORPTION_MODELS)
 GRID = np.arange(4., 256.5, .5)
 THRESHOLDS = {0.40: "Potential", 0.50: "Standard", 0.60: "Reliable", 0.70: "Sensitivity"}
 PHYSICAL_INPUTS = dict(temperature_c=20., relative_humidity_percent=70., pressure_kpa=101.325)
@@ -48,15 +51,22 @@ def iso9613_absorption(frequency_hz, temperature_c, relative_humidity_percent, p
 def absorption_from_recordings(data):
     path, = Path(data).glob("Data01*.csv")
     recordings = pd.read_csv(path)
-    counts = recordings.groupby("CallType").Fpeak.count().reindex(q2.CALLS)
-    frequency = recordings.groupby("CallType").Fpeak.median().reindex(q2.CALLS)
-    if not (np.isfinite(frequency) & (frequency > 0)).all():
-        raise ValueError("Every call type requires a finite positive median peak frequency.")
-    alpha = iso9613_absorption(frequency.to_numpy(), **PHYSICAL_INPUTS)
-    inputs = pd.DataFrame(dict(call=q2.CALLS, recordings=counts.to_numpy(),
-                               median_fpeak_hz=frequency.to_numpy(), alpha_db_per_m=alpha,
-                               absorption_256m_db=alpha * 255, **PHYSICAL_INPUTS))
-    return alpha, inputs
+    grouped = recordings.groupby("CallType")
+    attenuation, tables = {}, []
+    for measure in dict.fromkeys(measure for _, measure in ABSORPTION_MODELS.values()):
+        values = grouped[measure]
+        frequency = values.median().reindex(q2.CALLS)
+        if not (np.isfinite(frequency) & (frequency > 0)).all():
+            raise ValueError(f"Every call type requires a finite positive median {measure}.")
+        alpha = iso9613_absorption(frequency.to_numpy(), **PHYSICAL_INPUTS)
+        attenuation[measure] = alpha
+        tables.append(pd.DataFrame(dict(
+            call=q2.CALLS, frequency_measure=measure,
+            recordings=values.count().reindex(q2.CALLS).to_numpy(),
+            median_frequency_hz=frequency.to_numpy(), alpha_db_per_m=alpha,
+            absorption_256m_db=alpha * 255, **PHYSICAL_INPUTS,
+        )))
+    return attenuation, pd.concat(tables, ignore_index=True)
 
 
 def absorption_curve(distance, parameters, alpha):
@@ -66,7 +76,7 @@ def absorption_curve(distance, parameters, alpha):
     return ceiling[:, None] / np.sqrt(1 + relative_noise)
 
 
-def fit_absorption(distance, observed, shared, alpha):
+def fit_absorption(distance, observed, shared, alpha, penalty):
     initial = np.r_[shared[:, 0], np.log(shared[:, 1]), shared[:, 2]]
     lower = np.r_[np.zeros(6), np.full(3, .25)]
     upper = np.r_[np.ones(3), np.full(3, np.log(2048)), np.full(3, 8.)]
@@ -77,9 +87,9 @@ def fit_absorption(distance, observed, shared, alpha):
     def residual(x):
         error = absorption_curve(distance, unpack(x), alpha) - observed
         log_exponents = np.log(x[6:])
-        penalty = np.sqrt(PENALTIES[ABLATION] / len(log_exponents))
+        shrinkage = np.sqrt(penalty / len(log_exponents))
         return np.r_[error.ravel() / np.sqrt(error.size),
-                     penalty * (log_exponents - log_exponents.mean())]
+                     shrinkage * (log_exponents - log_exponents.mean())]
 
     solution = least_squares(residual, initial, bounds=(lower, upper),
                              ftol=1e-11, xtol=1e-11, gtol=1e-11)
@@ -93,7 +103,8 @@ def fit_models(distance, observed, alpha):
     initial = fits["shared_g"]
     fits.update({name: pooled_fit(distance, observed, initial, penalty)
                  for name, penalty in PENALTIES.items()})
-    fits[ABSORPTION] = fit_absorption(distance, observed, initial, alpha)
+    for model, (ablation, measure) in ABSORPTION_MODELS.items():
+        fits[model] = fit_absorption(distance, observed, initial, alpha[measure], PENALTIES[ablation])
     return fits
 
 
@@ -101,8 +112,9 @@ def evaluate(model, prediction_distances, training_distances, fit, alpha):
     if model == "isotonic":
         return np.stack([np.interp(np.log(prediction_distances),
                                    np.log(training_distances), row) for row in fit])
-    if model == ABSORPTION:
-        return absorption_curve(prediction_distances, fit, alpha)
+    if model in ABSORPTION_MODELS:
+        _, measure = ABSORPTION_MODELS[model]
+        return absorption_curve(prediction_distances, fit, alpha[measure])
     return physical.curve(prediction_distances, fit)
 
 
@@ -147,7 +159,9 @@ def validation(observed, alpha):
                                               model=model, metric=name, estimate=values[0, k],
                                               low95=low, high95=high))
                 for k, model in enumerate(MODELS[1:], 1):
-                    references = (0, MODELS.index(ABLATION)) if model == ABSORPTION else (0,)
+                    references = [0]
+                    if model in ABSORPTION_MODELS:
+                        references.append(MODELS.index(ABSORPTION_MODELS[model][0]))
                     for reference in references:
                         difference = rmse[:, k] - rmse[:, reference]
                         low, high = np.quantile(difference[1:], [.025, .975])
@@ -163,10 +177,9 @@ def select_production(scores, comparisons):
         index="model", columns="design", values="high95"
     )
     qualifies = (versus_iso < 0).all(axis=1)
-    absorption_gain = pooled.query(
-        "design == 'forward' and model == @ABSORPTION and reference == @ABLATION"
-    ).high95.item()
-    qualifies.loc[ABSORPTION] &= absorption_gain < 0
+    forward = pooled.query("design == 'forward'").set_index(["model", "reference"])
+    for model, (ablation, _) in ABSORPTION_MODELS.items():
+        qualifies.loc[model] &= forward.loc[(model, ablation), "high95"] < 0
     rows = scores.query("scope == 'primary' and call == 'pooled' and metric == 'rmse'")
     rmse = rows.pivot(index="model", columns="design", values="estimate").reindex(MODELS)
     rmse["eligible_replacement"] = qualifies.reindex(MODELS, fill_value=False)
