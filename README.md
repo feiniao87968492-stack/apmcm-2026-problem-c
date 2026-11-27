@@ -89,3 +89,5 @@ The seven figures in `results/` each have a same-name CSV and JSON metadata file
 - [Q4 draw rematching and consecutive radii](docs/q4-prefix-rematching.md)
 
 - [Cost-sensitive Q1-to-Q4 monitoring](docs/q1-q4-cost.md)
+
+- [Q1-to-Q4 monitoring without acoustic features](docs/q1-q4-prevalence.md)

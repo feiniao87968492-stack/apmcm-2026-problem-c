@@ -246,3 +246,7 @@ The five radii, grid counts, pairwise differences and retained playback ranges a
 ## Q1-to-Q4 cost-sensitive monitoring
 
 [Fixed-scenario decision costs, probability scores and paired intervals](../docs/q1-q4-cost.md) support the decision to retain the archived monitoring conclusion under the frozen improvement rule.
+
+## Monitoring without acoustic features
+
+[Fold prevalence, fixed-action references and paired costs](../docs/q1-q4-prevalence.md) support the monitoring comparison under the archived gross scenarios.
