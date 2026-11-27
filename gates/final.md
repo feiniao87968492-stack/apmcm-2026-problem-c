@@ -261,3 +261,7 @@ The protocol froze at 5bdf5ae. A detached checkout of 52116da reproduced both CS
 ## Q4 response sensitivity verification
 
 The protocol froze at 15f0724. A detached checkout of 8e6c959 reproduced the result CSV byte-for-byte with the response-sensitivity flag. Independent signed-score inversion verified all eight rows, all fixed-level, boundary and probe counts, and the archived 6 dB prefix endpoints. [Results](../docs/q4-response-sensitivity.md) · [Review](../reviews/q4-response-sensitivity-verification.md)
+
+## Appendix 5 matched-power noise verification
+
+The protocol froze at b2080f4. A detached checkout of 4fad996 regenerated all four CSVs byte-for-byte using the main entry point with the Appendix 5 noise flag. Independent code recomputed all 10,800 mixtures and verified matched SNR, noiseless similarities, 216 summary rows, 144 paired contrasts and 63 rank frequencies. The outputs describe the three recordings under the simulated spectra. [Results and reproduction command](../docs/appendix5-noise.md) · [Independent review](../reviews/appendix5-noise-verification.md)
