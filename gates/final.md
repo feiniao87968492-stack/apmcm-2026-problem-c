@@ -390,3 +390,10 @@ Two independent two-pass builds from Git archives of 252c104 used SOURCE_DATE_EP
 Source commit b26bd5d adds the three Q4 context listings alongside the existing context-exposure listing. The 72 listing paths match all 72 Git-tracked Python paths exactly. A comparison against 7b0b621 confirms that the analysis text and numbers are preserved. Poppler renders of page 17 and pages 164–169 confirm legibility. The anonymous PDF contains 182 pages, with the body and references on pages 3–20.
 
 Two separate Git archive builds each ran two pdflatex passes with SOURCE_DATE_EPOCH=1795731780 and produced the same PDF SHA-256, 93a74ff2c7133088d791d8ad17b0b39a3780e9a32064eeafad33d8f5626aad0e. [Independent manuscript review](../reviews/source-appendix-repair-review.md) · [Anonymous PDF](../paper/main.pdf)
+
+
+## Q3/Q4 playback observation duration
+
+The design froze at 2296534. The 60 s protocol was verified from Methods and Table 1 of the source study. The analysis regenerated both tables byte-for-byte from the contest attachments in a clean Git archive. Independent raw-pair replay agreed with all eight summary rows and all 96 date omissions. The 30 s window retained all recorded first events in matched pairs and missed one late control event across all pairs. [Results and reproduction](../docs/observation-window.md) · [Independent numerical review](../reviews/observation-window-verification.md)
+
+Separate two-pass builds from Git archives of 80e498a with SOURCE_DATE_EPOCH=1795731780 produced the same anonymous PDF. SHA-256 is e9780ad22d18f88b3ae618d603147895509a0ee3df6fff0ac2eb72ba40ed6711. The result appears on page 11, the body and references occupy pages 3–20 of 183, and the appendix lists all 73 tracked Python files. [Independent manuscript review](../reviews/observation-window-paper-review.md) · [Anonymous PDF](../paper/main.pdf)
