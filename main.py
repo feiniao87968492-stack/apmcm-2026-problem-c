@@ -90,7 +90,14 @@ def main():
                           help="Benchmark archived monitoring rules against training prevalence")
     analyses.add_argument("--q4-score-review", action="store_true",
                           help="Compare score-guided Q4 manual review queues")
+    analyses.add_argument("--q2-forward", action="store_true",
+                          help="Validate Q2 prediction from strictly shorter distances")
     args = parser.parse_args()
+    if args.q2_forward:
+        from q2_forward import write
+
+        write(args.data, args.output)
+        return
     if args.q4_score_review:
         from q4_score_review import write
 
