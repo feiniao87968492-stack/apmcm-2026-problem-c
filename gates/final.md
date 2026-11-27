@@ -345,3 +345,9 @@ Two independent archive builds of 217fe02 produced the same anonymous PDF after 
 ## Q2 partial pooling of attenuation exponents
 
 The specification froze at 61405b4 and the comparison ran at ae5f218. From a Git archive, the main entry point reproduced all four partial-pooling CSVs and all four prior forward-validation CSVs byte-for-byte. Independent analytic-Jacobian fits verified the holdouts, paired intervals, fitted parameters and radii. The primary penalty met the pooled forward comparison criterion against the shared fit alone. [Results and reproduction](../docs/q2-partial-pooling.md) · [Independent review](../reviews/q2-partial-pooling-verification.md)
+
+## Q4 intermittent noise through 100 m
+
+The specification froze at 8eeb687 and the comparison ran at 14277df. The main entry point reproduced both CSVs byte-for-byte from a Git archive. Independent analytic inversion verified all 30 checkpoints, six limits, archived endpoints and the equal-mean-power ordering. [Results and reproduction](../docs/q4-intermittent-noise.md) · [Independent numerical review](../reviews/q4-intermittent-noise-verification.md)
+
+Two independent Git archive builds of 7e4dfb2 produced identical PDFs after two pdflatex passes with SOURCE_DATE_EPOCH=1795731780. SHA-256 is e46cb528c291fcc546d4a3fa1bdbd813c06972a59f0b0883bd219f0f33229b13. Body and references occupy pages 3 through 20 of 174. Team and author fields are blank. [Independent manuscript review](../reviews/q4-intermittent-noise-paper-review.md) · [PDF](../paper/main.pdf)
