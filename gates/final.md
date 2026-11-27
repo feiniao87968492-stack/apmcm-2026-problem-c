@@ -376,3 +376,10 @@ Two independent two-pass builds from Git archives of 1e8ab6a used SOURCE_DATE_EP
 ## Q4 independent full-fit Monte Carlo follow-up
 
 The design froze at 4a20fd4. A clean archive of e777db8 ran the full fixed batch from the local contest attachments. The published joint profiles total 38,400 pairs, with 4,800 in each of eight blocks. The profile-only command regenerated the vertex and bounds tables byte-for-byte. Replaying the original defaults reproduced every indexed indicator in both archived fits. The independent calculation verified the profile totals, vertex statistics, resampling band and archive comparison. The 38,400-draw minimum interval still crosses 80%, so the frozen page 17 update criterion was not met. [Results and reproduction](../docs/q4-context-exposure.md#independent-full-fit-simulation-follow-up) · [Independent verification](../reviews/q4-context-followup-verification.md)
+
+
+## Q4 bounded-context behavioral noise sensitivity
+
+The design froze at 3192ea6. A clean Git archive of d140d12 regenerated both tables from the contest attachments using the archived paired draws. At exponent one the analysis verified every indexed context and standardized indicator as well as both bounded extrema. Independent direct scoring verified all ten checkpoint rows and four inclusive crossings. The union-deleted fit changes from all-pass under acoustic loss alone to all-fail under the archived coupling. [Results and reproduction](../docs/q4-context-exposure.md#sensitivity-to-behavioral-loss-under-6-db) · [Independent numerical review](../reviews/q4-context-lambda-verification.md)
+
+Two independent two-pass builds from Git archives of 252c104 used SOURCE_DATE_EPOCH=1795731780. PDF SHA-256 is 3dd232a0a98f01b42b748dce57c4e8d0a7f6c2ef3db7ad21bc4ceac404ef1722. The body and references occupy pages 3 through 20 of 177, with the revision on page 17 and blank team and author fields. [Independent manuscript review](../reviews/q4-context-lambda-paper-review.md) · [PDF](../paper/main.pdf)
