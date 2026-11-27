@@ -28,7 +28,7 @@ def predict(targets):
     return predictions
 
 
-def summarize(observed, predictions):
+def summarize(observed, predictions, *, models=MODELS):
     residual = predictions - observed[:, :, -3:][:, None]
     rows, contrasts = [], []
     selections = [(call, [i]) for i, call in enumerate(q2.CALLS)] + [
@@ -41,19 +41,19 @@ def summarize(observed, predictions):
             means = selected.mean(axis=(2, 3))
             rmses = np.sqrt((selected**2).mean(axis=(2, 3)))
             scope = {"call": call, "target_m": target, "cells": len(call_indices) * len(target_indices)}
-            for i, model in enumerate(MODELS):
+            for i, model in enumerate(models):
                 rows.append({**scope, "model": model, "mean_error": means[0, i], "rmse": rmses[0, i]})
-            for i, j in combinations(range(len(MODELS)), 2):
+            for i, j in combinations(range(len(models)), 2):
                 for metric, values in (("rmse", rmses), ("mean_error", means)):
                     delta = values[:, j] - values[:, i]
                     lo, hi = np.quantile(delta[1:], [.025, .975])
-                    contrasts.append({**scope, "model": MODELS[j], "reference": MODELS[i],
+                    contrasts.append({**scope, "model": models[j], "reference": models[i],
                                       "metric": metric, "difference": delta[0],
                                       "low95": lo, "high95": hi, "draws": len(delta) - 1})
     return pd.DataFrame(rows), pd.DataFrame(contrasts)
 
 
-def write(data, output):
+def observed_and_support(data):
     tables = q2.load_tables(data)
     rng = np.random.default_rng(SEED)
     observed, support = [], []
@@ -68,7 +68,11 @@ def write(data, output):
                 column = values[:, q2.KNOTS == distance]
                 support.append({"call": call, "representation": metric, "distance_m": distance,
                                 "available": np.isfinite(column).sum(), "rows": len(column)})
-    observed = np.stack(observed, axis=1)
+    return np.stack(observed, axis=1), support
+
+
+def write(data, output):
+    observed, support = observed_and_support(data)
     predictions = np.stack([predict(draw) for draw in observed])
     cells = []
     for i, model in enumerate(MODELS):

@@ -92,7 +92,14 @@ def main():
                           help="Compare score-guided Q4 manual review queues")
     analyses.add_argument("--q2-forward", action="store_true",
                           help="Validate Q2 prediction from strictly shorter distances")
+    analyses.add_argument("--q2-partial-pooling", action="store_true",
+                          help="Compare fixed attenuation exponent pooling penalties")
     args = parser.parse_args()
+    if args.q2_partial_pooling:
+        from q2_partial_pooling import write
+
+        write(args.data, args.output, Path(__file__).resolve().parent / "results")
+        return
     if args.q2_forward:
         from q2_forward import write
 
