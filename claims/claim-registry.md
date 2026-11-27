@@ -266,3 +266,7 @@ The five radii, grid counts, pairwise differences and retained playback ranges a
 ## Q4 intermittent noise
 
 [Checkpoint results and boundary brackets](../docs/q4-intermittent-noise.md) support the comparison of three hypothetical opportunity and power summaries.
+
+## Q4 context-dependent opportunity exposure
+
+[Context counts, allocations, limits and local support](../docs/q4-context-exposure.md) support the modeled comparison of uniform and extremal exposure across contexts.
