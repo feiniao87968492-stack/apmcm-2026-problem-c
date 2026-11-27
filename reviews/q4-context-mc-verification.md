@@ -1,0 +1,14 @@
+# Independent verification of Q4 bounded-context Monte Carlo precision
+
+**Pass.** I recomputed all 12 vertex means, 12 Monte Carlo standard errors, 72 covariance entries, and both simultaneous bands directly from the 4,800 indexed indicator rows. Each context and standardized archive-check column sum matches the existing clean and +6 dB count, and the standardized totals also match the intermittent-noise archive. Every noisy pass is paired with a clean pass for that context and fit. The sharp point bounds agree exactly with the published half-exposure allocation bounds rescaled to the 30–70% context interval. [Frozen design](../docs/model-spec.md#q4-bounded-context-monte-carlo-precision-freeze) · [Indexed indicators](../results/q4_context_mc_indicators.csv) · [Archived counts](../results/q4_context_exposure_counts.csv)
+
+I independently enumerated the six vertices by fixing two shares on opposite faces of the box, solving for the remaining share, then reflecting through the half-exposure center. Fixing two shares on the same side is infeasible because no single context outweighs the other two combined. I computed each draw–vertex score in integer units of 1/1,390. For the resulting integer score matrix \(X\) and column sums \(T\), the covariance of vertex means is \([4{,}800 X^\mathsf{T}X - TT^\mathsf{T}]/[4{,}800^2(4{,}800-1)1{,}390^2]\). I used its diagonal to verify the standard errors. The largest absolute discrepancies were \(2.54\times10^{-14}\) for a vertex mean and \(1.87\times10^{-20}\) for a covariance entry. [Vertex estimates and covariance](../results/q4_context_mc_vertices.csv)
+
+For each of 10,000 resamples from PCG64 at seed 20261205, I converted the 4,800 index draws into multiplicities and multiplied those by the integer score matrix, sharing the same multiplicities across fits and vertices. I centered by the observed sums and took the largest absolute deviation across each fit's six vertices. Interpolating the sorted deviations at zero-based rank 9,499.05 gave exact half-widths of 70,773/11,120,000 and 72,789/11,120,000 for the full and union-deleted fits, respectively. Both agree with the published half-widths to within \(2\times10^{-15}\) on the proportion scale. Projecting the vertex intervals gives the bounds below. [Projected bands](../results/q4_context_mc_bounds.csv)
+
+| Fit | Vertex SE range (percentage points) | Minimum projected band | Maximum projected band | Inclusive 80% decision |
+|---|---:|---:|---:|---|
+| Full | 0.281713–0.311505 | 79.707497%–80.980393% | 83.173984%–84.446879% | Unresolved |
+| Union-deleted | 0.295871–0.322553 | 70.151283%–71.460438% | 76.124544%–77.433699% | All allocations fail |
+
+The full-fit minimum band crosses 80%, triggering the frozen manuscript rule. These bands measure finite-draw simulation error conditional on the observed data, model and exposure scenario.

@@ -364,3 +364,10 @@ Independent two-pass builds from Git archives of 9681ef2 with SOURCE_DATE_EPOCH=
 The specification froze at 8c86448. Running the exact rational arithmetic from the Git archive of 88bd5a3 reproduced the six displacement checks, both crossings and their attaining allocations. Independent vertex enumeration verified the bounds and reconciled the archived endpoints. [Results and reproduction](../docs/q4-context-exposure.md#bounded-context-imbalance-at-50-overall-exposure) · [Independent numerical review](../reviews/q4-context-imbalance-verification.md)
 
 Independent two-pass builds from Git archives of 5c39d37 with SOURCE_DATE_EPOCH=1795731780 produced identical anonymous PDFs. SHA-256 is ec7d7a37265c424e7bd5e26a16d9917365e2e4ed9e13d8e1d397c660d0f793d4. The body and references occupy pages 3 through 20 of 176. Team and author fields are blank. [Independent manuscript review](../reviews/q4-context-imbalance-paper-review.md) · [PDF](../paper/main.pdf)
+
+
+## Q4 bounded-context Monte Carlo precision
+
+The design froze at d7f111b. Running the main entry point from an archive of 1b69a6f regenerated all three published CSVs byte-for-byte from the local contest attachments. Reusing the retained indicators through the earlier context writer also reproduced all four earlier context tables byte-for-byte. The independent integer-score calculation verified archived counts, vertex scores, covariance, standard errors and both centered bootstrap bands. The full-fit all-pass decision is unresolved at the available simulation precision. The union-deleted all-fail decision survives. [Results and reproduction](../docs/q4-context-exposure.md#monte-carlo-precision-at-3070-context-exposure) · [Independent numerical review](../reviews/q4-context-mc-verification.md)
+
+Two independent two-pass builds from Git archives of 1e8ab6a used SOURCE_DATE_EPOCH=1795731780. PDF SHA-256 is 4eaa49fc414a57397ec99a3d4577d919dd4f3d42acd380a47a3ecae0cc33b3f8. The revision is on page 17, the body and references occupy pages 3 through 20 of 177, and team and author fields are blank. [Independent manuscript review](../reviews/q4-context-mc-paper-review.md) · [PDF](../paper/main.pdf)
