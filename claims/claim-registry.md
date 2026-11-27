@@ -210,3 +210,7 @@ The five radii, grid counts, pairwise differences and retained playback ranges a
 ## Supplementary 2 background audio
 
 [Timestamped observations and audio-window checks](../docs/data-audit.md#supplementary-2-background-audio) and the [independent video audit](../reviews/appendix2-background-verification.md) support the background eligibility decision and the stated calibration gaps.
+
+## Q1 class-prior decisions
+
+[Holdout predictions and training priors](../results/q1_class_prior_predictions.csv) and [grouped metrics and decisions](../results/q1_class_prior_metrics.csv) support the class-prior comparison and the decision to retain the original logistic rule.
