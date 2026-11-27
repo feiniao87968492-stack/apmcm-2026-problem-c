@@ -1,0 +1,14 @@
+# Independent verification of Q2 forward-distance validation
+
+**Pass.** I reconstructed the available-case means directly from Data03–Data11 and checked the 64, 128 and 256 m predictions trained through 32, 64 and 128 m, respectively. The held-out target contributed to scoring only. The independent implementation reads each representation file separately, fits an isotonic regression to each call's shorter-distance means, and predicts with its last fitted value. For the three parametric variants it reimplements the bounded least-squares fits with the released parameterization, initial values, bounds and solver settings. [Frozen specification](../docs/model-spec.md#q2-forward-distance-validation-freeze) · [Predictions](../results/q2_forward_holdouts.csv)
+
+I recreated the 300 wide-row draws from NumPy seed 20261127. Rows were sampled independently per representation with all distance columns retained. The original RNG sequence includes aligned-row sensitivity draws between calls with matching missingness masks, which I accounted for before generating the next call's independent draws. Each fit and its held-out comparison use means recomputed from the same bootstrap draw. All 36 holdout rows, 27 support rows, 64 score rows and 192 contrast rows agree with production commit f8c8617. The point holdout and paired contrast values agree within 1e-15. Each representation has 190 of 300 available two-voice rows at 128 m and 210 at 256 m. [Support](../results/q2_forward_support.csv) · [Scores](../results/q2_forward_scores.csv) · [Paired differences](../results/q2_forward_contrasts.csv)
+
+| Pooled distance target | Isotonic carry-forward | Fixed exponent | Shared exponent | Separate exponents |
+|---|---:|---:|---:|---:|
+| 64 m | 0.07619 | 0.14537 | 0.12492 | 0.30479 |
+| 128 m | 0.18467 | 0.06889 | 0.08434 | 0.10586 |
+| 256 m | 0.29889 | 0.14862 | 0.13467 | 0.11126 |
+| 128 and 256 m | 0.24843 | 0.11583 | 0.11236 | 0.10859 |
+
+Separate minus shared pooled RMSE is −0.00376 for the primary 128/256 m comparison, with a paired percentile interval of [−0.00883, 0.00355]. The interval includes zero, so the earlier interior-distance advantage has no corresponding advantage under the frozen forward comparison rule. Separate exponents do improve on fixed exponents for this primary pool (paired interval [−0.01160, −0.00184]). At 64 m the separate-exponent fit's flat-call signed error is −0.50113, illustrating the sensitivity to training distance. At 256 m the separate-exponent two-voice prediction underestimates the available-case target by 0.19066. These results apply to forward prediction over the measured steps. The paired intervals condition on available rows and the wide-row resampling assumption given unknown acquisition groups. [Interior validation](../results/q2_shape_rank_rmse.csv) · [Forward validation](../results/q2_forward_contrasts.csv)
