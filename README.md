@@ -83,3 +83,5 @@ The seven figures in `results/` each have a same-name CSV and JSON metadata file
 - [Q3 bounds on first-playback responses](docs/q3-first-playback.md)
 
 - [Q3 playback carryover sensitivity](docs/q3-carryover.md)
+
+- [Q4 dependence sensitivity under draw rematching](docs/q4-draw-rematching.md)

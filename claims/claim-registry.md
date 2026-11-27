@@ -234,3 +234,7 @@ The five radii, grid counts, pairwise differences and retained playback ranges a
 ## Q3 playback carryover sensitivity
 
 [Budget-by-budget integer endpoints and witnesses](../results/q3_carryover_bounds.csv) and [scenario summaries](../results/q3_carryover_summary.csv) support the contrasts under hypothetical second-response corrections.
+
+## Q4 draw rematching
+
+[Endpoint counts](../results/q4_draw_rematching.csv) and [attaining permutations](../results/q4_draw_rematching_witnesses.csv) support the dependence sensitivity at fixed empirical draw marginals.
