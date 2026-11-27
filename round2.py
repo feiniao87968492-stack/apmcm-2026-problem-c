@@ -16,6 +16,15 @@ def interval(values):
     return np.quantile(values, [.025, .975], axis=0)
 
 
+def q1_boost_estimator(seed):
+    return XGBClassifier(
+        n_estimators=100, max_depth=2, learning_rate=.05, min_child_weight=3,
+        reg_lambda=1, reg_alpha=0, subsample=1, colsample_bytree=1,
+        tree_method="hist", device="cpu", objective="multi:softprob",
+        n_jobs=1, random_state=seed,
+    )
+
+
 def q1_boost(data, output, seed, n_boot):
     oof = pd.read_csv(output / "q1_oof_predictions.csv")
     frame = pd.read_csv(next(data.glob("Data01*.csv")))
@@ -25,12 +34,7 @@ def q1_boost(data, output, seed, n_boot):
     folds = oof.fold.to_numpy()
     for fold in np.unique(folds):
         test = folds == fold
-        model = XGBClassifier(
-            n_estimators=100, max_depth=2, learning_rate=.05, min_child_weight=3,
-            reg_lambda=1, reg_alpha=0, subsample=1, colsample_bytree=1,
-            tree_method="hist", device="cpu", objective="multi:softprob",
-            n_jobs=1, random_state=seed,
-        )
+        model = q1_boost_estimator(seed)
         model.fit(values[~test], labels[~test])
         predicted[test] = model.predict(values[test])
     oof["xgboost"] = np.asarray(q1.CALLS)[predicted]

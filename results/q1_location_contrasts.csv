@@ -1,0 +1,13 @@
+candidate,reference,metric,difference,low,high,draws
+xgboost_original,logistic_original,macro_f1,0.052672191508058575,-0.029745008530961906,0.11185992630687902,300
+xgboost_original,logistic_original,tv_correct,1.0,-2.0,5.0,300
+xgboost_original,logistic_original,tv_false_positive,4.0,0.0,9.0,300
+xgboost_delete,logistic_delete,macro_f1,0.03142185203554204,-0.03886659034181404,0.08096454732337481,300
+xgboost_delete,logistic_delete,tv_correct,0.0,-3.0,3.0,300
+xgboost_delete,logistic_delete,tv_false_positive,-1.0,-4.5249999999999995,2.0,300
+logistic_delete,logistic_original,macro_f1,0.03751208009693352,0.00016778434376260598,0.07460064974356745,300
+logistic_delete,logistic_original,tv_correct,1.0,0.0,3.0,300
+logistic_delete,logistic_original,tv_false_positive,2.0,0.0,5.0,300
+xgboost_delete,xgboost_original,macro_f1,0.016261740624416987,-0.01606251259029035,0.04592781426834961,300
+xgboost_delete,xgboost_original,tv_correct,0.0,0.0,0.0,300
+xgboost_delete,xgboost_original,tv_false_positive,-3.0,-6.0,0.0,300

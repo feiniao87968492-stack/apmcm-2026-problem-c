@@ -1,0 +1,5 @@
+variant,macro_f1,tv_correct,tv_false_positive
+logistic_original,0.32292152423910986,2.0,6.0
+xgboost_original,0.37559371574716843,3.0,10.0
+logistic_delete,0.3604336043360434,3.0,8.0
+xgboost_delete,0.3918554563715854,3.0,7.0

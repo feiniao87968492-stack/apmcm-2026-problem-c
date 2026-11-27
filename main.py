@@ -70,7 +70,14 @@ def main():
                           help="Simulate matched-power noise on the Supplementary 5 WAVs")
     analyses.add_argument("--q1-class-prior", action="store_true",
                           help="Compare Q1 class-prior rules on the frozen grouped folds")
+    analyses.add_argument("--q1-location", action="store_true",
+                          help="Run the frozen Q1 recording-location comparison")
     args = parser.parse_args()
+    if args.q1_location:
+        from q1_location import run
+
+        run(args.data, args.output, Path(__file__).resolve().parent / "results")
+        return
     if args.q1_class_prior:
         from q1_class_prior import run
 

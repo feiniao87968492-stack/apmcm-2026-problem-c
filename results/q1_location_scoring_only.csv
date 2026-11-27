@@ -1,0 +1,7 @@
+scoring_rows,model,macro_f1
+all,logistic,0.31440832146812214
+all,random_forest,0.3698009487833232
+all,xgboost,0.3833949199374147
+FalseBay,logistic,0.32292152423910986
+FalseBay,random_forest,0.3785659801678108
+FalseBay,xgboost,0.37559371574716843
