@@ -56,6 +56,20 @@ Table 3. Selected rank-one model minus the full multinomial. Ordinary intervals 
 \end{center}
 The ordinary log-loss gain and Brier upper limit pass the frozen criteria. The tail point differences satisfy the limits of $+0.10$ log loss and $+0.02$ Brier. The selected model scores 1.1010 and 0.1636 overall. The full comparison includes the call-aware hurdle and nested pooling. Their tradeoffs and predictions for each of the eight response masks at 50, 100 and 150 m are available with the local support counts. \coreevidence{docs/core-q3.md}{Model scores, fold coverage and predictions}.
 
+Across the 278 held-out trials, the selected tilt changes log loss by $-0.0241$ (paired 95\% interval $[-0.0777,0.0383]$) and Brier by $-0.0142$ ($[-0.0318,0.0049]$) versus stimulus frequencies. The incumbent comparison supports adoption for the stated decision rule. Uncertainty against the simpler stimulus model is larger. For the selected fit, the two-voice natural/control probabilities of any response at 50, 100 and 150 m are 0.658/0.117, 0.577/0.096 and 0.529/0.085. The same values apply to flat and modulated calls at matched covariates.
+\begin{center}\small
+\begin{tabular}{lrrrr}
+\toprule
+Condition at 100 m & No response & Vocal only & Head and vocal only & All three\\
+\midrule
+Natural & 0.423 & 0.206 & 0.165 & 0.070\\
+Control & 0.904 & 0.026 & 0.001 & 0.001\\
+\bottomrule
+\end{tabular}\\[3pt]
+Selected mask probabilities at eight birds after standardizing context. The evidence table gives all eight probabilities.
+\end{center}
+
+
 The recorded time analysis retains zero onsets and right-censors nonresponses at 60 s. The Weibull model uses an arm-specific zero atom and a monotone distance effect on positive waiting times. Its earliest-event log loss and integrated Brier are 1.0195 and 0.1860 versus 0.8557 and 0.1765 for the stimulus-only model. Neither the discrete hazard nor the finite-window model meets the timing adoption criterion. The selected benchmark uses stimulus alone. For the planning calculation we multiply the selected distance-specific 60 s risk by the arm-specific conditional timing CDF. This factorization scores 1.1312 in censored log loss and 0.1633 in integrated Brier in the post-selection comparison. Sparse empirical timing bins can have zero training frequency. The observed window cannot resolve perception or distinguish unobserved late events from a permanently nonresponding fraction.
 
 \par\begin{center}\begin{minipage}{.99\linewidth}\centering\includegraphics[width=\linewidth]{core_figure3.png}\\{\small Figure 3. Any-response planning curves at 100 m use factorized timing. The three component behaviors use stimulus-only distributions pooled over call type and distance.}\end{minipage}\end{center}
@@ -86,7 +100,7 @@ The planning rule requires at least 0.50 fidelity and at least 0.50 probability 
 \begin{tabular}{lrr|rrrr}
 \toprule
  & \multicolumn{2}{c}{Gross product} & \multicolumn{4}{c}{Joint rule}\\
- & Clean selected & Loss archived $\to$ selected & Clean & Loss 15 s & Loss 30 s & Loss pooled timing\\
+ & Clean selected & Loss old $\to$ new & Clean & Loss 15 s & Loss 30 s & Loss pooled\\
 \midrule
 Flat & 88.3 & 41.8 $\to$ 51.6 & 84.5 & 58.0 & 58.0 & 58.0\\
 Modulated & 134.9 & 77.2 $\to$ 79.7 & 144.0 & 77.0 & 81.5 & 107.0\\
@@ -100,6 +114,8 @@ Fidelity fails first for flat under loss and for flat and modulated in clean con
 
 
 \par\begin{center}\begin{minipage}{.99\linewidth}\centering\includegraphics[width=\linewidth]{core_figure4.png}\\{\small Figure 4. Production gross product and 30 s joint minimum in clean and hypothetical 20\% coupled-loss conditions. Reference lines show the gross and joint thresholds.}\end{minipage}\end{center}
+
+At 100 m under coupled loss, the two-voice gross score is 0.297 with both archived components. Substituting the acoustic curve alone raises it to 0.306. Substituting the behavior model alone lowers it to 0.261. The two selected components give 0.268. With the common cutoff of 0.287598, the behavior substitution explains the modeled change to failure at this distance even though the new acoustic curve improves fidelity there. This comparison isolates component changes at matched inputs. Strict validation supports the aggregate fit over the incumbent, while the two-voice tail remains sparse.
 
 \subsection{Group response and participation}
 For a group of eight birds, denote by $K$ the number of distinct birds responding and by $p$ the modeled probability that at least one responds. Since $1\le K\le8$ when the group responds, the expectation is bounded by $[p,8p]$. Both endpoints can be attained by fixing the number of responders within responding groups. If individual probabilities are identical and responses independent, $p=1-(1-\pi)^8$ and $E[K]=8\pi$. A separate sensitivity assigns a conditional mean share $s$ of the eight birds to responding groups, giving $E[K]=8sp$. The group-level data identify $p$ under the fitted model. Individual independence and $s$ enter as assumptions.
@@ -119,6 +135,19 @@ Table 6. Expected numbers of responding birds for eight-bird groups. The selecte
 \subsection{Noise spectrum and receiver measurements}
 The three Appendix 5 recordings contribute one measured example each, with spectral peaks of 978, 792 and 845 Hz in flat, modulated and two-voice order. We add synthetic broadband noise and matched-power noise in the 100--500 Hz and above-500--3000 Hz bands, with 200 paired realizations per clip and SNR. At 0 dB input SNR, the higher band lowers the mean equal-weight composite correlation by 0.041--0.052 relative to broadband noise. The lower band reduces the same composite by 0.028--0.036. Spectrogram and spectrum losses account for most of the higher-band gap. The experiment varies noise spectrum at fixed input power within each clip. The three examples provide a mechanism illustration with limited coverage of natural variability. \coreevidence{docs/appendix5-noise.md}{Waveform noise experiment}.
 
+\begin{center}\small
+\begin{tabular}{lrrr}
+\toprule
+Example & Peak (Hz) & 100--500 Hz & Above 500--3000 Hz\\
+\midrule
+Flat & 978 & $-0.029$ [$-0.040,-0.015$] & $-0.052$ [$-0.058,-0.046$]\\
+Modulated & 792 & $-0.028$ [$-0.040,-0.016$] & $-0.041$ [$-0.047,-0.035$]\\
+Two-voice & 845 & $-0.036$ [$-0.049,-0.023$] & $-0.050$ [$-0.057,-0.045$]\\
+\bottomrule
+\end{tabular}\\[3pt]
+Composite correlation change relative to broadband noise at 0 dB SNR. Brackets show the archived empirical spread over paired realizations.
+\end{center}
+
 Archived uncertainty scenarios also identify 100 m as a useful calibration target. At a hypothetical 6 dB increase, the archived two-voice net score meets the consecutive four-shape rule in 94.5\% of full-fit draws with acoustic loss alone and 67.3\% with proportional reduction of positive response excess. This comparison uses the original acoustic shapes, response model and reference. \coreevidence{docs/q4-response-sensitivity.md}{Archived noise and response sensitivities}.
 
 \subsection{Pilot allocation and monitoring review}
@@ -131,11 +160,13 @@ Plan & Flat & Modulated & Two-voice & Fisher & Sandwich\\
 \midrule
 Uniform & 10,10,10,10 & 10,10,10,10 & 10,10,10,10 & .500 & .513\\
 Constrained Fisher & 31,0,0,0 & 14,12,10,4 & 21,0,10,18 & .419 & .432\\
+Midpoint greedy & 34,0,0,0 & 12,11,10,5 & 20,0,10,18 & & .434\\
+Across-scenario greedy & 36,0,0,0 & 12,11,10,3 & 23,0,10,15 & & .441\\
 \bottomrule
 \end{tabular}\\[3pt]
 Table 7. Pair counts at 20, 50, 100 and 150 m within each call type and largest relative variance.
 \end{center}
-\coreevidence{docs/q4-fisher.md}{Fisher design} and \coreevidence{docs/q4-paired-planning.md}{paired sandwich sensitivity} provide the cell and margin details.
+\coreevidence{docs/q4-fisher.md}{Fisher design} and \coreevidence{docs/q4-paired-planning.md}{paired sandwich sensitivity} provide the cell and margin details. The constrained plan lowers the two focal two-voice standard errors by 8.2\% and 8.4\%, while the modulated standard error rises by 0.5\%. The sandwich analysis uses log odds ratios 0, 0.464, 1.031 and 1.597 with the fitted arm margins held fixed. Both objectives favor measuring some groups at 20 m, where the additional data also inform the clean cutoffs.
 
 In the archived 100 m, 20\% coupled-loss labeling scenario, the passing set contains two-voice alone. Among 105 False Bay holdouts, reviewing 50 recordings ranked by estimated classification error leaves zero false passes and eight missed passes. Uniform random review leaves expected counts of 3.14 and 9.95, with marginal central 95\% random-allocation ranges of 1--5 and 6--14. Review is assumed to correct selected labels perfectly. The comparisons condition on the archived logistic predictions and modeled scenario labels. \coreevidence{docs/q4-review-budget.md}{Review budget and comparator}.
 }
