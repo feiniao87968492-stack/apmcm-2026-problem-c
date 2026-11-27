@@ -75,3 +75,5 @@ The seven figures in `results/` each have a same-name CSV and JSON metadata file
 - [Q1 class-prior decision comparison](docs/q1-class-prior.md)
 
 - [Q1 recording-location sensitivity](docs/q1-location.md)
+
+- [Q1 label errors in Q4 monitoring](docs/q1-q4-labels.md)

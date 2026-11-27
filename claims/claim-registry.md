@@ -218,3 +218,7 @@ The five radii, grid counts, pairwise differences and retained playback ranges a
 ## Q1 recording-location sensitivity
 
 [Paired site-restricted results and archived scoring-only ranks](../docs/q1-location.md) support the description of location sensitivity under the original recording-group folds.
+
+## Q1 label errors in Q4 monitoring
+
+[Row-normalized confusions](../results/q1_q4_label_confusion.csv) and [fixed-curve monitoring scenarios](../results/q1_q4_label_monitoring.csv) support the score biases and threshold errors conditional on transferring FalseBay holdout confusions.
