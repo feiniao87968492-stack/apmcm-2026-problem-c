@@ -16,3 +16,55 @@ The field paper lists the Zenodo concept DOI 10.5281/zenodo.21376648 for underly
 The field paper reports broadcast levels of 82–86 dB SPL at 1 m for the marine playback trials and 84 dB SPL at 1 m for the dam propagation experiment. Data02 records the trial identifiers, playback tracks, distances and responses. The deposit lacks background sound levels linked to those trials and lacks a calibrated recording series from which to reconstruct them. [Field methods](https://doi.org/10.12688/openreseurope.24618.1) · [Data02 and example media](https://zenodo.org/records/21376649)
 
 Recovering the missing 128 m propagation correlations would require the original 1 m and 128 m recordings or the omitted correlation values, with the calls and repetitions identified. The deposit supplies the processed correlation tables. The prioritization analysis measures the conditional benefit if those observations become available. [Recovery analysis](recovery-priority.md)
+
+## Supplementary 2 background audio
+
+The example playback MP4 (SHA-256 `77a3450fa8070503035f50002913716270526de7c309bb4b486c166609192586`) contains 44.928 s of continuous decoded stereo AAC at 48 kHz. Times below are relative to the start of the file. Channel levels are dBFS, relative to the digital recording's full scale.
+
+| Time (s) | Observation | Use as background |
+|---|---|---|
+| 1.10–2.45 | Low-level pre-playback candidate between low-frequency transients near 0.8 and 2.6 s. Left/right RMS is −41.06/−39.76 dBFS. The independent reviewer identified a similar interval (1.25–2.45 s). | Source uncertain. The 1.35 s duration can fit the longest Supplementary 5 example (1.21125 s). |
+| 3.90–4.50 | Low-level pre-playback candidate at −41.57/−40.10 dBFS. The first sampled playback caption appears at 5.0 s. | Source uncertain and too short for the longest example. |
+| 5.60–6.00, 8.05–8.45, 10.75–11.15 | Strong harmonic bursts align with the playback phases. Left-channel RMS is −13.58, −13.60 and −14.26 dBFS, respectively. | Playback contamination. |
+| 8.70–10.00 | A short harmonic event occurs near 8.8–9.1 s and the sampled frames at 9.0–10.0 s display RESPONSE. | Response phase with unassigned acoustic sources. |
+| 12.00–44.90 | Trial footage continues and includes intermittent peaks near 14.4, 23.3 and 34.2 s. | Source uncertain. |
+
+The main and independent audits used frames, stereo waveforms and spectra. Direct listening was unavailable. An exploratory voice-activity detector also flagged the first candidate. Such flags can arise from broadband noise and leave the presence of speech unresolved. The soundtrack has no source-isolated background channel or clean-interval annotation. Neither audit could establish a continuous segment free of playback, speech and music. The evidence supports retaining the [Supplementary 5 synthetic-noise comparison](appendix5-noise.md) as a waveform sensitivity analysis. The three-way comparison with an original background clip lacked an eligible input. [Independent audit](../reviews/appendix2-background-verification.md)
+
+Calibrating acoustic loss for Q4 requires receiver-position recordings with calibrated levels and enough annotated background-only intervals across locations or trials to estimate spectra and SNR. Calibrating the response loss separately requires natural and control playback outcomes linked to the measured noise exposure, accounting for distance, context and group size. A single example soundtrack supplies neither calibration.
+
+### Reproduce the audio-window checks
+
+With PyAV 13.1.0 and NumPy installed, set `$attachmentCsvDir` to the local `date` directory and run this from PowerShell. The 0.5 s pre-playback and playback frames and 2 s frames across the full clip can be checked in a local video player.
+
+```powershell
+$video = Get-ChildItem -LiteralPath $attachmentCsvDir -Filter 'Supplementary2*.mp4' |
+    Select-Object -First 1
+@'
+import sys
+from hashlib import sha256
+from pathlib import Path
+
+import av
+import numpy as np
+
+path = Path(sys.argv[1])
+print(sha256(path.read_bytes()).hexdigest())
+with av.open(str(path)) as container:
+    audio = list(container.decode(audio=0))
+
+rate = audio[0].sample_rate
+wave = np.concatenate([frame.to_ndarray() for frame in audio], axis=1)
+sample_starts = np.cumsum([0] + [frame.samples for frame in audio[:-1]])
+timestamps = np.array([frame.time for frame in audio])
+np.testing.assert_allclose(timestamps * rate, sample_starts, rtol=0, atol=1e-5)
+print(rate, wave.shape, wave.shape[1] / rate)
+
+windows = [(1.10, 2.45), (1.25, 2.45), (3.90, 4.50),
+           (5.60, 6.00), (8.05, 8.45), (10.75, 11.15)]
+for left, right in windows:
+    segment = wave[:, round(left * rate):round(right * rate)]
+    dbfs = 10 * np.log10(np.mean(segment ** 2, axis=1))
+    print(left, right, np.round(dbfs, 2))
+'@ | python - $video.FullName
+```

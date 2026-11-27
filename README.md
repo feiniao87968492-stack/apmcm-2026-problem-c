@@ -70,3 +70,4 @@ The seven figures in `results/` each have a same-name CSV and JSON metadata file
 - [Q4 local and matched uniform noise](docs/q4-matched-noise.md)
 - [Q4 response sensitivity at 6 dB](docs/q4-response-sensitivity.md)
 - [Appendix 5 matched-power noise simulation](docs/appendix5-noise.md)
+- [Supplementary 2 audit of candidate background audio](docs/data-audit.md#supplementary-2-background-audio)

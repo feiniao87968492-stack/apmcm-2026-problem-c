@@ -265,3 +265,7 @@ The protocol froze at 15f0724. A detached checkout of 8e6c959 reproduced the res
 ## Appendix 5 matched-power noise verification
 
 The protocol froze at b2080f4. A detached checkout of 4fad996 regenerated all four CSVs byte-for-byte using the main entry point with the Appendix 5 noise flag. Independent code recomputed all 10,800 mixtures and verified matched SNR, noiseless similarities, 216 summary rows, 144 paired contrasts and 63 rank frequencies. The outputs describe the three recordings under the simulated spectra. [Results and reproduction command](../docs/appendix5-noise.md) · [Independent review](../reviews/appendix5-noise-verification.md)
+
+## Supplementary 2 background audio audit
+
+Two local inspections of the example video agreed on the low-level pre-playback candidates and the timing of the three playback bursts. Source attribution remains unresolved. The video audit adds an eligibility decision for a mixed-source soundtrack and leaves the Q4 response calibration dependent on trial-linked noise measurements. [Timestamped audit and reproduction command](../docs/data-audit.md#supplementary-2-background-audio) · [Independent audit](../reviews/appendix2-background-verification.md)
