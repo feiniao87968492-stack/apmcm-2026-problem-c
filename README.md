@@ -81,3 +81,5 @@ The seven figures in `results/` each have a same-name CSV and JSON metadata file
 - [Manual review budget for Q4 monitoring](docs/q4-review-budget.md)
 
 - [Q3 bounds on first-playback responses](docs/q3-first-playback.md)
+
+- [Q3 playback carryover sensitivity](docs/q3-carryover.md)

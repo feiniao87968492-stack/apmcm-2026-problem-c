@@ -230,3 +230,7 @@ The five radii, grid counts, pairwise differences and retained playback ranges a
 ## Q3 first-playback response bounds
 
 [Exact bounds by natural-first count](../results/q3_first_playback_bounds.csv) and [assumption summaries](../results/q3_first_playback_summary.csv) support attainable endpoints and sign checks for the observed first-playback contrast.
+
+## Q3 playback carryover sensitivity
+
+[Budget-by-budget integer endpoints and witnesses](../results/q3_carryover_bounds.csv) and [scenario summaries](../results/q3_carryover_summary.csv) support the contrasts under hypothetical second-response corrections.
