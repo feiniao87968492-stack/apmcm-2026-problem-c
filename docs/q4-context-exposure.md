@@ -128,3 +128,37 @@ masks = {fit: draws[indicator_columns(fit)].to_numpy(dtype=bool)
          for fit in ("full", "drop_union")}
 summarize(masks, archive, Path("generated"))
 ```
+
+
+## Independent full-fit simulation follow-up
+
+At 100 m with +6 dB in the noisy state, 50% total noisy opportunities and 30–70% within each context, the fixed follow-up used 38,400 new paired draws in eight blocks of 4,800. The exported table contains 26 distinct joint context/state indicator profiles and their counts by block. Sampling the pooled profile counts from a multinomial distribution has the same law as drawing indices with replacement and tallying their profiles. The 10,000 resamples use the frozen seed and the centered maximum absolute deviation over the six vertices. [Frozen specification](model-spec.md#q4-independent-full-fit-monte-carlo-follow-up-freeze)
+
+| Full-fit quantity | Archive, 4,800 draws | Independent follow-up, 38,400 draws |
+|---|---:|---:|
+| Minimum | 80.343945% | 80.210368% |
+| Minimum projected 95% interval | 79.707497%–80.980393% | 79.980878%–80.439857% |
+| Maximum | 83.810432% | 83.899831% |
+| Maximum projected 95% interval | 83.173984%–84.446879% | 83.670342%–84.129321% |
+| Simultaneous half-width | 0.636448 pp | 0.229489 pp |
+
+Both samples attain the minimum at 35% after feeding, 70% commuting and 30% searching. The follow-up lower endpoint is 0.019122 percentage points below 80%, so conditional all-pass remains unresolved under the inclusive rule. The intervals quantify simulation error with the available data, model and exposure scenario fixed. Field exposure and model uncertainty lie outside this result. [Profile counts by block](../results/q4_context_followup_profiles.csv) · [Vertex estimates and covariance](../results/q4_context_followup_vertices.csv) · [Archive comparison](../results/q4_context_followup_bounds.csv) · [Independent verification](../reviews/q4-context-followup-verification.md)
+
+Reproduce the fixed batch from the contest attachments.
+
+    python main.py --data "<attachment directory>/date" --output generated --q4-context-followup
+
+Reproduce the vertex and bound tables directly from the published profile counts.
+
+```python
+from pathlib import Path
+
+import pandas as pd
+
+from q4_context_followup import summarize
+
+archive = Path("results")
+output = Path("generated")
+output.mkdir(exist_ok=True)
+summarize(pd.read_csv(archive / "q4_context_followup_profiles.csv"), archive, output)
+```
