@@ -32,6 +32,19 @@ All paired log-loss intervals versus the half-count stimulus timing model span z
 
 The full-data prediction grid uses eight birds and the empirical frequencies of the three natural-trial contexts. Every timing fit exports cumulative probabilities at 0, 5, 15, 30 and 60 s. The any-event grid covers 20–150 m in 0.5 m steps for Q4. The individual behaviors use 50, 100 and 150 m. Selected stimulus-only time predictions are constant across distance and call type within each arm. For any event the selected natural probabilities at 5, 15, 30 and 60 s are 0.5282, 0.6373, 0.6479 and 0.6514, and controls are 0.1197, 0.1303, 0.1338 and 0.1444. These time predictions are an arm-level benchmark for Q4. [Prediction grid](../results/core_q3_predictions.csv) · [Local event support](../results/core_q3_support.csv)
 
+## Selected-model representative respondent latency
+
+The empirical stimulus-specific respondent medians at eight birds are the same at 50, 100 and 150 m because the model pools calls and distances within each stimulus.
+
+| Endpoint | Natural median (s) | Control median (s) |
+|---|---:|---:|
+| First response | 2.05 | 2.00 |
+| Head raising | 2.00 | 1.00 |
+| Vocalizing | 2.90 | 4.80 |
+| Approach | 8.00 | Unestimable |
+
+These summaries retain flagged zero latencies and condition on observing the endpoint within 60 s. Control approach has zero scored events. [Representative table and respondent counts](../results/core_q3_representative_latency.csv)
+
 ## Reproduction and Q4 interface
 
     python core_q3.py --data "<attachment directory>/date" --output generated

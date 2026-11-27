@@ -13,6 +13,12 @@
   ],
   "distance_unit": "m",
   "selected_model": "pool_0.0025",
+  "thresholds": {
+    "0.4": "Potential",
+    "0.5": "Standard",
+    "0.6": "Reliable",
+    "0.7": "Sensitivity"
+  },
   "marks": "Points are empirical equal-weight correlations. Lines use the production fit.",
   "uncertainty": "Pointwise percentiles conditional on wide-row resampling. The original files lack independent experimental identifiers.",
   "interval": "95% pointwise row-resampling bands",

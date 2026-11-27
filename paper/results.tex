@@ -23,20 +23,20 @@ Physical forest gains 0.077 macro F1 (paired 95\% interval 0.022--0.151) and low
 \newcommand{\PropagationResults}{The operational model partially pools effective spreading exponents with log-exponent penalty 0.0025. Its interior and forward RMSEs of 0.04547 and 0.10703 improve on isotonic fitting by 0.02269 (paired 95\% interval 0.02179--0.02368) and 0.14140 (0.13674--0.14681). Separate exponents give 0.04677 and 0.10859. Adding ISO 9613-1 absorption to its matched 0.01-penalty curve lowers forward RMSE by 0.00503 (0.00471--0.00528), yielding 0.10564. Its interior RMSE of 0.04899 ranks behind the production fit under the frozen selection rule. The production curve still overpredicts two-voice fidelity at 256 m by 0.203 in the forward holdout.
 
 \begin{center}\small
-\begin{tabular}{lrr}
+\begin{tabular}{lrrrr}
 \toprule
-Call & Fidelity 0.50 & Fidelity 0.70\\
+Call & Potential (0.40) & Standard (0.50) & Reliable (0.60) & Sensitivity (0.70)\\
 \midrule
-Flat & 84.5 & 43.2\\
-Modulated & 143.9 & 85.0\\
-Two-voice & 173.2 & 99.4\\
+Flat & 111.5 [110.3, 112.7] & 84.5 [83.5, 85.8] & 63.1 [62.0, 64.5] & 43.2 [41.9, 44.7]\\
+Modulated & 178.1 [176.3, 180.3] & 143.9 [142.0, 146.1] & 114.7 [112.9, 116.9] & 85.0 [83.3, 87.1]\\
+Two-voice & 207.2 [205.7, 208.6] & 173.2 [172.2, 174.4] & 141.1 [140.1, 142.0] & 99.4 [98.1, 100.8]\\
 \bottomrule
 \end{tabular}\\[3pt]
-Table 2. Production propagation ranges in metres.
+Table 2. Selected-curve radii in metres with 95\% percentile intervals from 300 wide-row refits. All point and draw crossings fall within the measured 4--256 m range.
 \end{center}
 At 128 m each two-voice representation retains 190 of 300 rows. The paired intervals condition on available scores and unknown acquisition groups. Missing-score completions and alternative representation weights can change rankings, as detailed in the supporting analyses. \coreevidence{docs/core-q2.md}{Propagation validation and support}.
 
-\par\begin{center}\begin{minipage}{.82\linewidth}\centering\includegraphics[width=\linewidth]{core_q2_propagation.png}\\{\small Figure 2. Selected partially pooled curves and empirical equal-weight correlations. Shading shows pointwise 95\% wide-row resampling intervals.}\end{minipage}\end{center}}
+\par\begin{center}\begin{minipage}{.82\linewidth}\centering\includegraphics[width=\linewidth]{core_q2_propagation.png}\\{\small Figure 2. Selected partially pooled curves and empirical equal-weight correlations. Shading shows pointwise 95\% wide-row resampling intervals. Dotted lines show the potential, standard and reliable thresholds. The dashed gray line shows the 0.70 sensitivity.}\end{minipage}\end{center}}
 
 \newcommand{\BehaviorResults}{
 On 278 trials in strict held-date folds with overlapping natural tracks purged, stimulus half-count frequencies, full multinomial and the structured pairwise mask model give mask log loss of 1.1250, 1.2993 and 1.1417, with any-response Brier scores of 0.1778, 0.1698 and 0.1681. A rank-one tilt by the number of scored behaviors gives 1.1021 and 0.1638. Its paired improvements over frequencies remain uncertain and its Brier improvement over full multinomial has a 95\% interval from $-0.0185$ to $+0.0037$. The shrinkage hurdle and nested frequency pool also miss the joint criterion. We retain the full multinomial for distance-specific response combinations. The tail holdout scores 52 trials from pairs with an arm at 125 m or farther, including 33 long-distance trials.
@@ -80,16 +80,17 @@ All four date-bootstrap slope intervals span zero. In the 49 same-distance pairs
 
 \par\begin{center}\begin{minipage}{.99\linewidth}\centering\includegraphics[width=\linewidth]{core_figure3.png}\\{\small Figure 3. Selected cumulative timing distributions pooled across call types and playback distances within each stimulus. Points mark the observed-window cutoffs.}\end{minipage}\end{center}
 \begin{center}\small
-\begin{tabular}{lrrr}
+\begin{tabular}{lrr}
 \toprule
-Call & 50 m & 100 m & 150 m\\
+Recorded endpoint & Natural (s) & Control (s)\\
 \midrule
-Flat & 1.79 & 1.88 & 1.94\\
-Modulated & 1.81 & 1.91 & 1.96\\
-Two-voice & 2.10 & \TVHundred & \TVFar\\
+Earliest response & 2.05 & 2.00\\
+Head raising & 2.00 & 1.00\\
+Vocalizing & 2.90 & 4.80\\
+Approach & 8.00 & Unestimable\\
 \bottomrule
 \end{tabular}\\[3pt]
-Table 4. Archived conditional sensitivity. Predicted median onset of head raising in seconds, conditional on head raising, for natural calls and eight birds.
+Table 4. Selected stimulus-only median latencies among recorded responders at 50, 100 and 150 m and eight birds. Each entry pools calls and distances within stimulus and applies to all three conditions. No control approach was recorded.
 \end{center}
 In the inclusive 25 m windows around 50, 100 and 150 m, there were 37/57, 35/61 and 6/8 natural stimuli with any response, and 4/54, 7/57 and 1/8 controls. Every natural call-by-behavior cell had fewer than five local onsets at 150 m. Flat and modulated head-raising predictions at 150 m draw on the wider dataset, with zero local head-raising events in those strata. Control stimuli produced no observed approaches, so their conditional approach latency is unestimable. Regularized event probabilities can remain positive for unobserved strata. Appendix A reports behavior probabilities and conditional medians separately. No observed response leaves perception unresolved.
 

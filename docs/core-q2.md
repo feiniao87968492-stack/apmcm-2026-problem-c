@@ -15,7 +15,16 @@ The target is equal-weight available-case correlation across the spectrogram, am
 
 Interior folds hold out one of the five interior distances at a time. Forward folds use only shorter distances, with isotonic extrapolation at its last fitted knot. The selected 0.0025 penalty has the smallest interior point RMSE among models meeting the frozen rule. Its paired RMSE changes versus isotonic are −0.02269 [−0.02368, −0.02179] interior and −0.14140 [−0.14681, −0.13674] forward. The frequency-informed fit improves on its matched 0.01 ablation by −0.00057 [−0.00070, −0.00043] interior and −0.00503 [−0.00528, −0.00471] forward. The latter fit has the lowest forward RMSE, while the frozen rule selects using interior RMSE among qualifying fits. Residual forward errors are material. For instance, the selected fit overpredicts two-voice fidelity at 256 m by 0.203 when fitted on shorter distances. At 128 m the two-voice target uses 190 of 300 rows per representation. Intervals are 95% percentiles over the same 300 wide-row resamples as the published forward comparison, conditional on available rows and unknown acquisition groups. The candidate penalties and the distance holdouts have been used in earlier work on these data. [Validation scores](../results/core_q2_scores.csv) · [Paired differences](../results/core_q2_comparisons.csv) · [Signed errors](../results/core_q2_holdouts.csv) · [Held-out row counts](../results/core_q2_support.csv)
 
-The selected full-data curve crosses 0.50 at **84.5, 143.9 and 173.2 m** and 0.70 at **43.2, 85.0 and 99.4 m** for flat, modulated and two-voice calls. The isotonic values are 84.7, 144.6 and 169.7 m at 0.50 and 35.4, 77.7 and 79.3 m at 0.70. All twelve crossings occur inside the measured range. [Decision table](../results/core_q2_decision.csv) · [Full fitted curves](../results/core_q2_curves.csv) · [Threshold crossings](../results/core_q2_radii.csv) · [Figure 2 data](../results/core_q2_propagation.csv)
+The selected curve gives the radii below in flat, modulated and two-voice order, with 95% percentile intervals from the 300 existing wide-row refits.
+
+| Fidelity threshold | Flat (m) | Modulated (m) | Two-voice (m) |
+|---|---:|---:|---:|
+| Potential 0.40 | 111.5 [110.3, 112.7] | 178.1 [176.3, 180.3] | 207.2 [205.7, 208.6] |
+| Standard 0.50 | 84.5 [83.5, 85.8] | 143.9 [142.0, 146.1] | 173.2 [172.2, 174.4] |
+| Reliable 0.60 | 63.1 [62.0, 64.5] | 114.7 [112.9, 116.9] | 141.1 [140.1, 142.0] |
+| Sensitivity 0.70 | 43.2 [41.9, 44.7] | 85.0 [83.3, 87.1] | 99.4 [98.1, 100.8] |
+
+All 12 point crossings and all 3,600 draw crossings fall within 4?256 m. The export records boundary flags and counts for the selected curve. The archived isotonic values are 84.7, 144.6 and 169.7 m at 0.50 and 35.4, 77.7 and 79.3 m at 0.70. [Frozen reporting rule](model-spec.md#core-contest-reporting-thresholds-and-respondent-timing-freeze) ? [Decision table](../results/core_q2_decision.csv) ? [Threshold crossings](../results/core_q2_radii.csv) ? [Figure 2 data](../results/core_q2_propagation.csv)
 
 The Q2 entry point writes the scores, decision, curves, radii and figure to the selected output directory.
 
