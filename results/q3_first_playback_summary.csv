@@ -1,0 +1,9 @@
+sample,n,assumption,m_min,m_max,positive_guaranteed,lower_m,lower_natural_responses,lower_control_responses,lower_exact,lower_pp,lower_natural_first_00,lower_natural_first_01,lower_natural_first_10,lower_natural_first_11,upper_m,upper_natural_responses,upper_control_responses,upper_exact,upper_pp,upper_natural_first_00,upper_natural_first_01,upper_natural_first_10,upper_natural_first_11
+matched,49,unrestricted,1,48,False,43,27,6,-16/43,-37.2093023255814,14,2,27,0,6,6,2,41/43,95.34883720930233,0,0,0,6
+matched,49,nearest_half,24,25,True,24,8,6,7/75,9.333333333333334,14,2,8,0,24,24,2,23/25,92.0,0,0,18,6
+matched,49,45_to_55_pct,23,26,True,23,7,6,22/299,7.357859531772576,14,2,7,0,23,23,2,12/13,92.3076923076923,0,0,17,6
+matched,49,40_to_60_pct,20,29,False,20,4,6,-1/145,-0.6896551724137931,14,2,4,0,20,20,2,27/29,93.10344827586206,0,0,14,6
+all,139,unrestricted,1,138,False,123,74,16,-49/123,-39.83739837398374,47,2,74,0,16,16,2,121/123,98.3739837398374,0,0,0,16
+all,139,nearest_half,69,70,True,69,20,16,148/2415,6.128364389233955,47,2,20,0,69,69,2,34/35,97.14285714285714,0,0,53,16
+all,139,45_to_55_pct,63,76,True,63,14,16,2/171,1.1695906432748537,47,2,14,0,63,63,2,37/38,97.36842105263158,0,0,47,16
+all,139,40_to_60_pct,56,83,False,56,7,16,-45/664,-6.77710843373494,47,2,7,0,56,56,2,81/83,97.59036144578313,0,0,40,16

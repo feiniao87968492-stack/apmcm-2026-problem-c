@@ -76,7 +76,14 @@ def main():
                           help="Propagate archived Q1 label errors into Q4 gross scores")
     analyses.add_argument("--q4-review-budget", action="store_true",
                           help="Evaluate ideal manual review in the frozen Q4 scenario")
+    analyses.add_argument("--q3-first-playback", action="store_true",
+                          help="Bound Q3 first-playback response differences")
     args = parser.parse_args()
+    if args.q3_first_playback:
+        from q3_first_playback import run
+
+        run(args.data, args.output)
+        return
     if args.q4_review_budget:
         from q4_review_budget import run
 
