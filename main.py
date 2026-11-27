@@ -1,4 +1,4 @@
-﻿"""Reproduce the C problem tables and figures from the contest CSVs."""
+"""Reproduce the C problem tables and figures from the contest CSVs."""
 from argparse import ArgumentParser
 from pathlib import Path
 
@@ -68,7 +68,15 @@ def main():
                           help="Invert the Q4 response-retention scenario at 6 dB")
     analyses.add_argument("--appendix5-noise", action="store_true",
                           help="Simulate matched-power noise on the Supplementary 5 WAVs")
+    analyses.add_argument("--q1-class-prior", action="store_true",
+                          help="Compare Q1 class-prior rules on the frozen grouped folds")
     args = parser.parse_args()
+    if args.q1_class_prior:
+        from q1_class_prior import run
+
+        baseline = Path(__file__).resolve().parent / "results" / "q1_oof_predictions.csv"
+        run(args.data, args.output, baseline)
+        return
     if args.appendix5_noise:
         from appendix5_noise import run
 
