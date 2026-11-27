@@ -262,3 +262,7 @@ The five radii, grid counts, pairwise differences and retained playback ranges a
 ## Q2 partial pooling of attenuation exponents
 
 [Forward errors, paired contrasts and fitted radii](../docs/q2-partial-pooling.md) support the comparison of three fixed penalties with the shared and separate exponents.
+
+## Q4 intermittent noise
+
+[Checkpoint results and boundary brackets](../docs/q4-intermittent-noise.md) support the comparison of three hypothetical opportunity and power summaries.

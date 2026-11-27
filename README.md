@@ -97,3 +97,5 @@ The seven figures in `results/` each have a same-name CSV and JSON metadata file
 - [Q2 forward-distance validation](docs/q2-forward.md)
 
 - [Q2 partial pooling of attenuation exponents](docs/q2-partial-pooling.md)
+
+- [Q4 intermittent noise through 100 m](docs/q4-intermittent-noise.md)
