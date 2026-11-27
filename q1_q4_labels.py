@@ -12,7 +12,7 @@ KEYS = ["row", "fold", "recording_group", "actual"]
 def load_labels(archive):
     site = pd.read_csv(archive / "q1_location_predictions.csv")
     prior = pd.read_csv(archive / "q1_class_prior_predictions.csv")
-    merged = site.merge(prior[KEYS + ["logistic", "full_prior"]], on=KEYS, validate="one_to_one")
+    merged = site.merge(prior[KEYS + ["logistic", "full_prior", "base_probability_tv"]], on=KEYS, validate="one_to_one")
     pd.testing.assert_series_equal(merged.logistic, merged.logistic_original, check_names=False)
     if len(merged) != 108:
         raise ValueError("Expected 108 matched holdout predictions")

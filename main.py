@@ -74,7 +74,14 @@ def main():
                           help="Run the frozen Q1 recording-location comparison")
     analyses.add_argument("--q1-q4-labels", action="store_true",
                           help="Propagate archived Q1 label errors into Q4 gross scores")
+    analyses.add_argument("--q4-review-budget", action="store_true",
+                          help="Evaluate ideal manual review in the frozen Q4 scenario")
     args = parser.parse_args()
+    if args.q4_review_budget:
+        from q4_review_budget import run
+
+        run(Path(__file__).resolve().parent / "results", args.output)
+        return
     if args.q1_q4_labels:
         from q1_q4_labels import run
 
