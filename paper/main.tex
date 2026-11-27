@@ -73,6 +73,10 @@ In False Bay, field playbacks took place on 12 days in June 2022 between 07:48 a
 
 \BehaviorResults
 
+Playback order is unavailable in Data02. For each possible natural-first count, we bound the observed natural-minus-control response-rate difference among the first playbacks by allocating the recorded pairs to the two orders. In the 49 pairs matched on recorded distance and group size, the bounds are $[9.33,92.00]$ percentage points for the two integers nearest a half split. The lower bound is $7.36$ points under a 45--55\% natural-first share and $-0.69$ under 40--60\%. The share restrictions are hypothetical. \href{https://github.com/feiniao87968492-stack/apmcm-2026-problem-c/blob/80b1e7079d2ae023daef291d569ec97dc851b2e9/docs/q3-first-playback.md}{First-playback bounds}.
+
+A separate carryover analysis uses both responses per pair at their recorded distances. We keep the first response and allow a budgeted number of second responses to change to hypothetical values without the preceding playback. Each change shifts the paired contrast by one response count. In the matched sample, at least 25 of 49 pairs must change to erase the observed 51.0-point advantage under any tested direction or order restriction. With near-half order and either suppressive or enhancing carryover alone, the lower bound reaches zero. In all 139 pairs, the corresponding one-direction lower bound stays at least 1.44 points even at full budget. With two-sided carryover, 72 changes can erase the full-sample advantage under either order restriction. Actual order and carryover remain unknown. \href{https://github.com/feiniao87968492-stack/apmcm-2026-problem-c/blob/055e83989fffb13538eb589453de3d1bfde1210c/docs/q3-carryover.md}{Carryover bounds and attainable allocations}.
+
 \section{Integrated communication and conservation}
 Let $p_c(d)$ be the natural-stimulus any-response probability at median group size, averaged over the observed contexts. We define gross communication effectiveness as
 \[
@@ -177,6 +181,8 @@ Poppler 24.04.0 was used to inspect the PDF.
 \lstinputlisting[caption={Vocal counts and contact scenarios}]{../vocal_counts.py}
 \lstinputlisting[caption={First replies and event order}]{../first_reply.py}
 \lstinputlisting[caption={Response frequency and responder composition}]{../behavior_gap.py}
+\lstinputlisting[caption={Observed first-playback response bounds}]{../q3_first_playback.py}
+\lstinputlisting[caption={Playback carryover sensitivity}]{../q3_carryover.py}
 
 \subsection{Integrated communication analyses}
 \lstinputlisting[caption={Effectiveness and attainment over the supported annulus}]{../spatial_annulus.py}
