@@ -95,3 +95,5 @@ The seven figures in `results/` each have a same-name CSV and JSON metadata file
 - [Score-guided manual review for Q4](docs/q4-score-review.md)
 
 - [Q2 forward-distance validation](docs/q2-forward.md)
+
+- [Q2 partial pooling of attenuation exponents](docs/q2-partial-pooling.md)

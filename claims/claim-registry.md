@@ -258,3 +258,7 @@ The five radii, grid counts, pairwise differences and retained playback ranges a
 ## Q2 forward-distance validation
 
 [Prediction errors, conditional paired intervals and representation support](../docs/q2-forward.md) support predictions using only shorter measured distances.
+
+## Q2 partial pooling of attenuation exponents
+
+[Forward errors, paired contrasts and fitted radii](../docs/q2-partial-pooling.md) support the comparison of three fixed penalties with the shared and separate exponents.
