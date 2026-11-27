@@ -321,3 +321,7 @@ Two separate Git archives of e51a0a1 produced the same PDF byte-for-byte after t
 The protocol froze at ccd7efd. The implementation at b4d4987 regenerated both CSVs byte-for-byte from a Git archive through the main entry point. Independent dense assignment verified 1,044 original counts, 13 crossing or cap counts and all eight extremizing permutations. [Results and reproduction](../docs/q4-prefix-rematching.md) · [Independent numerical verification](../reviews/q4-prefix-rematching-verification.md)
 
 Two independent Git archives of fed6993 produced identical PDFs after two pdflatex passes with SOURCE_DATE_EPOCH=1795731780. SHA-256 is b54d16b74f5ab5cdeab8544a962b87b0bd91a3b1417bc50c24e5a81379326c28. Body and references occupy pages 3–19 of 164. Team and author fields are blank. [Independent manuscript review](../reviews/q4-prefix-rematching-paper-review.md) · [PDF](../paper/main.pdf)
+
+## Cost-sensitive Q1-to-Q4 monitoring verification
+
+The protocol froze at a0abae4 and ran at 715934a. The main entry point reproduced all four CSVs byte-for-byte from a Git archive, and an independent refit verified the held-out probabilities and decisions. No probability model met the frozen primary improvement criterion. [Results and reproduction command](../docs/q1-q4-cost.md) · [Independent verification](../reviews/q1-q4-cost-verification.md)

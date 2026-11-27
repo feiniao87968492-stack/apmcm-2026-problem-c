@@ -242,3 +242,7 @@ The five radii, grid counts, pairwise differences and retained playback ranges a
 ## Q4 consecutive-radius draw rematching
 
 [Boundary counts](../results/q4_prefix_rematching.csv) and [attaining permutations](../results/q4_prefix_rematching_witnesses.csv) support the sharp consecutive-grid radius bounds at fixed empirical draw marginals.
+
+## Q1-to-Q4 cost-sensitive monitoring
+
+[Fixed-scenario decision costs, probability scores and paired intervals](../docs/q1-q4-cost.md) support the decision to retain the archived monitoring conclusion under the frozen improvement rule.
