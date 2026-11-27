@@ -206,3 +206,7 @@ The five radii, grid counts, pairwise differences and retained playback ranges a
 ## Appendix 5 matched-power noise simulation
 
 [Representation losses and composites](../results/appendix5_noise_summary.csv), [paired band contrasts](../results/appendix5_noise_contrasts.csv), [rank frequencies](../results/appendix5_noise_ranks.csv), and [noiseless checks](../results/appendix5_noise_zero.csv) support the three-clip simulation.
+
+## Supplementary 2 background audio
+
+[Timestamped observations and audio-window checks](../docs/data-audit.md#supplementary-2-background-audio) and the [independent video audit](../reviews/appendix2-background-verification.md) support the background eligibility decision and the stated calibration gaps.

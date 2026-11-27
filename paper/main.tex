@@ -12,6 +12,7 @@
 \setlength{\parskip}{5pt}
 \setlength{\parindent}{0pt}
 \newcommand{\callname}[1]{\textsc{#1}}
+\newcommand{\evidence}[2]{\href{https://github.com/feiniao87968492-stack/apmcm-2026-problem-c/blob/41f7153643d6098940507a8682c2bcbb4d64f97f/#1}{#2}}
 \input{results.tex}
 \begin{document}
 
@@ -72,7 +73,7 @@ In False Bay, field playbacks took place on 12 days in June 2022 between 07:48 a
 \BehaviorResults
 
 \section{Integrated communication and conservation}
-Let $p_c(d)$ be the natural-stimulus any-response probability at median group size, averaged over the observed contexts. We model communication effectiveness as
+Let $p_c(d)$ be the natural-stimulus any-response probability at median group size, averaged over the observed contexts. We define gross communication effectiveness as
 \[
 E_c(d)=F_c(d)p_c(d).
 \]
@@ -94,7 +95,9 @@ In a group-size sensitivity, the same multinomial and context weights predict at
 
 \IntegratedResults
 
-Measure noise and record acquisition identifiers across dates and playback tracks at foraging sites, particularly at 100 m and the 150 m support boundary. Test two-voice calls at 50 m under disturbance, where the 80\% decision depends on missing comparisons. Test candidate quiet periods or route changes using randomized noise regimes and counterbalanced natural/control order. The 120-pair illustration assigns ten pairs to each noise arm in each call-by-distance cell at 100 and 150 m. Under the clean planning marginals and independent cells, the normal 95\% half-width for the equal-weight mean noise contrast is 0.199 at zero within-pair covariance, versus 0.502 for the widest cell. With paired correlation from $-0.25$ to $+0.25$ the mean half-width ranges from 0.219 to 0.179. A planning target of 0.20 in every cell requires at least 724 matched pairs at zero correlation with cell-specific allocation (768 with equal allocation), or 582--870 across the covariance sensitivities. The average and cell-specific contrasts answer different monitoring questions.
+In the three Supplementary 5 recordings, one per call type, we compared broadband noise with 100--500 Hz and above-500--3,000 Hz noise at equal RMS within each clip and input SNR. At 0 dB input SNR, the higher band reduced the mean equal-weight composite of spectrogram, amplitude-spectrum and Hilbert-envelope correlations by 0.041--0.052 across the three recordings relative to broadband noise (200 paired realizations per condition). Spectrogram and spectrum losses accounted for most of the difference. This waveform experiment supports measuring noise spectra alongside noise level. \evidence{docs/appendix5-noise.md}{Simulation results}.
+
+The Supplementary 2 video has a low-level candidate background interval at 1.10--2.45 s. The source of its sound remains unresolved from frames and spectra, and the clip lacks a source-isolated background track. Obtain calibrated recordings at receiver positions with annotated background intervals to estimate frequency-specific acoustic loss. To estimate how response excess changes with noise, link measured exposure to paired natural and control trials across distances and contexts. Prioritize 100 m and sample near the 150 m support boundary, retaining acquisition identifiers across dates and playback tracks. \evidence{docs/data-audit.md\#supplementary-2-background-audio}{Video audit}. Test two-voice calls at 50 m under disturbance, where the 80\% decision depends on missing comparisons. Test candidate quiet periods or route changes using randomized noise regimes and counterbalanced natural/control order. The 120-pair illustration assigns ten pairs to each noise arm in each call-by-distance cell at 100 and 150 m. Under the clean planning marginals and independent cells, the normal 95\% half-width for the equal-weight mean noise contrast is 0.199 at zero within-pair covariance, versus 0.502 for the widest cell. With paired correlation from $-0.25$ to $+0.25$ the mean half-width ranges from 0.219 to 0.179. A planning target of 0.20 in every cell requires at least 724 matched pairs at zero correlation with cell-specific allocation (768 with equal allocation), or 582--870 across the covariance sensitivities. The average and cell-specific contrasts answer different monitoring questions.
 
 For the three Q4 margins in the Monte Carlo audit, we also plan 120 equal-cost natural/control pairs at common distances of 20, 50, 100 or 150 m. Expected multinomial Fisher information adds both arms under conditional independence and includes the original ridge penalty once. Delta-method gradients include the two fitted clean cutoffs, with acoustics fixed. A greedy allocation reduces the largest variance relative to current data from 0.500 under uniform allocation to 0.416. Requiring at least ten pairs in each focal cell gives 0.419 and lowers the two two-voice standard errors by 8.15\% and 8.42\% versus uniform. The modulated standard error increases by 0.5\%. This design evaluates precision under hypothetical coupling.
 
@@ -129,7 +132,7 @@ Sparse responses limit precision for behavior combinations and onset times. The 
 \end{minipage}\end{center}
 
 \section{Analysis source}
-The commands in the repository README reproduce the figures and tables using the supplied CSV files.
+The \evidence{README.md}{repository commands} reproduce the figures and tables from the supplied attachments. The noise simulation uses the three example WAVs. The video audit uses the original MP4 locally.
 
 \subsection{Software}
 The analysis used Python 3.10.11 with NumPy 2.2.6, pandas 2.3.3,
@@ -194,6 +197,10 @@ Poppler 24.04.0 was used to inspect the PDF.
 \lstinputlisting[caption={Q4 attenuation-shape propagation}]{../q4_shape_propagation.py}
 \lstinputlisting[caption={Q4 acoustic and response-loss tradeoffs}]{../q4_net_loss.py}
 \lstinputlisting[caption={Q4 consecutive-distance attainment}]{../q4_consecutive.py}
+\lstinputlisting[caption={Q4 loss limits at target distances}]{../q4_target_loss.py}
+\lstinputlisting[caption={Q4 local and matched uniform noise}]{../q4_matched_noise.py}
+\lstinputlisting[caption={Q4 response sensitivity at 6 dB}]{../q4_response_sensitivity.py}
+\lstinputlisting[caption={Matched-power noise simulation for the three example calls}]{../appendix5_noise.py}
 \end{document}
 
 
