@@ -72,7 +72,14 @@ def main():
                           help="Compare Q1 class-prior rules on the frozen grouped folds")
     analyses.add_argument("--q1-location", action="store_true",
                           help="Run the frozen Q1 recording-location comparison")
+    analyses.add_argument("--q1-q4-labels", action="store_true",
+                          help="Propagate archived Q1 label errors into Q4 gross scores")
     args = parser.parse_args()
+    if args.q1_q4_labels:
+        from q1_q4_labels import run
+
+        run(Path(__file__).resolve().parent / "results", args.output)
+        return
     if args.q1_location:
         from q1_location import run
 
