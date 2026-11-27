@@ -68,3 +68,13 @@ for left, right in windows:
     print(left, right, np.round(dbfs, 2))
 '@ | python - $video.FullName
 ```
+
+## Playback design and order recoverability
+
+This read-only audit was frozen against manuscript baseline 7b6bd67. The version 1 field paper, Methods, “Playback experiments” (pp. 4–5), describes testing the same observed group once with a natural call track and once with a sea-wave recording. The researchers randomly switched which stimulus came first between experiments and randomly drew the natural playback track without replacement within each behavioral context. They included only groups tested with both stimuli. The sea-wave control was broadcast as a stimulus. Each row describes a group response to one playback, and the two rows for an experiment form a group-level pair. [Field paper v1](https://doi.org/10.12688/openreseurope.24618.1)
+
+For successive same-day experiments, the researchers sought to keep each new group more than 300 m away during the preceding playback. At the same boat position the protocol also required at least five minutes between experiments. The alternative was to move the boat more than 1 km in a direction different from the previous group's route. [Field paper v1](https://doi.org/10.12688/openreseurope.24618.1)
+
+Data02 (MD5 f936555cb0af178dcb749ec9b51adab5) has 40 columns and 278 rows. Each of the 139 `expID` values joins one `call` and one `control` row with matching `Date` and `Context`. `PlaybackTrack` records the assigned natural track and uses the common label `control` for the sea-wave stimulus. The records support auditing realized track use by context. They lack the randomization log, draw sequence and available track pool for each draw. `Distance` describes boat-to-bird playback distance. The data lack timestamps and coordinates for checking separation or elapsed time between groups. [Versioned data deposit](https://zenodo.org/records/21376649)
+
+Data02 has no presentation-order field or per-stimulus timestamp. All pairs occupy adjacent rows in the file, with 81 stored call first and 58 stored control first. The field methods and accompanying analysis materials do not document this file order as chronological. The response latency fields measure elapsed time from an individual playback's onset and cannot identify which stimulus came first. The Q3 models pair the stimuli and adjust for recorded covariates. Presentation order and carryover are unestimated. [Data02, Code1 and Supplementary 3](https://zenodo.org/records/21376649)
