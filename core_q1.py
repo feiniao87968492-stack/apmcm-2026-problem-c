@@ -127,29 +127,56 @@ def run(data, output):
     oof["tv_decision_multiplier"] = decision_weights
     audit = frame.groupby("CallType")[["F02", "PulseRate"]].count().join(frame.groupby("CallType").size().rename("n"))
     output.mkdir(parents=True, exist_ok=True)
-    plot_decisions(actual, hard[selected], classes, selected, output)
+    plot_decisions(frame, actual, hard[selected], classes, selected, output)
     for suffix, table in (("scores", scores.reset_index()), ("settings", pd.DataFrame(settings_rows)),
                           ("oof", oof), ("availability", audit.reset_index()),
                           ("wav", pd.DataFrame(examples(data)))):
         if not table.empty:
             table.to_csv(output / f"core_q1_{suffix}.csv", index=False, lineterminator="\n")
 
-def plot_decisions(actual, hard, classes, selected, output):
+def plot_decisions(frame, actual, hard, classes, selected, output):
     import json
     import matplotlib.pyplot as plt
     from sklearn.metrics import confusion_matrix
 
     counts = confusion_matrix(actual, hard, labels=classes)
-    table = pd.DataFrame(counts, index=classes, columns=classes).rename_axis("actual")
-    table.to_csv(output / "core_figure1.csv", lineterminator="\n")
-    (output / "core_figure1.meta.json").write_text(json.dumps(
-        dict(data="core_figure1.csv", model=selected, units="held-out recordings",
-             rows="recorded class", columns="predicted class"), indent=2) + "\n",
-        encoding="utf-8", newline="\n")
-    fig, ax = plt.subplots(figsize=(4.1, 2.8), layout="constrained")
-    ax.imshow(counts, cmap="Blues", vmin=0)
+    features = (*FEATURES, "F02", "PulseRate")
+    labels = ("Duration", "First fundamental", "Peak frequency", "Spectral Q25",
+              "Spectral Q50", "Spectral Q75", "Second fundamental", "Pulse rate")
+    colors = ("#17686a", "#ae542b", "#634892")
     names = ("Flat", "Modulated", "Two-voice")
-    ax.set(xticks=range(3), yticks=range(3), xticklabels=names, yticklabels=names,
+    fig, (dist, ax) = plt.subplots(1, 2, figsize=(8.3, 3.7), layout="constrained",
+                                   gridspec_kw={"width_ratios": (1.5, 1)})
+    rows = []
+    for i, feature in enumerate(features):
+        quartiles = frame.groupby("CallType")[feature].quantile([.25, .5, .75]).unstack()
+        start = quartiles[.25].min()
+        width = quartiles[.75].max() - start
+        for j, (call, color, name) in enumerate(zip(classes, colors, names)):
+            low, middle, high = quartiles.loc[call]
+            if not np.isfinite(middle):
+                continue
+            dist.errorbar((middle-start)/width, i+.22*(j-1),
+                          xerr=[[(middle-low)/width], [(high-middle)/width]],
+                          color=color, fmt="o", markersize=3, capsize=2,
+                          label=name if i == 0 else None)
+            rows.append(dict(panel="distribution", feature=feature, call=call, count=frame.loc[
+                frame.CallType.eq(call), feature].count(), q25=low, median=middle, q75=high,
+                scale_origin=start, scale_width=width))
+    dist.set(yticks=range(len(labels)), yticklabels=labels, xlabel="Scaled median and IQR",
+             title="A  Acoustic features")
+    dist.invert_yaxis()
+    dist.legend(fontsize=7, loc="lower center", bbox_to_anchor=(.5, -.24), ncol=3, frameon=False)
+    for i, j in np.ndindex(counts.shape):
+        rows.append(dict(panel="confusion", call=classes[i], predicted=classes[j], count=counts[i, j]))
+    pd.DataFrame(rows).to_csv(output / "core_figure1.csv", index=False, lineterminator="\n")
+    (output / "core_figure1.meta.json").write_text(json.dumps(
+        dict(data="core_figure1.csv", model=selected,
+             distribution="Observed medians and quartiles on a common scale within each feature",
+             confusion="Counts of held-out recordings by recorded and predicted class"),
+        indent=2) + "\n", encoding="utf-8", newline="\n")
+    ax.imshow(counts, cmap="Blues", vmin=0)
+    ax.set(title="B  Grouped holdout", xticks=range(3), yticks=range(3), xticklabels=names, yticklabels=names,
            xlabel="Predicted call", ylabel="Recorded call")
     for i, j in np.ndindex(counts.shape):
         ax.text(j, i, str(counts[i, j]), ha="center", va="center",
