@@ -13,6 +13,7 @@
 \setlength{\parindent}{0pt}
 \newcommand{\callname}[1]{\textsc{#1}}
 \newcommand{\evidence}[2]{\href{https://github.com/feiniao87968492-stack/apmcm-2026-problem-c/blob/41f7153643d6098940507a8682c2bcbb4d64f97f/#1}{#2}}
+\newcommand{\monitoringevidence}[2]{\href{https://github.com/feiniao87968492-stack/apmcm-2026-problem-c/blob/c941a0713ac8305839d7d8a2c258a987df5d9523/#1}{#2}}
 \input{results.tex}
 \begin{document}
 
@@ -94,6 +95,10 @@ For the missing-score analysis we evaluate the available-value and extremal isot
 In a group-size sensitivity, the same multinomial and context weights predict at 2, 8 and 20 birds. Each size uses the same eight-bird clean common reference within each paired acoustic and date draw. We compare 50, 100 and 150 m in clean and 20\% coupled conditions, and apply the expected-count bounds $[p,np]$ at each size.
 
 \IntegratedResults
+
+For monitoring, we substitute held-out automatic call labels for known labels in the gross point curves with the common cutoff. This scenario transfers the 105 FalseBay recordings' classification errors to the monitoring conditions. At 100 m under 20\% coupled loss, only two-voice meets the cutoff with the recorded labels. Logistic labels miss 19 of 21 passing calls and incorrectly pass 6 of 84 nonpassing calls. Full prior correction recovers four of those misses and adds 18 false passes. The paired date intervals reflect classification error with the Q4 curves fixed. \monitoringevidence{docs/q1-q4-labels.md}{Monitoring results}.
+
+With 50 of the 105 recordings available for review, ranking the original logistic decisions by estimated error probability leaves zero false passes and eight missed passes, compared with random-review expectations of 3.14 and 9.95. Reviewing predicted nonpasses first, in descending two-voice probability, leaves six false passes and five missed passes. This ordering reduces misses further when those errors carry greater cost. Both queues use only held-out scores, which are treated as comparable across folds. The simulation assumes equal review costs and correct human relabeling. Reviewing all 105 removes both errors under that assumption. \monitoringevidence{docs/q4-review-budget.md}{Review budgets}.
 
 In the three Supplementary 5 recordings, one per call type, we compared broadband noise with two bands at equal RMS within each clip and input SNR. The lower band spans 100--500 Hz and the upper band extends from above 500 Hz through 3,000 Hz. At 0 dB input SNR, the higher band reduced the mean equal-weight composite of spectrogram, amplitude-spectrum and Hilbert-envelope correlations by 0.041--0.052 across the three recordings relative to broadband noise (200 paired realizations per condition). Spectrogram and spectrum losses accounted for most of the difference. This waveform experiment supports measuring noise spectra alongside noise level. \evidence{docs/appendix5-noise.md}{Simulation results}.
 
@@ -201,6 +206,11 @@ Poppler 24.04.0 was used to inspect the PDF.
 \lstinputlisting[caption={Q4 local and matched uniform noise}]{../q4_matched_noise.py}
 \lstinputlisting[caption={Q4 response sensitivity at 6 dB}]{../q4_response_sensitivity.py}
 \lstinputlisting[caption={Matched-power noise simulation for the three example calls}]{../appendix5_noise.py}
+\subsection{Classification and monitoring sensitivity}
+\lstinputlisting[caption={Class-prior decision rules}]{../q1_class_prior.py}
+\lstinputlisting[caption={Recording-location sensitivity}]{../q1_location.py}
+\lstinputlisting[caption={Propagation of classification errors into monitoring}]{../q1_q4_labels.py}
+\lstinputlisting[caption={Monitoring review budgets}]{../q4_review_budget.py}
 \end{document}
 
 
