@@ -94,7 +94,14 @@ def main():
                           help="Validate Q2 prediction from strictly shorter distances")
     analyses.add_argument("--q2-partial-pooling", action="store_true",
                           help="Compare fixed attenuation exponent pooling penalties")
+    analyses.add_argument("--q4-intermittent-noise", action="store_true",
+                          help="Compare intermittent and continuous Q4 noise")
     args = parser.parse_args()
+    if args.q4_intermittent_noise:
+        from q4_intermittent_noise import write
+
+        write(args.data, args.output, Path(__file__).resolve().parent / "results")
+        return
     if args.q2_partial_pooling:
         from q2_partial_pooling import write
 
