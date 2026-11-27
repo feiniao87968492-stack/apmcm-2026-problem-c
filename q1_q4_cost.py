@@ -67,7 +67,7 @@ def predict(data, archive):
     return result.drop(columns=columns)
 
 
-def evaluate(rows):
+def evaluate(rows, *, include_prevalence=False):
     groups = [group.index.to_numpy() for _, group in rows.groupby("recording_group", sort=True)]
     rng = np.random.default_rng(20261126)
     draws = [np.concatenate([groups[i] for i in sample])
@@ -76,6 +76,8 @@ def evaluate(rows):
     for label, calls in PASS_SETS.items():
         truth = rows.actual.isin(calls).to_numpy()
         probabilities = {m: rows[f"{m}_{label}"].to_numpy() for m in PROBABILITY_MODELS}
+        if include_prevalence:
+            probabilities["prevalence"] = rows[f"prevalence_{label}"].to_numpy()
         for model, p in probabilities.items():
             clipped = np.clip(p, 1e-15, 1 - 1e-15)
             scores.append({"pass_set": label, "model": model,
@@ -86,6 +88,8 @@ def evaluate(rows):
             label_fields = {"pass_set": label, "false_pass_cost": fp_cost, "missed_pass_cost": miss_cost}
             actions = {m: rows[m].isin(calls).to_numpy() for m in HARD_RULES}
             actions.update({m: p >= cutoff for m, p in probabilities.items()})
+            if include_prevalence:
+                actions.update(always_pass=np.ones_like(truth), always_nonpass=np.zeros_like(truth))
             costs = {}
             for model, pass_action in actions.items():
                 false_pass = pass_action & ~truth
@@ -96,8 +100,10 @@ def evaluate(rows):
                                   "false_pass": false_pass.sum(), "missed_pass": missed_pass.sum(),
                                   "true_pass": truth.sum(), "true_nonpass": (~truth).sum(),
                                   "mean_cost": costs[model].mean()})
-            for model in PROBABILITY_MODELS:
-                for reference in HARD_RULES:
+            models = (*HARD_RULES, *PROBABILITY_MODELS) if include_prevalence else PROBABILITY_MODELS
+            references = ("prevalence",) if include_prevalence else HARD_RULES
+            for model in models:
+                for reference in references:
                     change = costs[model] - costs[reference]
                     lower, upper = np.quantile([change[idx].mean() for idx in draws], [.025, .975])
                     contrasts.append({**label_fields, "model": model, "reference": reference,

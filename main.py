@@ -86,7 +86,14 @@ def main():
                           help="Bound the Q4 consecutive radius under draw rematching")
     analyses.add_argument("--q1-q4-cost", action="store_true",
                           help="Test cost-sensitive Q1-to-Q4 monitoring decisions")
+    analyses.add_argument("--q1-q4-prevalence", action="store_true",
+                          help="Benchmark archived monitoring rules against training prevalence")
     args = parser.parse_args()
+    if args.q1_q4_prevalence:
+        from q1_q4_prevalence import write
+
+        write(args.output, Path(__file__).resolve().parent / "results")
+        return
     if args.q1_q4_cost:
         from q1_q4_cost import write
 
