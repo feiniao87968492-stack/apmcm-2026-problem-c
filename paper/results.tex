@@ -1,6 +1,6 @@
-\newcommand{\PaperSummary}{We analyze 108 recordings and 139 paired playback experiments on African penguin calls at sea. Physical spectral features and a shallow forest improve grouped macro F1 from 0.314 to 0.392, while two-voice recall falls from two of 24 to zero. We retain the original logistic classifier. Partial pooling of attenuation exponents reduces interior and forward prediction RMSE from 0.0682 and 0.2484 under isotonic fitting to 0.0455 and 0.1070. The selected curve gives half-fidelity distances of 84.5, 143.9 and 173.2 m for flat, modulated and two-voice calls. The observed natural-minus-control response difference was 51.0 percentage points across 49 pairs matched on group size and distance. Presentation order is unknown. Strict date and track holdouts retain multinomial response combinations and stimulus-level event-time distributions through 60 s. With the selected propagation curve and hypothetical 20\% coupled loss, gross effectiveness ranges are 46.3, 81.6 and 117.4 m. A 30 s planning rule that requires both at least 0.50 fidelity and at least 0.50 natural response gives 58.0, 107.5 and 132.0 m. Receiver noise and response loss require joint field calibration.}
+\newcommand{\PaperSummary}{We analyze 108 recordings and 139 paired playback experiments on African penguin calls at sea. A balanced shallow forest using physical spectral features raises grouped macro F1 from 0.314 to 0.503 and two-voice recall from 2/24 to 13/24. We select a partially pooled propagation curve using interior and forward held-distance comparisons. The observed natural-minus-control response difference was 51.0 percentage points across 49 pairs matched on group size and distance. Presentation order is unknown. In strict held-date and track-purged validation, a distance-penalized rank-one model lowers mask log loss from 1.299 to 1.101. The stimulus-only distribution remains the earliest-response timing benchmark. For planning, we combine distance-specific response risk with a stimulus-specific conditional timing distribution. Under a hypothetical 20\% coupled loss, timely response becomes the binding constraint for longer-ranging calls, even where fidelity remains above 0.50. We propose testing quiet windows and vessel routing using receiver measurements and counterbalanced playback pairs.}
 
-\newcommand{\AcousticResults}{Peak frequency differed across call types after Holm adjustment ($p=0.0130$). The significant pairwise contrast was flat versus modulated ($p=0.0244$), with medians of 916 and 831 Hz. We compare the original six features with duration, first fundamental, peak-to-fundamental ratio, interquartile bandwidth, normalized peak location and quartile skewness in transformed coordinates. Logistic regularization and shallow forest depth are selected by grouped inner training folds.
+\newcommand{\AcousticResults}{Peak frequency differed across call types after Holm adjustment ($p=0.0130$). The significant pairwise contrast was flat versus modulated ($p=0.0244$), with medians of 916 and 831 Hz. Our physical features describe duration, first fundamental, peak-to-fundamental ratio, interquartile bandwidth, normalized peak location and quartile skewness. Grouped inner folds select depth by log loss. The decision multiplier alternative uses group-disjoint inner predictions to tune only hard decisions by macro F1. Its probabilities remain those of the unweighted forest.
 \begin{center}\small
 \begin{tabular}{lrrrrr}
 \toprule
@@ -8,28 +8,29 @@ Model & F1 & Flat recall & Modulated recall & Two-voice recall & Log loss\\
 \midrule
 Training prevalence & 0.229 & 0.523 & 0.275 & 0.000 & 1.090\\
 Fixed original logistic & 0.314 & 0.523 & 0.375 & 0.083 & 1.223\\
-Tuned original logistic & 0.326 & 0.591 & 0.425 & 0.042 & 1.127\\
-Tuned original forest & 0.350 & 0.636 & 0.550 & 0.000 & 1.067\\
-Tuned physical logistic & 0.337 & 0.659 & 0.400 & 0.042 & 1.126\\
-Tuned physical forest & 0.392 & 0.659 & 0.675 & 0.000 & 0.974\\
+Unweighted physical forest & 0.392 & 0.659 & 0.675 & 0.000 & 0.974\\
+Balanced forest & 0.503 & 0.523 & 0.475 & 0.542 & 0.978\\
+Bootstrap-balanced forest & 0.500 & 0.545 & 0.475 & 0.500 & 0.985\\
+Two-voice decision multiplier & 0.477 & 0.545 & 0.550 & 0.333 & 0.974\\
 \bottomrule
 \end{tabular}\\[3pt]
 Table 1. Pooled recording-group holdout scores.
 \end{center}
-Physical forest gains 0.077 macro F1 (paired 95\% interval 0.022--0.151) and lowers summed Brier from the prevalence value of 0.664 to 0.582. Its zero two-voice recall fails the adoption rule. The retained logistic probabilities score 0.738 on Brier, above prevalence. F02 availability marks all 24 two-voice recordings and pulse rate is absent from all 44 flat recordings, so the predictive comparisons omit both annotation-dependent fields. One example clip per type illustrates the spectra, with peak frequencies of 978, 792 and 845 Hz and interquartile bandwidths of 331, 317 and 325 Hz. \coreevidence{docs/core-q1.md}{Classification evidence}.
+The selected balanced physical forest gains 0.189 macro F1 (paired 95\% interval 0.068--0.310). Two-voice precision is 13/34, compared with 2/8 for logistic. Summed Brier is 0.588, below the training-prevalence value of 0.664. F02 is present for the 24 two-voice recordings alone, and pulse rate is absent from all 44 flat recordings. Both fields are excluded from prediction. \coreevidence{docs/core-q1.md}{Classification evidence}.
 
-\par\begin{center}\begin{minipage}{.86\linewidth}\centering\includegraphics[width=\linewidth]{q1_acoustics.png}\\{\small Figure 1. Acoustic feature distributions and grouped classification evidence.}\end{minipage}\end{center}}
+\begin{center}\begin{minipage}{.55\linewidth}\centering\includegraphics[width=\linewidth]{core_figure1.png}\\{\small Figure 1. Held-out predictions from the balanced physical forest.}\end{minipage}\end{center}
+}
 
-\newcommand{\PropagationResults}{The operational model partially pools effective spreading exponents with log-exponent penalty 0.0025. Its interior and forward RMSEs of 0.04547 and 0.10703 improve on isotonic fitting by 0.02269 (paired 95\% interval 0.02179--0.02368) and 0.14140 (0.13674--0.14681). Separate exponents give 0.04677 and 0.10859. Adding ISO 9613-1 absorption to its matched 0.01-penalty curve lowers forward RMSE by 0.00503 (0.00471--0.00528), yielding 0.10564. Its interior RMSE of 0.04899 ranks behind the production fit under the frozen selection rule. The production curve still overpredicts two-voice fidelity at 256 m by 0.203 in the forward holdout.
+\newcommand{\PropagationResults}{The selected curve combines partial pooling at penalty 0.0025 with fixed atmospheric absorption using median $Q_{50}$ by call. The three medians are 908.0, 864.5 and 844.5 Hz for flat, modulated and two-voice calls. Interior and forward RMSE are 0.045319 and 0.10249, compared with 0.045466 and 0.10703 for the matched no-absorption fit. The paired forward change versus the matched ablation is $-0.004548$ (95\% interval $[-0.004818,-0.004223]$). The selected curve still overpredicts two-voice fidelity at 256 m by 0.196 in forward validation. The Fpeak variant gives 0.045322 and 0.10262. Both variants pass the frozen comparisons. The interior-first rule selects $Q_{50}$ by a very small point difference, and the two frequency proxies should be interpreted as closely competing assumptions. The atmospheric coefficient is fixed using the stipulated temperature, humidity and pressure. Calibrated levels and recording-to-propagation linkage are unavailable.
 
 \begin{center}\small
 \begin{tabular}{lrrrr}
 \toprule
 Call & Potential (0.40) & Standard (0.50) & Reliable (0.60) & Sensitivity (0.70)\\
 \midrule
-Flat & 111.5 [110.3, 112.7] & 84.5 [83.5, 85.8] & 63.1 [62.0, 64.5] & 43.2 [41.9, 44.7]\\
-Modulated & 178.1 [176.3, 180.3] & 143.9 [142.0, 146.1] & 114.7 [112.9, 116.9] & 85.0 [83.3, 87.1]\\
-Two-voice & 207.2 [205.7, 208.6] & 173.2 [172.2, 174.4] & 141.1 [140.1, 142.0] & 99.4 [98.1, 100.8]\\
+Flat & 112.2 [111.1, 113.5] & 85.0 [83.9, 86.2] & 63.2 [62.0, 64.6] & 42.8 [41.6, 44.4]\\
+Modulated & 178.8 [177.0, 181.0] & 144.3 [142.4, 146.5] & 114.7 [112.9, 117.0] & 84.4 [82.7, 86.5]\\
+Two-voice & 207.8 [206.3, 209.2] & 173.6 [172.5, 174.7] & 141.0 [140.0, 142.0] & 98.6 [97.2, 100.0]\\
 \bottomrule
 \end{tabular}\\[3pt]
 Table 2. Selected-curve radii in metres with 95\% percentile intervals from 300 wide-row refits. All point and draw crossings fall within the measured 4--256 m range.
@@ -39,46 +40,25 @@ At 128 m each two-voice representation retains 190 of 300 rows. The paired inter
 \par\begin{center}\begin{minipage}{.82\linewidth}\centering\includegraphics[width=\linewidth]{core_q2_propagation.png}\\{\small Figure 2. Selected partially pooled curves and empirical equal-weight correlations. Shading shows pointwise 95\% wide-row resampling intervals. Dotted lines show the potential, standard and reliable thresholds. The dashed gray line shows the 0.70 sensitivity.}\end{minipage}\end{center}}
 
 \newcommand{\BehaviorResults}{
-On 278 trials in strict held-date folds with overlapping natural tracks purged, stimulus half-count frequencies, full multinomial and the structured pairwise mask model give mask log loss of 1.1250, 1.2993 and 1.1417, with any-response Brier scores of 0.1778, 0.1698 and 0.1681. A rank-one tilt by the number of scored behaviors gives 1.1021 and 0.1638. Its paired improvements over frequencies remain uncertain and its Brier improvement over full multinomial has a 95\% interval from $-0.0185$ to $+0.0037$. The shrinkage hurdle and nested frequency pool also miss the joint criterion. We retain the full multinomial for distance-specific response combinations. The tail holdout scores 52 trials from pairs with an arm at 125 m or farther, including 33 long-distance trials.
+In 12 strict held-date folds, with overlapping natural tracks purged, the stimulus frequency, full multinomial and structured pairwise models score 1.1250, 1.2993 and 1.1417 in mask log loss. Any-response Brier is 0.1778, 0.1698 and 0.1681. The selected rank-one tilt multiplies the empirical stimulus frequencies by an exponential factor proportional to the number of scored behaviors. Its covariates are stimulus, log distance, log group size and context, with eightfold stronger shrinkage on distance. At matched covariates its predictions are invariant to call type.
 
-The time model includes onset at zero and all responses through 60 s, treating nonresponses as administratively censored. For any event, stimulus timing, discrete hazard and finite-window occurrence plus timing give censored log losses of 0.8557, 0.8577 and 0.8622, and integrated Brier scores of 0.1765, 0.1752 and 0.1768. The stimulus distribution remains selected for any event, head raising, vocalizing and approach. Conditional any-event median errors are 2.19 s for the stimulus reference and 2.18 s for each alternative. Natural cumulative probabilities at 15, 30 and 60 s are 0.637, 0.648 and 0.651. The corresponding control probabilities are 0.130, 0.134 and 0.144. Smoothed control approach probabilities reflect the half-count prior, since no approach was observed in controls. \coreevidence{docs/core-q3.md}{Time distributions and local support}.
-
-Natural playback produced 90 responses among 139 trials versus 18 controls, a paired difference of 51.8 percentage points (95\% experiment-pair interval 43.9--60.1). Stratifying by natural playback distance relative to control gives gaps of 51.0 points for 49 same-distance pairs (date-block interval 37.5--64.2), 61.5 for 52 nearer pairs (51.7--69.5), and 39.5 for 38 farther pairs (24.3--55.7). All same-distance pairs matched group size. The 27 natural-only and two control-only outcomes in this stratum show that the observed gap persists at a matched distance and group size. At 50 m and eight birds, the adjusted natural-call increment for flat vocal-only response was 0.134 (0.043--0.276).
-
-The five-fold comparison favors the full multinomial over stimulus frequencies for Brier and favors stimulus frequencies for mask log loss. Adding context and group size improves Brier in the nested analysis. The two-stage model worsens both scores. Pairwise interactions improve both scores relative to the no-interaction fit. The pairwise mask-loss gain against unsmoothed stimulus frequencies largely comes from one approach-only trial whose mask was absent from training. With half a count per mask, the gain is 0.0131, with a paired difference interval of $[-0.0644,0.0476]$.
-
-Under strict date holdout, we also purge training pairs whose natural track occurs on the test date. The 12 folds cover all 139 pairs, with 97--127 training pairs per fold. Smoothed stimulus frequencies, the full multinomial, and the pairwise mask model give pooled log loss/Brier of 1.125/0.1778, 1.299/0.1698, and 1.142/0.1681. The smoothed baseline leads on mask loss and the pairwise model leads on Brier. We retain the full fit for standardized contrasts.
-
-Among 137 equal-size pairs, 76 have exactly one responding arm, with 74 natural-only and two control-only. Both control-only events occur in the 49 equal-distance pairs, one for modulated and one for two-voice. In a paired logistic model with a common response intercept for the two arms, conditioning on exactly one response removes that intercept. The direction intercept remains in both Firth models and enters the full information determinant used by the Jeffreys penalty. At matched prediction distances of 50, 100 and 150 m, the multinomial-based predictions average joint cells over contexts at eight birds before conditioning.
-
-The Firth training and held-out scoring samples include all eligible equal-size discordant pairs, including unequal playback distances. In the purged folds, the half-count direction frequency gives log loss and Brier scores of 0.1422 and 0.02650. The independent and shared-odds-ratio multinomial predictions give 0.1331 and 0.02727, and 0.1315 and 0.02660, respectively. The Firth model with log distance ratio raises both scores relative to the half-count rule. Adding call indicators raises them further, by 0.0162 in log loss (paired date-bootstrap 95\% interval 0.0070--0.0264) and 0.00249 in Brier (0.00095--0.00439). Both Firth fits use the prespecified fallback in the fold with no control-only training events. The half-count frequency remains the direction benchmark. Q4 absolute probabilities use the published multinomial.
-
-We decompose the marginal behavior gap into response frequency and composition among responders. With $p=\Pr(\mathrm{any})$ and $q=\Pr(\mathrm{event}\mid\mathrm{any})$, the natural-minus-control gap is $(p_N-p_C)(q_N+q_C)/2+(p_N+p_C)(q_N-q_C)/2$. Across 139 pairs, the vocalizing gap of 51.1 percentage points splits into 29.1 and 22.0 points. The composition term has a 95\% date-block interval of 14.5--30.8 points. In 49 same-distance and same-size pairs it is 26.3 points (11.6--40.0). The approach composition term is positive in both samples, while the head-raising composition intervals include zero. At eight birds we mix context-specific masks before conditioning. The standardized composition estimates have the same signs across the three calls and distances. For two-voice at 150 m, only two natural trials and one control are within 25 m. These terms are descriptive.
-
-The field study counted calls in 60 s before playback and 60 s from onset \cite{fieldstudy}. The mean post-minus-pre change is 1.98 calls per minute higher for natural playback than for control (95\% date-block interval 1.68--2.35) across 139 pairs. Matching distance and group size gives 1.67 (1.31--2.17) across 49 pairs. A bird can contribute multiple calls to the group count. A strict rise in minute counts matches the scored vocal response in these data, with 76 natural and five control positives. Positive post-onset counts alone give 78 and seven. In the strict holdout, stimulus means, full Poisson regression and Poisson with baseline count give deviance of 2.520, 2.370 and 2.194, and mean absolute error of 1.269, 1.145 and 1.181 calls. The held-out paired intervals miss the joint improvement criterion, so we retain stimulus means for count prediction.
-
-Following the field study \cite{fieldstudy}, we classify only the first call of each scored vocal response. Modulated replies account for 9/17, 13/27 and 18/32 natural responses while resting after feeding, while commuting and while searching, or 9/36, 13/65 and 18/38 of all corresponding trials. Five controls vocalized. In strict date and track holdout, the pooled half-count distribution scores 0.953 in cross-entropy and 0.585 in summed Brier. Shrinking by context gives 1.000 and 0.606, and adding played call gives 1.023 and 0.625. The added predictors miss the paired two-metric criterion, so we retain the pooled distribution. Within date and context, permutation of reply labels gives 26.0 expected same-type matches versus 24 observed among 76 natural responders (one-sided $p=0.886$).
-
-\begin{center}\begin{minipage}{.88\linewidth}\centering\small
-\begin{tabular}{lrrrr}
+\begin{center}\small
+\begin{tabular}{lrr}
 \toprule
-Natural playback & Flat reply & Modulated reply & Two-voice reply & Total\\
+Validation sample & Mask log-loss change & Any-response Brier change\\
 \midrule
-Flat       & 12 & 12 & 2 & 26\\
-Modulated  &  6 &  8 & 2 & 16\\
-Two-voice  & 10 & 20 & 4 & 34\\
+All 278 held-out trials & $-0.1984$ [$-0.3735,-0.0689$] & $-0.0062$ [$-0.0191,+0.0035$]\\
+52 trials in held-out tail pairs & $+0.0289$ & $-0.0242$\\
+33 trials actually at 125 m or farther & $-0.0117$ & $-0.0111$\\
 \bottomrule
 \end{tabular}\\[3pt]
-Table 3. First-reply counts among natural vocal responders, pooled across contexts.
-\end{minipage}\end{center}
+Table 3. Selected rank-one model minus the full multinomial. Ordinary intervals use paired date resampling.
+\end{center}
+The ordinary log-loss gain and Brier upper limit pass the frozen criteria. The tail point differences satisfy the limits of $+0.10$ log loss and $+0.02$ Brier. The selected model scores 1.1010 and 0.1636 overall. The full comparison includes the call-aware hurdle and nested pooling. Their tradeoffs and predictions for each of the eight response masks at 50, 100 and 150 m are available with the local support counts. \coreevidence{docs/core-q3.md}{Model scores, fold coverage and predictions}.
 
-Across the three size strata, the observed natural-minus-control gaps are 72.2, 50.0 and 30.6 percentage points. Matching distance and size gives 73.1, 33.3 and 21.4 points across 26, 9 and 14 pairs. Date-block intervals for those matched gaps are 59.3--88.0, 0.0--66.7 and $-10.9$--56.4 points. These are descriptive strata. Strict log loss and Brier are 0.5530/0.1789 for binary logit, 0.7376/0.2353 with the unit offset, and 0.5488/0.1784 with the free coefficient. The free model improves both scores over the offset, while its paired differences versus logit span zero. We retain logit for strict binary prediction. Group-level prediction can check this size-scaling restriction. Individual response rates, dependence and counts remain unidentified from the binary group outcomes.
+The recorded time analysis retains zero onsets and right-censors nonresponses at 60 s. The Weibull model uses an arm-specific zero atom and a monotone distance effect on positive waiting times. Its earliest-event log loss and integrated Brier are 1.0195 and 0.1860 versus 0.8557 and 0.1765 for the stimulus-only model. Neither the discrete hazard nor the finite-window model meets the timing adoption criterion. The selected benchmark uses stimulus alone. For the planning calculation we multiply the selected distance-specific 60 s risk by the arm-specific conditional timing CDF. This factorization scores 1.1312 in censored log loss and 0.1633 in integrated Brier in the post-selection comparison. Sparse empirical timing bins can have zero training frequency. The observed window cannot resolve perception or distinguish unobserved late events from a permanently nonresponding fraction.
 
-For the two outcomes within each experiment, adding a shared log odds ratio to the fitted trial margins changes four-state log loss from 1.059 to 1.043. The paired difference is $-0.016$ with a date-block interval of $[-0.032,0.002]$. The marginal Brier remains 0.1698 by construction. The interval includes zero, so we retain conditional independence for joint prediction. Residual association can reflect shared context or stimulus order.
-
-All four date-bootstrap slope intervals span zero. In the 49 same-distance pairs, the estimated changes in the response gap per unit of wind speed and wave height are 0.119 and 0.134, respectively. In the strict holdout, adding wind raises binary log loss by 0.060 and Brier by 0.017. Wave height changes them by $-0.010$ and $-0.001$, with intervals spanning zero. Both WAVERYS cells also give negative full-sample slopes and positive same-distance slopes, with all intervals spanning zero. The weather fits miss the joint predictive criterion.
-
-\par\begin{center}\begin{minipage}{.99\linewidth}\centering\includegraphics[width=\linewidth]{core_figure3.png}\\{\small Figure 3. Selected cumulative timing distributions pooled across call types and playback distances within each stimulus. Points mark the observed-window cutoffs.}\end{minipage}\end{center}
+\par\begin{center}\begin{minipage}{.99\linewidth}\centering\includegraphics[width=\linewidth]{core_figure3.png}\\{\small Figure 3. Any-response planning curves at 100 m use factorized timing. The three component behaviors use stimulus-only distributions pooled over call type and distance.}\end{minipage}\end{center}
 \begin{center}\small
 \begin{tabular}{lrr}
 \toprule
@@ -92,17 +72,73 @@ Approach & 8.00 & Unestimable\\
 \end{tabular}\\[3pt]
 Table 4. Selected stimulus-only median latencies among recorded responders at 50, 100 and 150 m and eight birds. Each entry pools calls and distances within stimulus and applies to all three conditions. No control approach was recorded.
 \end{center}
-In the inclusive 25 m windows around 50, 100 and 150 m, there were 37/57, 35/61 and 6/8 natural stimuli with any response, and 4/54, 7/57 and 1/8 controls. Every natural call-by-behavior cell had fewer than five local onsets at 150 m. Flat and modulated head-raising predictions at 150 m draw on the wider dataset, with zero local head-raising events in those strata. Control stimuli produced no observed approaches, so their conditional approach latency is unestimable. Regularized event probabilities can remain positive for unobserved strata. Appendix A reports behavior probabilities and conditional medians separately. No observed response leaves perception unresolved.
 
-In the archived responder-only analysis, the ridge model improves on the training median only for vocal onset in experiment-pair folds (3.03 versus 2.97 s MAE). On date holdout the vocal MAEs are 3.02 and 3.07 s, and the median also has lower MAE for head raising and approach. We interpret conditional ridge estimates as descriptive. For the earliest recorded onset, we compare four bins (by 5 s, over 5 through 15 s, after 15 s, and no recorded response). The multinomial improves summed Brier from 0.407 to 0.397 in pair folds, while log loss increases from 0.728 to 0.735. Both scores worsen on date holdout. At 150 m, its exploratory probability of a two-voice natural response by 5 s is 0.419 (95\% date-block interval 0.150--0.699), with two nearby natural trials. The corresponding control estimate is 0.053 (0.004--0.140), with one nearby trial. The timing probabilities refer to recorded events in the supplied trials. Retrospectively shortening the field protocol's 60 s observation to 5 s reduced the natural-minus-control risk difference by 18.37 percentage points (95\% date-block interval $-34.69$ to $-4.76$) in the 49 distance- and size-matched pairs. A 15 s window missed one natural response and a 30 s window retained all 41 recorded responses in these pairs. Across all 139 pairs, 30 s missed one late control response. In the matched pairs, 60 s restricted mean waiting time was 28.06 s shorter for natural playback (95\% interval 20.37--35.10 s shorter). \href{https://github.com/feiniao87968492-stack/apmcm-2026-problem-c/blob/57b0906286e2946504c579065bc377066bc7953f/docs/observation-window.md}{Observation duration results}. In 19 natural trials with both vocalizing and approach, vocal onset came first in 18, with one approach first and no ties. Approach minus vocal onset had a median of 3.6 s (95\% date-block interval 2.2--11.6 s). Both onsets were scored at group level.}
+Observed response totals are 90/139 natural and 18/139 control. The difference in the 49 matched pairs is 51.0 points. Only two natural and one control two-voice trials fall within 25 m of 150 m, limiting the tail interpretation. The archived directions, order and carryover bounds, group-size sensitivity, weather analyses, counts, first replies and shorter observation windows are indexed in the supporting evidence. \coreevidence{README.md}{Supporting analyses}.
+}
 
-\newcommand{\IntegratedResults}{We cross the selected propagation curve and archived isotonic curve with the archived and selected mask models. The mask decision retains the same full multinomial, so acoustic substitution accounts for the change. At the fixed gross cutoff of 0.287598, the 20\% coupled-loss radii move from 41.8, 77.2 and 116.2 m to 46.3, 81.6 and 117.4 m in flat, modulated and two-voice order. The clean gross radii are 82.4, 139.0 and at least 150 m with the selected acoustic curve.
+\newcommand{\IntegratedResults}{
+The gross index uses the selected propagation curve and the selected 60 s response model. The common cutoff, 0.287598, comes from the archived isotonic and full multinomial fits at 20 m and is fixed for each component substitution. The three propagation representations have equal weights to balance spectrotemporal shape, frequency content and temporal envelope. Those weights represent a modeling compromise because the data provide no perceptual weighting. The empirical behavior-context weights represent the mix of sampled groups, with counts 36 after feeding, 65 commuting and 38 searching. Different encounter proportions can change the standardized response probability. A separate archived behavior-score sensitivity gives weights 0.2, 0.4 and 0.4 to head raising, vocalization and approach to emphasize contact and recruitment. These are values for an additive score. A group displaying two behaviors may contain different individuals exhibiting each behavior.
 
-For a complementary planning criterion, we require fidelity and the natural probability of a recorded response by 30 s to each reach 0.50 throughout the half-metre prefix. The stimulus-level response exceeds 0.50 at both 15 and 30 s, even under the specified coupled loss. Both windows therefore give the same radii, with the acoustic threshold setting the limit in this comparison. Clean joint radii are 84.5, 143.5 and at least 150 m. Coupled-loss joint radii are 58.0, 107.5 and 132.0 m. These point scenarios use a common 150 m boundary. Near that distance the two-voice comparison has two natural trials and one control trial within 25 m. \coreevidence{docs/core-q4.md}{Aligned component comparisons}.
+The planning rule requires at least 0.50 fidelity and at least 0.50 probability of recorded natural response by the chosen time at every node in the prefix. For each arm with stimulus $a$, let $H_a(t)$ be the empirical proportion of recorded responders that first responded by $t$. We calculate $q_t(c,d,a)=p_{60}(c,d,a)H_a(t)$ at common model covariates before applying any coupled loss. Estimated natural and control $H(15)$ are $89/90$ and $17/18$, and $H(30)$ values are $90/90$ and $17/18$. The 60 s model therefore carries the distance dependence. In clean conditions natural $q_{30}$ declines from 0.757 at 20 m to 0.529 at 150 m. With 20\% coupled loss it declines from 0.635 to 0.440, while the archived stimulus-only timing remains constant at 0.545. All ranges are conditional on the grid and assumed loss.
 
-Archived uncertainty scenarios identify 100 m as a priority for noise calibration. At that target, two-voice net scores under a hypothetical 6 dB increase meet the consecutive four-shape rule in 94.5\% of full-fit draws with acoustic loss alone and 67.3\% when the same retention also scales positive response excess. These values use the archived reference and shape comparison. \evidence{docs/q4-response-sensitivity.md}{Archived noise and response sensitivities}.
 
-\par\begin{center}\begin{minipage}{.99\linewidth}\centering\includegraphics[width=\linewidth]{core_figure4.png}\\{\small Figure 4. Selected-curve gross product and 30 s joint minimum in clean and hypothetical 20\% coupled-loss conditions. Reference lines show the gross and joint thresholds.}\end{minipage}\end{center}}
+\begin{center}\small
+\begin{tabular}{lrr|rrrr}
+\toprule
+ & \multicolumn{2}{c}{Gross product} & \multicolumn{4}{c}{Joint rule}\\
+ & Clean selected & Loss archived $\to$ selected & Clean & Loss 15 s & Loss 30 s & Loss pooled timing\\
+\midrule
+Flat & 88.3 & 41.8 $\to$ 51.6 & 84.5 & 58.0 & 58.0 & 58.0\\
+Modulated & 134.9 & 77.2 $\to$ 79.7 & 144.0 & 77.0 & 81.5 & 107.0\\
+Two-voice & $\ge150$ & 116.2 $\to$ 83.8 & $\ge150$ & 77.0 & 81.5 & 132.0\\
+\bottomrule
+\end{tabular}\\[3pt]
+Table 5. Scenario distances in metres. Loss denotes 20\% coupled loss. The pooled-timing comparator uses the selected acoustics.
+\end{center}
+
+Fidelity fails first for flat under loss and for flat and modulated in clean conditions. Timely response fails first for modulated and two-voice under loss, at 77.5 m for 15 s and 82.0 m for 30 s. Both clean two-voice criteria reach the 150 m support boundary. These results use the same standardized response model across call types, so differences in fidelity explain the distinct joint distances when the acoustic threshold binds. \coreevidence{docs/core-q4.md}{Component comparisons and support}.
+
+
+\par\begin{center}\begin{minipage}{.99\linewidth}\centering\includegraphics[width=\linewidth]{core_figure4.png}\\{\small Figure 4. Production gross product and 30 s joint minimum in clean and hypothetical 20\% coupled-loss conditions. Reference lines show the gross and joint thresholds.}\end{minipage}\end{center}
+
+\subsection{Group response and participation}
+For a group of eight birds, denote by $K$ the number of distinct birds responding and by $p$ the modeled probability that at least one responds. Since $1\le K\le8$ when the group responds, the expectation is bounded by $[p,8p]$. Both endpoints can be attained by fixing the number of responders within responding groups. If individual probabilities are identical and responses independent, $p=1-(1-\pi)^8$ and $E[K]=8\pi$. A separate sensitivity assigns a conditional mean share $s$ of the eight birds to responding groups, giving $E[K]=8sp$. The group-level data identify $p$ under the fitted model. Individual independence and $s$ enter as assumptions.
+
+\begin{center}\small
+\begin{tabular}{lrrrrrr}
+\toprule
+100 m scenario & $p$ & Bounds & Independent & $s=.25$ & $s=.50$ & $s=.75$\\
+\midrule
+Clean & .577 & [.577, 4.617] & .816 & 1.154 & 2.309 & 3.463\\
+20\% coupled loss & .481 & [.481, 3.847] & .630 & .962 & 1.924 & 2.886\\
+\bottomrule
+\end{tabular}\\[3pt]
+Table 6. Expected numbers of responding birds for eight-bird groups. The selected response model gives the same standardized probability across call types at this distance.
+\end{center}
+
+\subsection{Noise spectrum and receiver measurements}
+The three Appendix 5 recordings contribute one measured example each, with spectral peaks of 978, 792 and 845 Hz in flat, modulated and two-voice order. We add synthetic broadband noise and matched-power noise in the 100--500 Hz and above-500--3000 Hz bands, with 200 paired realizations per clip and SNR. At 0 dB input SNR, the higher band lowers the mean equal-weight composite correlation by 0.041--0.052 relative to broadband noise. The lower band reduces the same composite by 0.028--0.036. Spectrogram and spectrum losses account for most of the higher-band gap. The experiment varies noise spectrum at fixed input power within each clip. The three examples provide a mechanism illustration with limited coverage of natural variability. \coreevidence{docs/appendix5-noise.md}{Waveform noise experiment}.
+
+Archived uncertainty scenarios also identify 100 m as a useful calibration target. At a hypothetical 6 dB increase, the archived two-voice net score meets the consecutive four-shape rule in 94.5\% of full-fit draws with acoustic loss alone and 67.3\% with proportional reduction of positive response excess. This comparison uses the original acoustic shapes, response model and reference. \coreevidence{docs/q4-response-sensitivity.md}{Archived noise and response sensitivities}.
+
+\subsection{Pilot allocation and monitoring review}
+An archived design exercise allocates 120 equal-cost paired playbacks across 12 cells. It uses fixed acoustics, the archived multinomial ridge curvature and gradients of three decision margins. The constrained Fisher plan protects the three focal cells with at least ten pairs each. It gives a largest variance relative to current data of 0.419 compared with 0.500 under uniform allocation. The paired sandwich sensitivity keeps the original model and varies the fitted within-pair association. The largest variance ratio across scenarios is 0.432 for constrained Fisher versus 0.513 for uniform. These figures compare precision under the archived planning assumptions.
+
+\begin{center}\small
+\begin{tabular}{lcccrr}
+\toprule
+Plan & Flat & Modulated & Two-voice & Fisher & Sandwich\\
+\midrule
+Uniform & 10,10,10,10 & 10,10,10,10 & 10,10,10,10 & .500 & .513\\
+Constrained Fisher & 31,0,0,0 & 14,12,10,4 & 21,0,10,18 & .419 & .432\\
+\bottomrule
+\end{tabular}\\[3pt]
+Table 7. Pair counts at 20, 50, 100 and 150 m within each call type and largest relative variance.
+\end{center}
+\coreevidence{docs/q4-fisher.md}{Fisher design} and \coreevidence{docs/q4-paired-planning.md}{paired sandwich sensitivity} provide the cell and margin details.
+
+In the archived 100 m, 20\% coupled-loss labeling scenario, the passing set contains two-voice alone. Among 105 False Bay holdouts, reviewing 50 recordings ranked by estimated classification error leaves zero false passes and eight missed passes. Uniform random review leaves expected counts of 3.14 and 9.95, with marginal central 95\% random-allocation ranges of 1--5 and 6--14. Review is assumed to correct selected labels perfectly. The comparisons condition on the archived logistic predictions and modeled scenario labels. \coreevidence{docs/q4-review-budget.md}{Review budget and comparator}.
+}
 
 \newcommand{\TVHundred}{2.20}
 \newcommand{\TVFar}{2.26}
