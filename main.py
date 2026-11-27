@@ -104,7 +104,14 @@ def main():
                           help="Run the fixed 38,400-draw full-fit context precision follow-up")
     analyses.add_argument("--q4-context-lambda", action="store_true",
                           help="Invert bounded-context Q4 behavioral noise loss")
+    analyses.add_argument("--observation-window", action="store_true",
+                          help="Compare paired playback responses across observation windows")
     args = parser.parse_args()
+    if args.observation_window:
+        from observation_window import run
+
+        run(args.data, args.output)
+        return
     if args.q4_context_lambda:
         from q4_context_lambda import write
 
