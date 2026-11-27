@@ -60,13 +60,13 @@ def run(output):
         ax.spines[["top", "right"]].set_visible(False)
     axes[0].set_ylabel("Cumulative response probability")
     axes[0].legend(fontsize=7)
-    fig.suptitle("Stimulus timing pooled across calls and distances", fontsize=11)
+    fig.suptitle("Two-voice at 100 m: any response uses the Q4 timing model", fontsize=11)
     fig.savefig(output / "core_figure3.png", dpi=240)
     plt.close(fig)
     (output / "core_figure3.meta.json").write_text(json.dumps(
         dict(data="core_figure3.csv", x="window_s", y="probability",
              display_rows={"distance_m": 100, "call": "tv"},
-             estimand="Stimulus-level timing pooled across calls and distances",
+             estimand="Selected planning timing for any response and validated timing for individual behaviors",
              groups=["endpoint", "stimulus"]), indent=2) + "\n", encoding="utf-8", newline="\n")
 
     distance = np.arange(20., 150.5, .5)
@@ -83,7 +83,8 @@ def run(output):
     cutoff = .5 * np.mean([fidelity("isotonic", c)[0] *
                            response("mask", "full_multinomial", c, "call", 60)[0] for c in q3.CALLS])
     support = pd.read_csv(output / "core_q3_support.csv").groupby(["call", "stimulus"]).first()
-    rows, limits = [], []
+    rates = pd.read_csv(output / "core_q3_conditional_rates.csv").set_index(["stimulus", "window_s"])
+    rows, limits, responders = [], [], []
     for c in q3.CALLS:
         natural_support = support.loc[(c, "call")]
         control_support = support.loc[(c, "control")]
@@ -93,36 +94,54 @@ def run(output):
                 p = response("mask", mask_model, c, "call", 60)
                 control = response("mask", mask_model, c, "control", 60)
                 for loss in (0., .20):
-                    gross, _ = environment(f, p, control, loss, 0)
+                    gross, adjusted_p = environment(f, p, control, loss, 0)
+                    if a == b == "selected":
+                        risk = adjusted_p[np.searchsorted(distance, 100)]
+                        responders.append(dict(call=c, loss=loss, distance_m=100, birds=8,
+                            probability=risk, lower=risk, upper=8*risk,
+                            independent=8*(1-(1-risk)**(1/8)),
+                            share_25=2*risk, share_50=4*risk, share_75=6*risk))
                     value, status = radius(distance, gross, cutoff)
                     limits.append(dict(call=c, acoustic=a, behavior=b, loss=loss, criterion="gross",
                                        radius_m=value, status=status, cutoff=cutoff))
                     for w in (15, 30):
-                        early = response("timing", timing_model, c, "call", w)
-                        # Apply the same coupled link to the early cumulative risk.
-                        early_control = response("timing", timing_model, c, "control", w)
-                        _, adjusted = environment(f, early, early_control, loss, 0)
-                        planning = np.minimum((1-loss)*f, adjusted)
-                        passed = np.logical_and.accumulate(planning >= .5)
-                        value = float(distance[passed][-1]) if passed.any() else 20.
-                        status = ("above_support" if passed.all() else
-                                  "below_support" if not passed.any() else "last_passing_node")
-                        limits.append(dict(call=c, acoustic=a, behavior=b, loss=loss,
-                                           criterion=f"joint_{w}s", radius_m=value,
-                                           status=status, cutoff=.5))
-                        for j, d in enumerate(distance):
-                            rows.append(dict(call=c, distance_m=d, acoustic=a, behavior=b,
-                                             acoustic_model=acoustic_model, mask_model=mask_model,
-                                             timing_model=timing_model, loss=loss, window_s=w,
-                                             fidelity=(1-loss)*f[j], early_response=adjusted[j],
-                                             gross=gross[j], planning_score=planning[j],
-                                             prefix_pass=passed[j],
-                                             natural_support=natural_support.min_observed_m <= d <= natural_support.max_observed_m,
-                                             control_support=control_support.min_observed_m <= d <= control_support.max_observed_m))
+                        for timing_rule in dict.fromkeys((timing_model, "stimulus_time")):
+                            if timing_rule == "factorized_time":
+                                early = p * rates.loc[("call", w), "conditional_probability"]
+                                early_control = control * rates.loc[("control", w), "conditional_probability"]
+                            else:
+                                early = response("timing", timing_rule, c, "call", w)
+                                early_control = response("timing", timing_rule, c, "control", w)
+                            _, adjusted = environment(f, early, early_control, loss, 0)
+                            fidelity_adjusted = (1-loss)*f
+                            planning = np.minimum(fidelity_adjusted, adjusted)
+                            passed = np.logical_and.accumulate(planning >= .5)
+                            value = float(distance[passed][-1]) if passed.any() else 20.
+                            status = ("above_support" if passed.all() else
+                                      "below_support" if not passed.any() else "last_passing_node")
+                            failed = None if passed.all() else int(np.flatnonzero(~passed)[0])
+                            binding = "support"
+                            if failed is not None:
+                                binding = ("both" if fidelity_adjusted[failed] < .5 and adjusted[failed] < .5
+                                           else "fidelity" if fidelity_adjusted[failed] < .5 else "response")
+                            limits.append(dict(call=c, acoustic=a, behavior=b, loss=loss,
+                                criterion=f"joint_{w}s", timing_model=timing_rule,
+                                radius_m=value, status=status, cutoff=.5, binding=binding,
+                                first_failing_m=None if failed is None else distance[failed],
+                                response_20m=adjusted[0], response_150m=adjusted[-1]))
+                            for j, d in enumerate(distance):
+                                rows.append(dict(call=c, distance_m=d, acoustic=a, behavior=b,
+                                    acoustic_model=acoustic_model, mask_model=mask_model,
+                                    timing_model=timing_rule, loss=loss, window_s=w,
+                                    fidelity=fidelity_adjusted[j], early_response=adjusted[j],
+                                    gross=gross[j], planning_score=planning[j], prefix_pass=passed[j],
+                                    natural_support=natural_support.min_observed_m <= d <= natural_support.max_observed_m,
+                                    control_support=control_support.min_observed_m <= d <= control_support.max_observed_m))
     curves = pd.DataFrame(rows)
     curves.to_csv(output / "core_q4_curves.csv", index=False, lineterminator="\n")
     pd.DataFrame(limits).to_csv(output / "core_q4_radii.csv", index=False, lineterminator="\n")
-    fig = curves.query("acoustic == 'selected' and behavior == 'selected' and window_s == 30")
+    pd.DataFrame(responders).to_csv(output / "core_q4_responders.csv", index=False, lineterminator="\n")
+    fig = curves.query("acoustic == 'selected' and behavior == 'selected' and window_s == 30 and timing_model == @timing_model")
     gross = fig.assign(scenario=fig.loss.map({0.: "Clean product", .20: "Coupled-loss product"}),
                        score=fig.gross)
     joint = fig.assign(scenario=fig.loss.map({0.: "Clean joint minimum", .20: "Coupled-loss joint minimum"}),

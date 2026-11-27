@@ -6,7 +6,7 @@
     "distance_m": 100,
     "call": "tv"
   },
-  "estimand": "Stimulus-level timing pooled across calls and distances",
+  "estimand": "Selected planning timing for any response and validated timing for individual behaviors",
   "groups": [
     "endpoint",
     "stimulus"

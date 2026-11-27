@@ -1,0 +1,7 @@
+{
+  "data": "core_figure1.csv",
+  "model": "physical_balanced",
+  "units": "held-out recordings",
+  "rows": "recorded class",
+  "columns": "predicted class"
+}
