@@ -73,3 +73,5 @@ The seven figures in `results/` each have a same-name CSV and JSON metadata file
 - [Supplementary 2 audit of candidate background audio](docs/data-audit.md#supplementary-2-background-audio)
 
 - [Q1 class-prior decision comparison](docs/q1-class-prior.md)
+
+- [Q1 recording-location sensitivity](docs/q1-location.md)

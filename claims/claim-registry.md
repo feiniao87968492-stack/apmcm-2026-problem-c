@@ -214,3 +214,7 @@ The five radii, grid counts, pairwise differences and retained playback ranges a
 ## Q1 class-prior decisions
 
 [Holdout predictions and training priors](../results/q1_class_prior_predictions.csv) and [grouped metrics and decisions](../results/q1_class_prior_metrics.csv) support the class-prior comparison and the decision to retain the original logistic rule.
+
+## Q1 recording-location sensitivity
+
+[Paired site-restricted results and archived scoring-only ranks](../docs/q1-location.md) support the description of location sensitivity under the original recording-group folds.
