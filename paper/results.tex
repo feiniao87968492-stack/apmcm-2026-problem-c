@@ -37,6 +37,21 @@ Table 2. Selected-curve radii in metres with 95\% percentile intervals from 300 
 \end{center}
 At 128 m each two-voice representation retains 190 of 300 rows. The paired intervals condition on available scores and unknown acquisition groups. Missing-score completions and alternative representation weights can change rankings, as detailed in the supporting analyses. \coreevidence{docs/core-q2.md}{Propagation validation and support}.
 
+
+\begin{center}\small
+\begin{tabular}{lrrr}
+\toprule
+Selected fit & 64 m & 128 m & 256 m\\
+\midrule
+Flat & $-0.020$ & $+0.066$ & $+0.003$\\
+Modulated & $-0.156$ & $+0.113$ & $+0.059$\\
+Two-voice & $-0.154$ & $+0.065$ & $+0.196$\\
+\bottomrule
+\end{tabular}\\[3pt]
+Forward signed prediction errors on the fidelity scale. Training uses strictly shorter distances.
+\end{center}
+The forward errors change sign between 64 and 128 m. The small full-data crossing intervals quantify how the selected fit moves when the available rows are resampled. The held-distance errors quantify prediction at an excluded distance, including the error that comes from the chosen curve shape. Both matter when planning a new deployment.
+
 \par\begin{center}\begin{minipage}{.82\linewidth}\centering\includegraphics[width=\linewidth]{core_q2_propagation.png}\\{\small Figure 2. Selected partially pooled curves and empirical equal-weight correlations. Shading shows pointwise 95\% wide-row resampling intervals. Dotted lines show the potential, standard and reliable thresholds. The dashed gray line shows the 0.70 sensitivity.}\end{minipage}\end{center}}
 
 \newcommand{\BehaviorResults}{
@@ -77,6 +92,22 @@ Selected mask probabilities for eight birds, weighted over observed contexts. Th
 
 
 The recorded time analysis retains zero onsets and right-censors nonresponses at 60 s. The Weibull model uses an arm-specific zero atom and a monotone distance effect on positive waiting times. Its earliest-event log loss and integrated Brier are 1.0195 and 0.1860 versus 0.8557 and 0.1765 for the stimulus-only model. Neither the discrete hazard nor the finite-window model meets the timing adoption criterion. The selected benchmark uses stimulus alone. For the planning calculation we multiply the selected distance-specific 60 s risk by the arm-specific conditional timing CDF. This factorization scores 1.1312 in censored log loss and 0.1633 in integrated Brier in the post-selection comparison. Sparse empirical timing bins can have zero training frequency. The observed window cannot resolve perception or distinguish unobserved late events from a permanently nonresponding fraction.
+
+
+\begin{center}\small
+\begin{tabular}{lrrr}
+\toprule
+Earliest-response model & Censored log loss & Integrated Brier & Median MAE (s)\\
+\midrule
+Stimulus frequencies & 0.8557 & 0.1765 & 2.188\\
+Discrete hazard & 0.8577 & 0.1752 & 2.177\\
+Finite-window two-part & 0.8622 & 0.1768 & 2.177\\
+Weibull AFT & 1.0195 & 0.1860 & 3.464\\
+Factorized planning, post-selection & 1.1312 & 0.1633 & 2.188\\
+\bottomrule
+\end{tabular}\\[3pt]
+Earliest-response prediction across strict held-date folds. Conditional MAE uses the 108 scored events.
+\end{center}
 
 \par\begin{center}\begin{minipage}{.99\linewidth}\centering\includegraphics[width=\linewidth]{core_figure3.png}\\{\small Figure 3. Any-response planning curves at 100 m use factorized timing. The three component behaviors use stimulus-only distributions pooled over call type and distance.}\end{minipage}\end{center}
 \begin{center}\small
@@ -156,6 +187,7 @@ Composite correlation change relative to broadband noise at 0 dB SNR. Brackets s
 
 Archived uncertainty scenarios also identify 100 m as a useful calibration target. At a hypothetical 6 dB increase, the archived two-voice net score meets the consecutive four-shape rule in 94.5\% of full-fit draws with acoustic loss alone and 67.3\% with proportional reduction of positive response excess. This comparison uses the original acoustic shapes, response model and reference. \coreevidence{docs/q4-response-sensitivity.md}{Archived noise and response sensitivities}.
 
+\clearpage
 \subsection{Pilot allocation and monitoring review}
 An archived design exercise allocates 120 equal-cost paired playbacks across 12 cells. It uses fixed acoustics, the archived multinomial ridge curvature and gradients of three decision margins. The constrained Fisher plan protects the three focal cells with at least ten pairs each. It gives a largest variance relative to current data of 0.419 compared with 0.500 under uniform allocation. The paired sandwich sensitivity keeps the original model and varies the fitted within-pair association. The largest variance ratio across scenarios is 0.432 for constrained Fisher versus 0.513 for uniform. These figures compare precision under the archived planning assumptions.
 
@@ -174,7 +206,7 @@ Table 7. Pair counts at 20, 50, 100 and 150 m within each call type and largest 
 \end{center}
 \coreevidence{docs/q4-fisher.md}{Fisher design} and \coreevidence{docs/q4-paired-planning.md}{paired sandwich sensitivity} provide the cell and margin details. The constrained plan lowers the two focal two-voice standard errors by 8.2\% and 8.4\%, while the modulated standard error rises by 0.5\%. The sandwich analysis uses log odds ratios 0, 0.464, 1.031 and 1.597 with the fitted arm margins held fixed. Both objectives favor measuring some groups at 20 m, where the additional data also inform the clean cutoffs.
 
-In the archived 100 m, 20\% coupled-loss labeling scenario, the passing set contains two-voice alone. Among 105 False Bay holdouts, reviewing 50 recordings ranked by estimated classification error leaves zero false passes and eight missed passes. Uniform random review leaves expected counts of 3.14 and 9.95, with marginal central 95\% random-allocation ranges of 1--5 and 6--14. Review is assumed to correct selected labels perfectly. The comparisons condition on the archived logistic predictions and modeled scenario labels. \coreevidence{docs/q4-review-budget.md}{Review budget and comparator}.
+In the archived 100 m, 20\% coupled-loss labeling scenario, the passing set contains two-voice alone. Among 105 False Bay holdouts, reviewing 50 recordings ranked by estimated classification error leaves zero false passes and eight missed passes. Uniform random review leaves expected counts of 3.14 and 9.95, with marginal central 95\% random-allocation ranges of 1--5 and 6--14. Review is assumed to correct selected labels perfectly. The nonpass-first queue leaves six false passes and five missed passes at the same review budget. Choosing a queue therefore depends on the relative cost of overlooking a passing recording and incorrectly passing a nonqualifying one. The comparisons condition on the archived logistic predictions and modeled scenario labels. \coreevidence{docs/q4-review-budget.md}{Review budget and comparator}.
 }
 
 \newcommand{\TVHundred}{2.20}
