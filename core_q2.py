@@ -17,6 +17,7 @@ ABSORPTION = "pool_0.01_absorption"
 ABLATION = "pool_0.01"
 MODELS = (*ARCHIVED_SHAPES, *PENALTIES, ABSORPTION)
 GRID = np.arange(4., 256.5, .5)
+THRESHOLDS = {0.40: "Potential", 0.50: "Standard", 0.60: "Reliable", 0.70: "Sensitivity"}
 PHYSICAL_INPUTS = dict(temperature_c=20., relative_humidity_percent=70., pressure_kpa=101.325)
 
 
@@ -113,7 +114,8 @@ def validation(observed, alpha):
         for j, target in enumerate(targets):
             training = q2.KNOTS != target if design == "interior" else q2.KNOTS < target
             training_distances = q2.KNOTS[training]
-            for i, draw in enumerate(observed):
+            selected_fits = []
+    for i, draw in enumerate(observed):
                 fits = fit_models(training_distances, draw[:, training], alpha)
                 for k, model in enumerate(MODELS):
                     estimates[i, k, :, j] = evaluate(
@@ -176,11 +178,28 @@ def select_production(scores, comparisons):
     return selected, rmse.reset_index().rename_axis(None, axis=1)
 
 
+def crossing(model, fit, call_index, threshold, curve, alpha):
+    if curve[0] < threshold:
+        return GRID[0], "below_support"
+    if curve[-1] >= threshold:
+        return GRID[-1], "above_support"
+    if model == "isotonic":
+        return q2.radius(fit[call_index], threshold)
+    distance = brentq(
+        lambda d: evaluate(model, np.array([d]), q2.KNOTS, fit, alpha)[call_index, 0]
+        - threshold, GRID[0], GRID[-1],
+    )
+    return distance, "crossing"
+
+
 def full_curves(observed, alpha, selected):
     predictions = np.empty((len(observed), len(MODELS), len(q2.CALLS), len(GRID)))
     point_fits = fit_models(q2.KNOTS, observed[0], alpha)
+    selected_fits = []
     for i, draw in enumerate(observed):
         fits = point_fits if i == 0 else fit_models(q2.KNOTS, draw, alpha)
+        if i:
+            selected_fits.append(fits[selected])
         for j, model in enumerate(MODELS):
             predictions[i, j] = evaluate(model, GRID, q2.KNOTS, fits[model], alpha)
     low, high = np.quantile(predictions[1:], [.025, .975], axis=0)
@@ -194,23 +213,22 @@ def full_curves(observed, alpha, selected):
                 lower95=low[j, k], upper95=high[j, k], empirical_equal_weight=empirical[k],
                 selected=model == selected,
             )))
-        for threshold in (.50, .70):
+        for threshold in THRESHOLDS if model == selected else (.50, .70):
             for k, call in enumerate(q2.CALLS):
-                fitted_curve = predictions[0, j, k]
-                if fitted_curve[0] < threshold:
-                    distance, status = GRID[0], "below_support"
-                elif fitted_curve[-1] >= threshold:
-                    distance, status = GRID[-1], "above_support"
-                elif model == "isotonic":
-                    distance, status = q2.radius(point_fits[model][k], threshold)
-                else:
-                    distance = brentq(
-                        lambda d: evaluate(model, np.array([d]), q2.KNOTS, point_fits[model], alpha)[k, 0]
-                        - threshold, GRID[0], GRID[-1],
-                    )
-                    status = "crossing"
-                radii.append(dict(model=model, call=call, threshold=threshold, distance_m=distance,
-                                  status=status, selected=model == selected))
+                distance, status = crossing(model, point_fits[model], k, threshold,
+                                            predictions[0, j, k], alpha)
+                row = dict(model=model, call=call, threshold=threshold, distance_m=distance,
+                           status=status, selected=model == selected)
+                if model == selected:
+                    distances, statuses = zip(*[
+                        crossing(model, fit, k, threshold, curve, alpha)
+                        for fit, curve in zip(selected_fits, predictions[1:, j, k])
+                    ])
+                    lower, upper = np.quantile(distances, [.025, .975])
+                    row.update(lower95_m=lower, upper95_m=upper, draws=len(distances),
+                               draws_below_support=statuses.count("below_support"),
+                               draws_above_support=statuses.count("above_support"))
+                radii.append(row)
     return pd.concat(curves, ignore_index=True), pd.DataFrame(radii)
 
 
@@ -230,8 +248,12 @@ def plot_propagation(output, curves, selected):
             ax.plot(part.distance_m, part.fidelity, color=color, linestyle=style, label=label,
                     linewidth=1.9)
             ax.scatter(part.distance_m, part.empirical_equal_weight, color=color, s=14, zorder=3)
-        for threshold in (.50, .70):
-            ax.axhline(threshold, color="#7A7A7A", linestyle=":", linewidth=.7)
+        for threshold, label in THRESHOLDS.items():
+            ax.axhline(threshold, color="#787878", linestyle="--" if threshold == .70 else ":",
+                       linewidth=.8)
+            ax.text(.01, threshold+.011, f"{label} {threshold:.2f}", color="#424242",
+                    transform=ax.get_yaxis_transform(), fontsize=7,
+                    bbox={"facecolor": "white", "edgecolor": "none", "pad": .4})
         ax.set(xscale="log", xlim=(3.7, 278), ylim=(0, 1.04),
                xlabel="Propagation distance (m)", ylabel="Acoustic fidelity")
         ax.set_xticks(q2.KNOTS, [f"{d:g}" for d in q2.KNOTS])
@@ -242,7 +264,7 @@ def plot_propagation(output, curves, selected):
     table.to_csv(output / "core_q2_propagation.csv", index=False, lineterminator="\n")
     metadata = dict(
         inputs=["Data01*.csv", *[f"Data{n:02d}*.csv" for n in range(3, 12)]],
-        distance_unit="m", selected_model=selected,
+        distance_unit="m", selected_model=selected, thresholds=THRESHOLDS,
         marks="Points are empirical equal-weight correlations. Lines use the production fit.",
         uncertainty=q2.BOOTSTRAP_NOTE, interval="95% pointwise row-resampling bands",
         seed=SEED, bootstrap_draws=DRAWS, source_data="core_q2_propagation.csv",

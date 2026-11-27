@@ -309,6 +309,22 @@ def prediction_table(frame, contexts, weights, mask_model, timing_models):
     return pd.concat(rows, ignore_index=True)
 
 
+def representative_latency(frame, timing_models):
+    onset = recorded_onset(frame)
+    rows = []
+    for i, endpoint in enumerate(ENDPOINTS):
+        observed = np.isfinite(onset[:, i])
+        for stimulus in q3.STIMULI:
+            values = onset[observed & frame.Type.eq(stimulus), i]
+            for distance in q3.REPRESENTATIVE:
+                rows.append(dict(endpoint=endpoint, stimulus=stimulus, distance_m=distance,
+                                 group_size=8, model=timing_models[endpoint],
+                                 pooled_responders=len(values),
+                                 median_latency_s=np.median(values) if len(values) else None,
+                                 status="pooled_by_stimulus" if len(values) else "unestimable"))
+    return pd.DataFrame(rows)
+
+
 def support_table(frame):
     onset = recorded_onset(frame)
     rows = []
@@ -351,6 +367,7 @@ def run(data, output):
         "predictions": prediction_table(frame, contexts, context_weights.to_numpy(),
                                         selected_mask, selected_timing),
         "support": support_table(frame),
+        "representative_latency": representative_latency(frame, selected_timing),
     }
     output.mkdir(parents=True, exist_ok=True)
     for name, table in tables.items():
