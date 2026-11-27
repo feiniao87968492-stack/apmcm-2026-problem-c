@@ -315,3 +315,9 @@ The protocol froze at 7fe10d3 and ran at d834afa. Both output CSVs regenerated b
 ## Q4 draw rematching in the English manuscript
 
 Two separate Git archives of e51a0a1 produced the same PDF byte-for-byte after two pdflatex passes with SOURCE_DATE_EPOCH=1795731780. The PDF SHA-256 is 30847d7e7eb227a02ed95734553e33a5dde23790a729be57586610d22b55a221. The body and references occupy pages 3–19 of 162. The team number and PDF author fields are blank. The independent review verified the endpoint criterion, the versioned evidence link and all 61 source listings. [Independent manuscript review](../reviews/q4-draw-rematching-paper-review.md) · [PDF](../paper/main.pdf)
+
+## Q4 consecutive-radius rematching verification
+
+The protocol froze at ccd7efd. The implementation at b4d4987 regenerated both CSVs byte-for-byte from a Git archive through the main entry point. Independent dense assignment verified 1,044 original counts, 13 crossing or cap counts and all eight extremizing permutations. [Results and reproduction](../docs/q4-prefix-rematching.md) · [Independent numerical verification](../reviews/q4-prefix-rematching-verification.md)
+
+Two independent Git archives of fed6993 produced identical PDFs after two pdflatex passes with SOURCE_DATE_EPOCH=1795731780. SHA-256 is b54d16b74f5ab5cdeab8544a962b87b0bd91a3b1417bc50c24e5a81379326c28. Body and references occupy pages 3–19 of 164. Team and author fields are blank. [Independent manuscript review](../reviews/q4-prefix-rematching-paper-review.md) · [PDF](../paper/main.pdf)
