@@ -80,7 +80,14 @@ def main():
                           help="Bound Q3 first-playback response differences")
     analyses.add_argument("--q3-carryover", action="store_true",
                           help="Bound Q3 contrasts under hypothetical playback carryover")
+    analyses.add_argument("--q4-draw-rematching", action="store_true",
+                          help="Stress-test Q4 by rematching acoustic and behavior draws")
     args = parser.parse_args()
+    if args.q4_draw_rematching:
+        from q4_draw_rematching import write
+
+        write(args.data, args.output, Path(__file__).resolve().parent / "results")
+        return
     if args.q3_carryover:
         from q3_carryover import run
 
