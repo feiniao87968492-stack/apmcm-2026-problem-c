@@ -34,14 +34,15 @@ def acoustic_fidelities(data, distances=DISTANCES, *, include_shared=False):
     return (curves, np.stack(shared_parameters)) if include_shared else curves
 
 
-def behavior_probabilities(data, distances=DISTANCES):
+def behavior_probabilities(data, distances=DISTANCES, *, context_specific=False):
     frame = q3.load_playbacks(data)
     weights = frame.loc[frame.Type.eq("call"), "Context"].value_counts(normalize=True).sort_index()
     n_dates = frame.Date.nunique()
     dates = np.random.default_rng(DATE_SEED).integers(n_dates, size=(DRAWS, n_dates))
     filters, _ = pair_filters(frame)
     for model in MODELS:
-        point, draws = refit(frame, filters[model], dates, weights, distances=distances)
+        point, draws = refit(frame, filters[model], dates, weights, distances=distances,
+                             context_specific=context_specific)
         yield model, np.concatenate((point[None], draws))
 
 

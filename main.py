@@ -96,7 +96,14 @@ def main():
                           help="Compare fixed attenuation exponent pooling penalties")
     analyses.add_argument("--q4-intermittent-noise", action="store_true",
                           help="Compare intermittent and continuous Q4 noise")
+    analyses.add_argument("--q4-context-exposure", action="store_true",
+                          help="Bound context-dependent Q4 intermittent exposure")
     args = parser.parse_args()
+    if args.q4_context_exposure:
+        from q4_context_exposure import write
+
+        write(args.data, args.output, Path(__file__).resolve().parent / "results")
+        return
     if args.q4_intermittent_noise:
         from q4_intermittent_noise import write
 

@@ -38,7 +38,7 @@ def training_counts(frame, eligible, model):
                        min_m=part.Distance.min(), max_m=part.Distance.max())
 
 
-def refit(frame, eligible, sampled_dates, weights, distances=q3.REPRESENTATIVE):
+def refit(frame, eligible, sampled_dates, weights, distances=q3.REPRESENTATIVE, *, context_specific=False):
     contexts = tuple(weights.index)
     design = q3.features(frame, contexts)
     target = q3.features(q3.probability_grid(np.asarray(distances), contexts, 8), contexts)
@@ -47,10 +47,11 @@ def refit(frame, eligible, sampled_dates, weights, distances=q3.REPRESENTATIVE):
 
     def predict(rows):
         zero = q3.fit_masks(design[rows], masks[rows], target)[:, 0].reshape(shape)
-        return (1 - zero) @ weights.to_numpy()
+        response = 1 - zero
+        return response if context_specific else response @ weights.to_numpy()
 
     blocks = [np.flatnonzero(eligible & frame.Date.eq(d)) for d in sorted(frame.Date.unique())]
-    draws = np.full((len(sampled_dates), *shape[:-1]), np.nan)
+    draws = np.full((len(sampled_dates), *(shape if context_specific else shape[:-1])), np.nan)
     for i, dates in enumerate(sampled_dates):
         rows = np.concatenate([blocks[j] for j in dates])
         if len(rows):
