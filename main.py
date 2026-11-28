@@ -257,11 +257,13 @@ def main():
         import core_q2
         import core_q3
         import core_integration
+        import core_paper_figures
 
         core_q2.run(args.data, args.output)
         core_q3.run(args.data, args.output)
         core_q1.run(args.data, args.output)
         core_integration.run(args.output)
+        core_paper_figures.run(Path(__file__).resolve().parent / "results", args.output)
         return
     if args.bootstrap < 2:
         parser.error("--bootstrap must be at least 2")

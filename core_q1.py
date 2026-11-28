@@ -11,6 +11,12 @@ from appendix5_noise import load_clips
 from q1 import CALLS, FEATURES, FROZEN_TEST_GROUPS, comparison_scores, macro_f1
 
 
+PHYSICAL_LABELS = ("Log duration", "Log first fundamental", "Log peak / fundamental",
+                   "Log interquartile bandwidth", "Normalized peak position", "Quartile skewness")
+ORIGINAL_LABELS = ("Duration", "First fundamental", "Peak frequency", "Spectral Q25",
+                   "Spectral Q50", "Spectral Q75")
+
+
 def model(kind, setting, class_weight=None):
     if kind == "logistic":
         return make_pipeline(StandardScaler(), LogisticRegression(C=setting, max_iter=1000))
@@ -58,11 +64,13 @@ def run(data, output):
     tv = int(np.flatnonzero(classes == "tv")[0])
     decision_weights = np.ones(len(labels))
     settings_rows = []
+    outer_fits = {name: [] for name in ("fixed_logistic", *candidates)}
     for fold, held in enumerate(FROZEN_TEST_GROUPS, 1):
         test = np.flatnonzero(np.isin(groups, held))
         train = np.flatnonzero(~np.isin(groups, held))
         fit = model("logistic", 1).fit(raw[train], labels[train])
         probabilities["fixed_logistic"][test] = fit.predict_proba(raw[test])
+        outer_fits["fixed_logistic"].append((test, fit))
         probabilities["prevalence"][test] = np.bincount(labels[train], minlength=3) / len(train)
         folds = list(StratifiedGroupKFold(3, shuffle=True, random_state=20261209).split(
             raw[train], labels[train], groups[train]))
@@ -76,7 +84,9 @@ def run(data, output):
                 losses.append(logloss(predictions, labels[train]).mean())
                 inner_predictions.append(predictions)
             best = settings[int(np.argmin(losses))]
-            probabilities[name][test] = model(kind, best, weighting.get(name)).fit(x[train], labels[train]).predict_proba(x[test])
+            fit = model(kind, best, weighting.get(name)).fit(x[train], labels[train])
+            probabilities[name][test] = fit.predict_proba(x[test])
+            outer_fits[name].append((test, fit))
             settings_rows.append(dict(fold=fold, model=name, setting=best, inner_log_loss=min(losses)))
             if name == "physical_forest":
                 inner = inner_predictions[int(np.argmin(losses))]
@@ -127,14 +137,45 @@ def run(data, output):
     oof["tv_decision_multiplier"] = decision_weights
     audit = frame.groupby("CallType")[["F02", "PulseRate"]].count().join(frame.groupby("CallType").size().rename("n"))
     output.mkdir(parents=True, exist_ok=True)
-    plot_decisions(frame, actual, hard[selected], classes, selected, output)
+    uses_multiplier = selected == multiplier_name
+    estimator = "physical_forest" if uses_multiplier else selected
+    predictors, feature_names = (physical, PHYSICAL_LABELS) if estimator.startswith("physical") else (
+        raw, ORIGINAL_LABELS
+    )
+    importance = held_out_importance(
+        predictors, feature_names, outer_fits[estimator], actual, hard[selected], classes,
+        tv, decision_weights if uses_multiplier else np.ones(len(labels)),
+    )
+    plot_decisions(frame, actual, hard[selected], classes, selected, importance, output)
     for suffix, table in (("scores", scores.reset_index()), ("settings", pd.DataFrame(settings_rows)),
                           ("oof", oof), ("availability", audit.reset_index()),
                           ("wav", pd.DataFrame(examples(data)))):
         if not table.empty:
             table.to_csv(output / f"core_q1_{suffix}.csv", index=False, lineterminator="\n")
 
-def plot_decisions(frame, actual, hard, classes, selected, output):
+def held_out_importance(predictors, feature_names, fits, actual, decisions, classes, tv, weights):
+    """Shuffle one column within each held recording fold using the same fitted model."""
+    repeats = 40
+    rng = np.random.default_rng(20261211)
+    baseline = macro_f1(actual, decisions)
+    records = []
+    for column, feature in enumerate(feature_names):
+        shuffled_labels = np.empty((repeats, len(actual)), dtype=decisions.dtype)
+        for test, fit in fits:
+            values = predictors[test]
+            shuffled = np.repeat(values[None, :, :], repeats, axis=0)
+            shuffled[:, :, column] = [rng.permutation(values[:, column]) for _ in range(repeats)]
+            probabilities = fit.predict_proba(shuffled.reshape(-1, values.shape[1]))
+            probabilities = probabilities.reshape(repeats, len(test), len(classes))
+            probabilities[:, :, tv] *= weights[test]
+            shuffled_labels[:, test] = classes[probabilities.argmax(axis=2)]
+        decreases = [baseline - macro_f1(actual, labels) for labels in shuffled_labels]
+        records.append(dict(panel="importance", feature=feature, mean_f1_decrease=np.mean(decreases),
+                            shuffle_sd=np.std(decreases, ddof=1), repeats=repeats))
+    return records
+
+
+def plot_decisions(frame, actual, hard, classes, selected, importance, output):
     import json
     import matplotlib.pyplot as plt
     from sklearn.metrics import confusion_matrix
@@ -145,8 +186,8 @@ def plot_decisions(frame, actual, hard, classes, selected, output):
               "Spectral Q50", "Spectral Q75", "Second fundamental", "Pulse rate")
     colors = ("#17686a", "#ae542b", "#634892")
     names = ("Flat", "Modulated", "Two-voice")
-    fig, (dist, ax) = plt.subplots(1, 2, figsize=(8.3, 3.7), layout="constrained",
-                                   gridspec_kw={"width_ratios": (1.5, 1)})
+    fig, (dist, ax, rank) = plt.subplots(1, 3, figsize=(9.5, 3.65), layout="constrained",
+                                         gridspec_kw={"width_ratios": (1.25, 1, 1.25)})
     rows = []
     for i, feature in enumerate(features):
         quartiles = frame.groupby("CallType")[feature].quantile([.25, .5, .75]).unstack()
@@ -169,17 +210,28 @@ def plot_decisions(frame, actual, hard, classes, selected, output):
     dist.legend(fontsize=7, loc="lower center", bbox_to_anchor=(.5, -.24), ncol=3, frameon=False)
     for i, j in np.ndindex(counts.shape):
         rows.append(dict(panel="confusion", call=classes[i], predicted=classes[j], count=counts[i, j]))
-    pd.DataFrame(rows).to_csv(output / "core_figure1.csv", index=False, lineterminator="\n")
+    pd.DataFrame([*rows, *importance]).to_csv(output / "core_figure1.csv", index=False, lineterminator="\n")
     (output / "core_figure1.meta.json").write_text(json.dumps(
         dict(data="core_figure1.csv", model=selected,
              distribution="Observed medians and quartiles on a common scale within each feature",
-             confusion="Counts of held-out recordings by recorded and predicted class"),
+             confusion="Counts of held-out recordings by recorded and predicted class",
+             importance="Pooled held-out macro F1 decrease, mean and SD of 40 within-fold shuffles",
+             importance_seed=20261211),
         indent=2) + "\n", encoding="utf-8", newline="\n")
-    ax.imshow(counts, cmap="Blues", vmin=0)
+    ax.imshow(counts, cmap="Blues", vmin=0, aspect="auto")
     ax.set(title="B  Grouped holdout", xticks=range(3), yticks=range(3), xticklabels=names, yticklabels=names,
            xlabel="Predicted call", ylabel="Recorded call")
     for i, j in np.ndindex(counts.shape):
         ax.text(j, i, str(counts[i, j]), ha="center", va="center",
                 color="white" if counts[i, j] > .58*counts.max() else "#172332")
-    fig.savefig(output / "core_figure1.png", dpi=240)
+    ranked = pd.DataFrame(importance).sort_values("mean_f1_decrease")
+    rank.axvline(0, color="#a1a6ad", linewidth=.75)
+    rank.errorbar(ranked.mean_f1_decrease, range(len(ranked)), xerr=ranked.shuffle_sd,
+                  fmt="o", color="#17686a", markersize=4, capsize=2)
+    rank.set(title="C  Feature importance", xlabel="Macro F1 decrease",
+             yticks=range(len(ranked)), yticklabels=ranked.feature)
+    for panel in (dist, rank):
+        panel.spines[["top", "right"]].set_visible(False)
+        panel.tick_params(axis="y", labelsize=8)
+    fig.savefig(output / "core_figure1.png", dpi=300)
     plt.close(fig)
