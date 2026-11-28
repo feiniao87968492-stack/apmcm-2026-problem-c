@@ -4,7 +4,7 @@ Reproducible analysis of acoustic communication and playback responses in Africa
 
 ## Reproduce
 
-Use Python 3.10 in a virtual environment and the contest attachment folder containing Data01 through Data11. The default run reproduces the core model comparisons, the selected Q2-to-Q4 route and Figures 1?6 with the frozen seeds. The three optional Supplementary 5 WAV files enable the measured-waveform summaries. Figure 5 reads the archived noise contrasts, which the WAV files reproduce through `--appendix5-noise`. The same route is available with `--core`. Use `--archived` for the previous full pipeline and its original outputs, or `--help` for named analyses.
+Use Python 3.10 in a virtual environment and the contest attachment folder containing Data01 through Data11. The default run reproduces the core model comparisons, the selected Q2-to-Q4 route and Figures 1?6 with the frozen seeds. The three optional Supplementary 5 WAV files enable the measured-waveform summaries. Figure 5 reads the archived noise contrasts, which the WAV files reproduce through `--appendix5-noise`. The default also regenerates the paired duration, 30 s planning and external vigilance comparisons. To run only those comparisons with the released core tables, use `--playback-endpoints`. The same default route is available with `--core`. Use `--archived` for the previous full pipeline and its original outputs, or `--help` for named analyses.
 
 ```sh
 python -m pip install -r requirements.txt
@@ -16,6 +16,7 @@ Both the core and archived figures in `results/` have corresponding CSV and meta
 - [English paper](paper/main.pdf)
 - [Core Q1](docs/core-q1.md) ? [Core Q2](docs/core-q2.md) ? [Core Q3](docs/core-q3.md) ? [Core Q4 and reproduction](docs/core-q4.md)
 - [Frozen analysis assumptions and rationale](docs/model-spec.md)
+- [Group head-raising duration, 30 s planning and external noise evidence](docs/playback-endpoints.md)
 - [Data audit](docs/data-audit.md)
 - [Round-one comparisons and model decisions](docs/round1-results.md)
 - [Round-two ablations and paired intervals](docs/round2-results.md)

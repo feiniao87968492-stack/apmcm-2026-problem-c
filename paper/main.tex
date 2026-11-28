@@ -14,6 +14,7 @@
 \newcommand{\callname}[1]{\textsc{#1}}
 \newcommand{\evidence}[2]{\href{https://github.com/feiniao87968492-stack/apmcm-2026-problem-c/blob/41f7153643d6098940507a8682c2bcbb4d64f97f/#1}{#2}}
 \newcommand{\coreevidence}[2]{\href{https://github.com/feiniao87968492-stack/apmcm-2026-problem-c/blob/0b74512/#1}{#2}}
+\newcommand{\followupevidence}[2]{\href{https://github.com/feiniao87968492-stack/apmcm-2026-problem-c/blob/d21e3e5/#1}{#2}}
 \newcommand{\monitoringevidence}[2]{\href{https://github.com/feiniao87968492-stack/apmcm-2026-problem-c/blob/c941a0713ac8305839d7d8a2c258a987df5d9523/#1}{#2}}
 \input{results.tex}
 \begin{document}
@@ -67,6 +68,8 @@ An eight-state mask records the combination of the three scored behaviors. The f
 
 We analyze observable event time over the field protocol's 60 s window, for the first flagged event and each individual behavior. Cumulative time bins include zero, 5, 15, 30 and 60 s, with a separate administrative censoring cell. We compare stimulus frequencies, a regularized discrete hazard, a finite-window occurrence model and a Weibull accelerated failure-time model on the same folds. We score censored log loss and integrated Brier, with conditional MAE as a secondary comparison. Distance-specific predictions use eight birds, average over observed contexts and display local trial support. The time estimand ends at 60 s.
 
+Head-raising duration is the recorded span between the first bird starting and the last bird stopping within the 60 s observation window. We compare paired seconds per trial, including zeros, and mean seconds among responders. A two-part model predicts expected seconds by multiplying the probability of a positive span by its conditional mean. We compare each part with and without natural call-type terms, scoring expected seconds on the same held dates.
+
 \BehaviorResults
 
 \clearpage
@@ -81,15 +84,17 @@ A second rule requires both fidelity and the cumulative natural probability by 3
 
 \IntegratedResults
 
-Pilot quiet windows during mapped foraging activity or reroute vessels around those areas when navigation permits. Compare usual operations with the pilot under comparable sea states and group contexts. Measure calibrated noise levels and spectra at receiver positions, and compare recorded responses to paired natural and control playbacks with counterbalanced presentation order. Prioritize sampling around 100 m and near the 150 m support boundary. Use the modeled distances as conditional planning inputs, with any operating buffer subject to local noise and behavioral calibration. Record acquisition identifiers, contexts and playback order. The earlier monitoring, noise, carryover and trial-design comparisons remain available in the supporting analyses. \coreevidence{README.md}{Supporting analyses and reproduction}.
+Pilot quiet windows during mapped foraging activity or reroute vessels around those areas when navigation permits. Compare usual operations with the pilot under comparable sea states and group contexts. Measure calibrated noise levels and spectra at receiver positions, and compare recorded responses to paired natural and control playbacks with counterbalanced presentation order. Sample across the 80--130 m span where the two-voice scenario endpoints differ and near 150 m to check the far-distance extrapolation. Use the modeled distances as conditional planning inputs, with any operating buffer subject to local noise and behavioral calibration. Record acquisition identifiers, contexts and playback order. The earlier monitoring, noise, carryover and trial-design comparisons remain available in the supporting analyses. \coreevidence{README.md}{Supporting analyses and reproduction}.
 
 \section{Limitations and reproducibility}
-Sparse responses limit precision for behavior combinations and onset times. The integrated index combines separate propagation and playback experiments. Its noise scenarios depend on the stated assumptions. Data02 provides no verified stimulus order, so presentation-order and carryover effects are unestimated. The \href{https://github.com/feiniao87968492-stack/apmcm-2026-problem-c/blob/aaaff78e98df91bc998fa1359171050e7b1967a8/docs/data-audit.md\#playback-design-and-order-recoverability}{versioned playback audit} documents the available design fields. The repository provides code and results. The specification records resampling counts and seeds for each analysis.
+Sparse responses limit precision for behavior combinations and onset times. The integrated index combines separate propagation and playback experiments. Its noise scenarios depend on the stated assumptions. The public recordings include one waveform example per call type. An earlier sea-surface archive provides call codes and behavioral context \cite{earliersurface}. An independent acoustic validation needs waveform or spectral records linked to all three labels and acquisition groups. Data02 provides no verified stimulus order, so presentation-order and carryover effects are unestimated. The \href{https://github.com/feiniao87968492-stack/apmcm-2026-problem-c/blob/aaaff78e98df91bc998fa1359171050e7b1967a8/docs/data-audit.md\#playback-design-and-order-recoverability}{versioned playback audit} documents the available design fields. The repository provides code and results. The specification records resampling counts and seeds for each analysis.
 
 \begin{thebibliography}{9}
 \bibitem{problem} APMCM Organizing Committee. 2026 APMCM Problem C, \emph{Acoustic Communication and Playback Responses of African Penguins at Sea}. Contest statement and attachments, 2026.
 \bibitem{archive} \emph{African penguin acoustic and playback study, associated data and supplementary material}. Zenodo record 21376649, \url{https://zenodo.org/records/21376649}, accessed November 26, 2026.
 \bibitem{fieldstudy} Thiebault, A., et al. Contact and recruit: the importance of acoustic communication in the foraging strategy of a flightless seabird. \emph{Open Research Europe}, 2026. \url{https://doi.org/10.12688/openreseurope.24618.1}.
+\bibitem{earliersurface} McInnes, A. M., et al. Social context and prey composition are associated with calling behaviour in a diving seabird. \emph{Ibis}, 162, 1047--1059, 2020. \url{https://doi.org/10.1111/ibi.12806}. Data at \url{https://doi.org/10.6084/m9.figshare.7212173.v2}.
+\bibitem{boatnoise} Thiebault, A., et al. African penguins' behaviour is affected by motor boat airborne noise: an experimental study on wild penguins. \emph{Science of the Total Environment}, 1056, 182372, 2026. \url{https://doi.org/10.1016/j.scitotenv.2026.182372}.
 \bibitem{iso9613} International Organization for Standardization. ISO 9613-1:1993, \emph{Acoustics: Attenuation of sound during propagation outdoors. Part 1: Calculation of the absorption of sound by the atmosphere}.
 \bibitem{era5} Copernicus Climate Change Service. ERA5 hourly data on single levels, accessed through Open-Meteo on November 26, 2026. \url{https://doi.org/10.24381/cds.adbb2d47}.
 \bibitem{waverys} Copernicus Marine Service. Global Ocean Waves Reanalysis (WAVERYS), product GLOBAL\_MULTIYEAR\_WAV\_001\_032.
@@ -154,6 +159,7 @@ Poppler 24.04.0 was used to inspect the PDF.
 \lstinputlisting[caption={Group size and response predictions}]{../group_size.py}
 \lstinputlisting[caption={Vocal counts and contact scenarios}]{../vocal_counts.py}
 \lstinputlisting[caption={Paired playback observation windows}]{../observation_window.py}
+\lstinputlisting[caption={Head-raising duration, 30 s response and external noise}]{../playback_endpoints.py}
 \lstinputlisting[caption={First replies and event order}]{../first_reply.py}
 \lstinputlisting[caption={Response frequency and responder composition}]{../behavior_gap.py}
 \lstinputlisting[caption={Observed first-playback response bounds}]{../q3_first_playback.py}
