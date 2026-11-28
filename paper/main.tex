@@ -13,7 +13,7 @@
 \setlength{\parindent}{0pt}
 \newcommand{\callname}[1]{\textsc{#1}}
 \newcommand{\evidence}[2]{\href{https://github.com/feiniao87968492-stack/apmcm-2026-problem-c/blob/41f7153643d6098940507a8682c2bcbb4d64f97f/#1}{#2}}
-\newcommand{\coreevidence}[2]{\href{https://github.com/feiniao87968492-stack/apmcm-2026-problem-c/blob/7fa4c87/#1}{#2}}
+\newcommand{\coreevidence}[2]{\href{https://github.com/feiniao87968492-stack/apmcm-2026-problem-c/blob/0b74512/#1}{#2}}
 \newcommand{\monitoringevidence}[2]{\href{https://github.com/feiniao87968492-stack/apmcm-2026-problem-c/blob/c941a0713ac8305839d7d8a2c258a987df5d9523/#1}{#2}}
 \input{results.tex}
 \begin{document}
@@ -39,7 +39,7 @@ African penguins use several call types at sea. A useful comparison needs to acc
 We treat the playback group as the observational unit for behavior. A positive group outcome means at least one of the scored behaviors was observed. The integrated radius is an operational measure defined on the distance range supported by both data sources. Its interpretation depends on the chosen reference level and experimental context.
 
 \section{Acoustic characteristics and classification}
-The recording date and location define groups for held-out validation. The main feature set contains duration, first fundamental frequency, peak frequency, and three spectral quartiles. The second fundamental contributes to the descriptive analysis of two-voice calls. Because its availability is associated with the call type in the supplied recordings, we analyze that field separately from the main classifier.
+The recording date and location define groups for held-out validation. The baseline feature set contains duration, first fundamental frequency, peak frequency, and three spectral quartiles. The adopted model uses six physical coordinates derived from those measurements. The second fundamental contributes to the descriptive analysis of two-voice calls. Because its availability is associated with the call type in the supplied recordings, we analyze that field separately from the main classifier.
 
 We use rank tests with Holm correction to describe acoustic differences. Nested date-location folds choose settings from training recordings. We score pooled held-out macro F1, class recall, log loss and Brier, with a paired recording-group bootstrap for F1. A replacement must improve F1 at the paired lower limit, preserve two-voice recall and improve both proper scores over training prevalence.
 
@@ -51,7 +51,11 @@ Let $\bar r_{cm}(d)$ be the available-case mean correlation with the one-metre r
 \operatorname{Corr}(X,Y)=
 \left[1+\frac{\operatorname{Var}(\epsilon)}{a(d)^2\operatorname{Var}(X)}\right]^{-1/2}.
 \]
-We fit a call-specific ceiling $A_c$, scale $D_c$ and effective spreading exponent $g_c$. A physical sensitivity multiplies the fitted geometric variance ratio $(d/D_c)^{g_c}$ by $10^{\alpha_c(d-1)/10}$, using atmospheric absorption $\alpha_c$ in dB/m from ISO 9613-1. Weather inputs are fixed at 20\,$^\circ$C, 70\% relative humidity and 101.325 kPa. We compare type-specific medians of peak frequency and spectral Q50. These correlations omit calibrated received levels and a linkage between waveforms and propagation examples, so the absorption coefficient is supplied by assumption. Model selection uses both interior holdouts and forward fits using strictly shorter distances. We compare equal-weight cell RMSEs and 300 paired wide-row resamples.
+We fit a call-specific ceiling, reference scale and effective spreading exponent. The adopted fidelity curve is
+\[
+ F_c(d)=A_c\bigl[1+(d/D_c)^{g_c}10^{\alpha_c(d-1)/10}\bigr]^{-1/2}.
+\]
+The spreading component uses the fitted effective exponent $g_c$. The atmospheric component uses $\alpha_c$ in dB/m from ISO 9613-1 \cite{iso9613}. Partial pooling shrinks the three log exponents toward their mean. Weather inputs are fixed at 20\,$^\circ$C, 70\% relative humidity and 101.325 kPa. We compare type-specific medians of peak frequency and spectral Q50. These correlations omit calibrated received levels and a linkage between waveforms and propagation examples, so the absorption coefficient is supplied by assumption. Model selection uses both interior holdouts and forward fits using strictly shorter distances. We compare equal-weight cell RMSEs and 300 paired wide-row resamples.
 
 \PropagationResults
 
@@ -61,7 +65,7 @@ In the \href{https://doi.org/10.12688/openreseurope.24618.1}{original field prot
 
 An eight-state mask records the combination of the three scored behaviors. The full multinomial uses stimulus, call type and their interaction, context, log distance and log group size. The strict comparison holds out each of 12 dates and purges any additional pair sharing a held natural track. Alternatives include stimulus frequencies, a structured pairwise model, a shrinkage hurdle, a rank-one tilt and a training-only nested pool. We compare mask log loss and any-response Brier with paired date intervals.
 
-We analyze observable event time over the field protocol's 60 s window, for the first flagged event and each individual behavior. Cumulative time bins include zero, 5, 15, 30 and 60 s, with a separate administrative censoring cell. We compare stimulus frequencies, a regularized discrete hazard and a finite-window occurrence and conditional timing model on the same folds. We score censored log loss and integrated Brier, with conditional MAE as a secondary comparison. Distance-specific predictions use eight birds, average over observed contexts and display local trial support. The time estimand ends at 60 s.
+We analyze observable event time over the field protocol's 60 s window, for the first flagged event and each individual behavior. Cumulative time bins include zero, 5, 15, 30 and 60 s, with a separate administrative censoring cell. We compare stimulus frequencies, a regularized discrete hazard, a finite-window occurrence model and a Weibull accelerated failure-time model on the same folds. We score censored log loss and integrated Brier, with conditional MAE as a secondary comparison. Distance-specific predictions use eight birds, average over observed contexts and display local trial support. The time estimand ends at 60 s.
 
 \BehaviorResults
 
@@ -86,6 +90,7 @@ Sparse responses limit precision for behavior combinations and onset times. The 
 \bibitem{problem} APMCM Organizing Committee. 2026 APMCM Problem C, \emph{Acoustic Communication and Playback Responses of African Penguins at Sea}. Contest statement and attachments, 2026.
 \bibitem{archive} \emph{African penguin acoustic and playback study, associated data and supplementary material}. Zenodo record 21376649, \url{https://zenodo.org/records/21376649}, accessed November 26, 2026.
 \bibitem{fieldstudy} Thiebault, A., et al. Contact and recruit: the importance of acoustic communication in the foraging strategy of a flightless seabird. \emph{Open Research Europe}, 2026. \url{https://doi.org/10.12688/openreseurope.24618.1}.
+\bibitem{iso9613} International Organization for Standardization. ISO 9613-1:1993, \emph{Acoustics: Attenuation of sound during propagation outdoors. Part 1: Calculation of the absorption of sound by the atmosphere}.
 \bibitem{era5} Copernicus Climate Change Service. ERA5 hourly data on single levels, accessed through Open-Meteo on November 26, 2026. \url{https://doi.org/10.24381/cds.adbb2d47}.
 \bibitem{waverys} Copernicus Marine Service. Global Ocean Waves Reanalysis (WAVERYS), product GLOBAL\_MULTIYEAR\_WAV\_001\_032.
 \end{thebibliography}
@@ -97,12 +102,12 @@ Sparse responses limit precision for behavior combinations and onset times. The 
 \section{Archived behavior combinations}
 \begin{center}
 \includegraphics[width=.96\linewidth]{q3_behavior_masks.png}\\
-{\small Figure 5. Predicted behavior combinations for natural and control stimuli at 100 m and eight birds, averaged over empirical context frequencies.}
+{\small Figure B1. Archived multinomial behavior combinations for natural and control stimuli at 100 m and eight birds, averaged over empirical context frequencies.}
 \end{center}
 
 \section{Call-specific disturbance scenarios}
 \begin{center}\begin{minipage}{.94\linewidth}\centering\includegraphics[width=\linewidth]{q4_scenarios.png}\\
-{\small Figure 6. Call-specific clean references and alternative disturbance scenarios. Dotted lines mark the fixed clean cutoffs. Shading shows the clean conditional intervals.}
+{\small Figure C1. Archived call-specific clean references and alternative disturbance scenarios. Dotted lines mark the fixed clean cutoffs. Shading shows the clean conditional intervals.}
 \end{minipage}\end{center}
 
 \section{Analysis source}
@@ -191,6 +196,7 @@ Poppler 24.04.0 was used to inspect the PDF.
 \lstinputlisting[caption={Q4 independent full-fit precision follow-up}]{../q4_context_followup.py}
 \lstinputlisting[caption={Q4 bounded-context behavioral noise sensitivity}]{../q4_context_lambda.py}
 \lstinputlisting[caption={Matched-power noise simulation for the three example calls}]{../appendix5_noise.py}
+\lstinputlisting[caption={Noise, participation and field-design figures}]{../core_paper_figures.py}
 \subsection{Classification and monitoring sensitivity}
 \lstinputlisting[caption={Class-prior decision rules}]{../q1_class_prior.py}
 \lstinputlisting[caption={Recording-location sensitivity}]{../q1_location.py}
