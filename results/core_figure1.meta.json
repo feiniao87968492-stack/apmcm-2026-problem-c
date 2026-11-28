@@ -2,5 +2,7 @@
   "data": "core_figure1.csv",
   "model": "physical_balanced",
   "distribution": "Observed medians and quartiles on a common scale within each feature",
-  "confusion": "Counts of held-out recordings by recorded and predicted class"
+  "confusion": "Counts of held-out recordings by recorded and predicted class",
+  "importance": "Pooled held-out macro F1 decrease, mean and SD of 40 within-fold shuffles",
+  "importance_seed": 20261211
 }

@@ -15,3 +15,7 @@ At 100 m the selected natural group risks are 0.577 clean and 0.481 under loss f
 Archived comparisons provide the [waveform noise evidence](appendix5-noise.md), [Fisher allocation](q4-fisher.md), [paired sandwich sensitivity](q4-paired-planning.md) and [manual-review illustration](q4-review-budget.md). At 50 recordings reviewed, uniform random review has fixed-sample marginal central 95% ranges of 1?5 residual false passes and 6?14 missed passes. These are hypergeometric quantiles for the remaining 55 of 105 recordings, starting with six and 19 errors, respectively.
 
 Run the current production comparisons and figures with `python main.py --data "<attachment directory>/date" --output generated`. Use `--archived` for the previous full pipeline and `--help` to list the historical named analyses. The paired uncertainty analyses in the archive remain available as conditional sensitivity evidence.
+
+## Conservation figures
+
+Figure 5 compares matched-power band-limited and broadband noise across six input SNRs. Its intervals describe the paired noise realizations within each of three archived example recordings. Figure 6 presents the archived 120-pair constrained allocation, the production eight-bird count sensitivity and the archived full-prefix two-voice loss boundaries at 100 and 150 m. The 150 m deletion fit uses extrapolated playback risks. [Figure 5 data](../results/core_figure5.csv) ? [Figure 6 data](../results/core_figure6.csv)

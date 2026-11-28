@@ -1,0 +1,11 @@
+{
+  "data": "core_figure6.csv",
+  "sources": [
+    "q4_paired_planning_allocations.csv",
+    "core_q4_responders.csv",
+    "q4_target_loss_boundaries.csv"
+  ],
+  "loss_rule": "Archive two-voice all-four-curve prefix and inclusive 80% across 4,800 draws",
+  "loss_boundary": "(1-acoustic_loss)*(1-response_loss) >= requirement, both losses at most 20%",
+  "participation": "One row per scenario at 100 m because the adopted group response pools calls"
+}

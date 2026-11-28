@@ -4,7 +4,7 @@ Reproducible analysis of acoustic communication and playback responses in Africa
 
 ## Reproduce
 
-Use Python 3.10 in a virtual environment and the contest attachment folder containing Data01 through Data11. The default run reproduces the core model comparisons, the selected Q2-to-Q4 route and Figures 2?4 with the frozen seeds. The same route is available with `--core`. Use `--archived` for the previous full pipeline and its original outputs, or `--help` for named analyses.
+Use Python 3.10 in a virtual environment and the contest attachment folder containing Data01 through Data11. The default run reproduces the core model comparisons, the selected Q2-to-Q4 route and Figures 1?6 with the frozen seeds. The three optional Supplementary 5 WAV files enable the measured-waveform summaries. Figure 5 reads the archived noise contrasts, which the WAV files reproduce through `--appendix5-noise`. The same route is available with `--core`. Use `--archived` for the previous full pipeline and its original outputs, or `--help` for named analyses.
 
 ```sh
 python -m pip install -r requirements.txt

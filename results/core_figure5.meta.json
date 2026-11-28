@@ -1,0 +1,7 @@
+{
+  "data": "core_figure5.csv",
+  "source": "appendix5_noise_contrasts.csv",
+  "contrast": "Band minus broadband, same noise RMS at the same clip and input SNR",
+  "uncertainty": "Central 95% of 200 paired simulated noise realizations per clip and SNR",
+  "sample": "One archival WAV per call type"
+}
