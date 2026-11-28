@@ -15,6 +15,7 @@
 \newcommand{\evidence}[2]{\href{https://github.com/feiniao87968492-stack/apmcm-2026-problem-c/blob/41f7153643d6098940507a8682c2bcbb4d64f97f/#1}{#2}}
 \newcommand{\coreevidence}[2]{\href{https://github.com/feiniao87968492-stack/apmcm-2026-problem-c/blob/0b74512/#1}{#2}}
 \newcommand{\followupevidence}[2]{\href{https://github.com/feiniao87968492-stack/apmcm-2026-problem-c/blob/d21e3e5/#1}{#2}}
+\newcommand{\mechanismevidence}[2]{\href{https://github.com/feiniao87968492-stack/apmcm-2026-problem-c/blob/83fcd5f9d38e8e3096b852ed4fc39931168dff17/#1}{#2}}
 \newcommand{\monitoringevidence}[2]{\href{https://github.com/feiniao87968492-stack/apmcm-2026-problem-c/blob/c941a0713ac8305839d7d8a2c258a987df5d9523/#1}{#2}}
 \input{results.tex}
 \begin{document}
@@ -54,9 +55,11 @@ Let $\bar r_{cm}(d)$ be the available-case mean correlation with the one-metre r
 \]
 We fit a call-specific ceiling, reference scale and effective spreading exponent. The adopted fidelity curve is
 \[
- F_c(d)=A_c\bigl[1+(d/D_c)^{g_c}10^{\alpha_c(d-1)/10}\bigr]^{-1/2}.
+ F_c(d;w)=A_c\bigl[1+(d/D_c)^{g_c}10^{\alpha_c(w)(d-1)/10}\bigr]^{-1/2}.
 \]
-The spreading component uses the fitted effective exponent $g_c$. The atmospheric component uses $\alpha_c$ in dB/m from ISO 9613-1 \cite{iso9613}. Partial pooling shrinks the three log exponents toward their mean. Weather inputs are fixed at 20\,$^\circ$C, 70\% relative humidity and 101.325 kPa. We compare type-specific medians of peak frequency and spectral Q50. These correlations omit calibrated received levels and a linkage between waveforms and propagation examples, so the absorption coefficient is supplied by assumption. Model selection uses both interior holdouts and forward fits using strictly shorter distances. We compare equal-weight cell RMSEs and 300 paired wide-row resamples.
+The fitted effective spreading exponents $g_c$ are partially pooled. Atmospheric absorption $\alpha_c(w)$ follows ISO 9613-1 \cite{iso9613} at weather vector $w$ and the call-type median frequency. We compare $Q_{50}$ and peak frequency using interior holdouts and forward fits at a fixed weather reference of 20\,$^\circ$C, 70\% relative humidity and 101.325 kPa. The measurements supply correlations and omit calibrated received levels and measured weather at the microphones.
+
+For the range distributions, we draw the temperature, humidity and pressure together from 3,660 June--July daytime ERA5 hours in False Bay across 2013--2022 \cite{era5}. Each of 300 wide-row refits draws a possible calibration weather vector from 142 calm daytime hours in December 2021 near Brandvlei Dam. We pair a False Bay hour with a refit in 10,000 scenarios. The fit transfers its ceiling, reference scale and spreading exponent to False Bay, with the same weather draw for all three calls. Only molecular absorption depends on the weather vector. \mechanismevidence{sources/weather/README.md}{Weather coverage and provenance}.
 
 \PropagationResults
 
@@ -78,16 +81,14 @@ Let $p_c(d)$ be the natural-stimulus any-response probability at median group si
 \[
 E_c(d)=F_c(d)p_c(d).
 \]
-The production Q4 path uses the selected propagation curve. To attribute changes, we cross the selected and archived acoustic and behavioral components at the same distances and apply a common gross threshold. It is half the equal-call clean mean from the archived isotonic and multinomial fits at 20 m. The product radius is the sustained downward crossing of that threshold. Under hypothetical 20\% coupled loss, fidelity decreases by 20\% and the natural probability decreases by 20\% of positive natural-minus-control response excess.
-
-A second rule requires both fidelity and the cumulative natural probability by 30 s to attain 0.50 at each prefix node from 20 m. We also evaluate 15 s. These thresholds describe a planning scenario. The common evaluation grid ends at 150 m, and sparse local playback support limits interpretation near that boundary.
+We evaluate the index across the stochastic propagation scenarios and use the previously fixed product cutoff of 0.287598. It is half the three-call mean clean index at 20 m in the reference fit. The gross radius uses the sustained downward crossing of that cutoff. A second rule requires both fidelity and the cumulative natural probability by 30 s to reach 0.50 at every half-metre step from 20 m. We set group size to eight, average over the recorded contexts and end the planning grid at 150 m.
 
 \IntegratedResults
 
-Pilot quiet windows during mapped foraging activity or reroute vessels around those areas when navigation permits. Compare usual operations with the pilot under comparable sea states and group contexts. Measure calibrated noise levels and spectra at receiver positions, and compare recorded responses to paired natural and control playbacks with counterbalanced presentation order. Sample across the 80--130 m span where the two-voice scenario endpoints differ and near 150 m to check the far-distance extrapolation. Use the modeled distances as conditional planning inputs, with any operating buffer subject to local noise and behavioral calibration. Record acquisition identifiers, contexts and playback order. The earlier monitoring, noise, carryover and trial-design comparisons remain available in the supporting analyses. \coreevidence{README.md}{Supporting analyses and reproduction}.
+Pilot quiet windows during mapped foraging activity or reroute vessels around those areas when navigation permits. Compare usual operations with the pilot under comparable sea states and group contexts. Measure calibrated noise levels and spectra at receiver positions, and compare recorded responses to paired natural and control playbacks with counterbalanced presentation order. For the +3 dB two-voice scenario, place validation playbacks around the modeled 93 m and 146 m crossings to test whether behavioral loss accompanies reduced acoustic fidelity. Use the modeled distances as conditional planning inputs, with any operating buffer subject to local noise and behavioral calibration. Record acquisition identifiers, contexts and playback order. The earlier monitoring, noise, carryover and trial-design comparisons remain available in the supporting analyses. \coreevidence{README.md}{Supporting analyses and reproduction}.
 
 \section{Limitations and reproducibility}
-Sparse responses limit precision for behavior combinations and onset times. The integrated index combines separate propagation and playback experiments. Its noise scenarios depend on the stated assumptions. The public recordings include one waveform example per call type. An earlier sea-surface archive provides call codes and behavioral context \cite{earliersurface}. An independent acoustic validation needs waveform or spectral records linked to all three labels and acquisition groups. Data02 provides no verified stimulus order, so presentation-order and carryover effects are unestimated. The \href{https://github.com/feiniao87968492-stack/apmcm-2026-problem-c/blob/aaaff78e98df91bc998fa1359171050e7b1967a8/docs/data-audit.md\#playback-design-and-order-recoverability}{versioned playback audit} documents the available design fields. The repository provides code and results. The specification records resampling counts and seeds for each analysis.
+Sparse responses limit precision for behavior combinations and onset times. The integrated index combines separate propagation and playback experiments. Weather quantiles depend on the transfer of a dam fit to False Bay. The noise scenarios use a hypothesized link from receiver variance to vocal transition information and then to response probability. The public recordings include one waveform example per call type. An earlier sea-surface archive provides call codes and behavioral context \cite{earliersurface}. An independent acoustic validation needs waveform or spectral records linked to all three labels and acquisition groups. Data02 provides no verified stimulus order, so presentation-order and carryover effects are unestimated. The \href{https://github.com/feiniao87968492-stack/apmcm-2026-problem-c/blob/aaaff78e98df91bc998fa1359171050e7b1967a8/docs/data-audit.md\#playback-design-and-order-recoverability}{versioned playback audit} documents the available design fields. The repository provides code and results. The specification records resampling counts and seeds for each analysis.
 
 \begin{thebibliography}{9}
 \bibitem{problem} APMCM Organizing Committee. 2026 APMCM Problem C, \emph{Acoustic Communication and Playback Responses of African Penguins at Sea}. Contest statement and attachments, 2026.
@@ -96,7 +97,7 @@ Sparse responses limit precision for behavior combinations and onset times. The 
 \bibitem{earliersurface} McInnes, A. M., et al. Social context and prey composition are associated with calling behaviour in a diving seabird. \emph{Ibis}, 162, 1047--1059, 2020. \url{https://doi.org/10.1111/ibi.12806}. Data at \url{https://doi.org/10.6084/m9.figshare.7212173.v2}.
 \bibitem{boatnoise} Thiebault, A., et al. African penguins' behaviour is affected by motor boat airborne noise: an experimental study on wild penguins. \emph{Science of the Total Environment}, 1056, 182372, 2026. \url{https://doi.org/10.1016/j.scitotenv.2026.182372}.
 \bibitem{iso9613} International Organization for Standardization. ISO 9613-1:1993, \emph{Acoustics: Attenuation of sound during propagation outdoors. Part 1: Calculation of the absorption of sound by the atmosphere}.
-\bibitem{era5} Copernicus Climate Change Service. ERA5 hourly data on single levels, accessed through Open-Meteo on November 26, 2026. \url{https://doi.org/10.24381/cds.adbb2d47}.
+\bibitem{era5} Copernicus Climate Change Service. ERA5 hourly data on single levels, accessed through Open-Meteo on November 26--28, 2026. \url{https://doi.org/10.24381/cds.adbb2d47}.
 \bibitem{waverys} Copernicus Marine Service. Global Ocean Waves Reanalysis (WAVERYS), product GLOBAL\_MULTIYEAR\_WAV\_001\_032.
 \end{thebibliography}
 \clearpage
@@ -130,6 +131,9 @@ Poppler 24.04.0 was used to inspect the PDF.
 \lstinputlisting[caption={Core propagation validation}]{../core_q2.py}
 \lstinputlisting[caption={Core playback masks and timing}]{../core_q3.py}
 \lstinputlisting[caption={Core model integration and figures}]{../core_integration.py}
+\lstinputlisting[caption={Stochastic atmospheric propagation}]{../mechanistic_propagation.py}
+\lstinputlisting[caption={Call-type interactions and group event times}]{../mechanistic_behavior.py}
+\lstinputlisting[caption={Vocal transition information and communication ranges}]{../mechanistic_q4.py}
 \lstinputlisting[caption={Reproduction entry point}]{../main.py}
 \lstinputlisting[caption={Acoustic classification}]{../q1.py}
 \lstinputlisting[caption={Acoustic propagation}]{../q2.py}
