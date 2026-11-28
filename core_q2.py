@@ -70,10 +70,10 @@ def absorption_from_recordings(data):
 
 
 def absorption_curve(distance, parameters, alpha):
-    ceiling, scale, exponent = parameters.T
-    relative_noise = ((distance / scale[:, None]) ** exponent[:, None]
-                      * 10 ** (alpha[:, None] * (distance - 1) / 10))
-    return ceiling[:, None] / np.sqrt(1 + relative_noise)
+    ceiling, scale, exponent = np.moveaxis(parameters, -1, 0)
+    relative_noise = ((distance / scale[..., None]) ** exponent[..., None]
+                      * 10 ** (alpha[..., None] * (distance - 1) / 10))
+    return ceiling[..., None] / np.sqrt(1 + relative_noise)
 
 
 def fit_absorption(distance, observed, shared, alpha, penalty):

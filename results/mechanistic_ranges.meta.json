@@ -1,0 +1,9 @@
+{
+  "data": "mechanistic_ranges.csv",
+  "panels": {
+    "A": "0.50 acoustic fidelity crossing",
+    "B": "0.50 fidelity and 0.50 natural response by 30 s"
+  },
+  "intervals": "5th and 95th percentiles of 10,000 paired climate and fit scenarios",
+  "distance_unit": "m"
+}

@@ -108,11 +108,18 @@ def main():
                           help="Compare paired playback responses across observation windows")
     analyses.add_argument("--playback-endpoints", action="store_true",
                           help="Compare head-raising and timely response and validate noise evidence")
+    analyses.add_argument("--mechanistic", action="store_true",
+                          help="Evaluate atmospheric, vocal information and group response mechanisms")
     analyses.add_argument("--core", action="store_true",
                           help="Reproduce the core Q1?Q4 model comparison and figures")
     analyses.add_argument("--archived", action="store_true",
                           help="Reproduce the archived full baseline and sensitivity pipeline")
     args = parser.parse_args()
+    if args.mechanistic:
+        from mechanistic_q4 import run
+
+        run(args.data, args.output)
+        return
     if args.playback_endpoints:
         from playback_endpoints import run
 
@@ -265,6 +272,7 @@ def main():
         import core_q3
         import core_integration
         import core_paper_figures
+        import mechanistic_q4
         import playback_endpoints
 
         core_q2.run(args.data, args.output)
@@ -273,6 +281,7 @@ def main():
         core_integration.run(args.output)
         core_paper_figures.run(Path(__file__).resolve().parent / "results", args.output)
         playback_endpoints.run(args.data, args.output, args.output)
+        mechanistic_q4.run(args.data, args.output)
         return
     if args.bootstrap < 2:
         parser.error("--bootstrap must be at least 2")

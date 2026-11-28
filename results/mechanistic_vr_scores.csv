@@ -1,0 +1,3 @@
+scheme,model,metric,estimate,trials,dates,reference,difference,ci_low,ci_high
+ordinary,call_aware_vr,log_loss_bits,1.9081670430917936,60,11,pooled_vr,-0.008151721422114733,-0.07092453300803168,0.06509176796688525
+ordinary,pooled_vr,log_loss_bits,1.9163187645139084,60,11,,,,

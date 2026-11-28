@@ -78,16 +78,34 @@ def hurdle(frame, evaluation, contexts, design=compact_design):
     return np.column_stack((1-p, p[:, None] * composition))
 
 
-def rank_one(frame, evaluation, contexts, distance_penalty=1.):
+def rank_one(frame, evaluation, contexts, distance_penalty=1., *,
+             call_penalty=None, interaction_penalty=None):
     y = frame["mask"].to_numpy()
     burden = q3.BITS.sum(axis=1)
     train = compact_design(frame, contexts)
     scaler = StandardScaler().fit(train)
-    x = np.column_stack((np.ones(len(train)), scaler.transform(train)))
+
+    def design(rows):
+        base = np.column_stack((np.ones(len(rows)), scaler.transform(compact_design(rows, contexts))))
+        if call_penalty is None:
+            return base
+        indicators = np.column_stack([rows.assigned_call.eq(call) for call in q3.CALLS])
+        helmert = np.array([[1, 1], [-1, 1], [0, -2]]) / np.sqrt([2, 6])
+        contrasts = (indicators @ helmert) * rows.Type.eq("call").to_numpy()[:, None]
+        if interaction_penalty is None:
+            return np.column_stack((base, contrasts))
+        distance = (np.log1p(rows.Distance.to_numpy()) - np.log(51)) / scaler.scale_[1]
+        return np.column_stack((base, contrasts, contrasts * distance[:, None]))
+
+    x = design(frame)
     offset = np.log(stimulus_counts(frame, y, 8, frame))
     observed = (np.arange(len(y)), y)
-    penalty = np.ones(x.shape[1])
+    penalty = np.ones(1 + train.shape[1])
     penalty[2] = distance_penalty
+    if call_penalty is not None:
+        penalty = np.r_[penalty, np.repeat(call_penalty, 2)]
+    if interaction_penalty is not None:
+        penalty = np.r_[penalty, np.repeat(interaction_penalty, 2)]
 
     def objective(beta):
         logits = offset + (x @ beta)[:, None] * burden
@@ -100,10 +118,8 @@ def rank_one(frame, evaluation, contexts, distance_penalty=1.):
                       options={"maxiter": 1000, "gtol": 1e-7, "ftol": 1e-12})
     if not fitted.success:
         raise RuntimeError(f"Rank-one mask fit failed: {fitted.message}")
-    z = np.column_stack((np.ones(len(evaluation)),
-                         scaler.transform(compact_design(evaluation, contexts))))
     return softmax(np.log(stimulus_counts(frame, y, 8, evaluation))
-                   + (z @ fitted.x)[:, None] * burden, axis=1)
+                   + (design(evaluation) @ fitted.x)[:, None] * burden, axis=1)
 
 
 def nested_weight(frame, contexts):
