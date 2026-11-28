@@ -95,11 +95,12 @@ def plot_field_design(archive, output):
             allocation.bar(x, count, bottom=bottom, width=.71, color=color,
                            label=name if plan == "uniform" else None)
             bottom += count
-        allocation.text(x.mean(), 76, label, ha="center", va="bottom")
+        allocation.text(x.mean(), 72, label, ha="center", va="bottom")
     allocation.set(title="A  Location of 120 new pairs", ylabel="Playback pairs",
-                   ylim=(0, 94), xticks=np.r_[groups[0][0], groups[1][0]],
+                   ylim=(0, 85), xticks=np.r_[groups[0][0], groups[1][0]],
                    xticklabels=distances * 2, xlabel="Matched playback distance (m)")
-    allocation.legend(loc="upper left", ncol=3, frameon=False)
+    handles, labels = allocation.get_legend_handles_labels()
+    figure.legend(handles, labels, loc="outside upper center", ncol=3, frameon=False)
 
     counts = panels["responders"]
     for y, row in enumerate(responders.itertuples()):
@@ -123,8 +124,11 @@ def plot_field_design(archive, output):
             label += "*"
         boundary.plot(part.acoustic_loss_pct, part.response_loss_limit_pct,
                       color=color, linestyle=style, linewidth=1.5, label=label)
+        if part.target_outside_retained_range.iloc[0]:
+            boundary.scatter(part.acoustic_loss_pct.iloc[0], part.response_loss_limit_pct.iloc[0],
+                             color=color, s=11, zorder=3)
     boundary.set(title="C  Two-voice loss limits", xlabel="Acoustic fidelity loss (%)",
-                 ylabel="Allowed response loss (%)", xlim=(0, 20.5), ylim=(0, 21.4),
+                 ylabel="Allowed response loss (%)", xlim=(-.5, 20.5), ylim=(-.5, 21.4),
                  xticks=(0, 5, 10, 15, 20), yticks=(0, 5, 10, 15, 20))
     boundary.legend(loc="upper center", bbox_to_anchor=(.5, -.24), ncol=2, frameon=False, fontsize=8)
 

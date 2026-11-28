@@ -219,8 +219,10 @@ def plot_decisions(frame, actual, hard, classes, selected, importance, output):
              importance_seed=20261211),
         indent=2) + "\n", encoding="utf-8", newline="\n")
     ax.imshow(counts, cmap="Blues", vmin=0, aspect="auto")
-    ax.set(title="B  Grouped holdout", xticks=range(3), yticks=range(3), xticklabels=names, yticklabels=names,
+    ax.set(title="B  Grouped holdout", xticks=range(3), yticks=range(3), yticklabels=names,
            xlabel="Predicted call", ylabel="Recorded call")
+    ax.set_xticklabels(("Flat", "Mod.", "Two-v."), fontsize=9)
+    ax.tick_params(axis="y", labelsize=9)
     for i, j in np.ndindex(counts.shape):
         ax.text(j, i, str(counts[i, j]), ha="center", va="center",
                 color="white" if counts[i, j] > .58*counts.max() else "#172332")
@@ -233,5 +235,6 @@ def plot_decisions(frame, actual, hard, classes, selected, importance, output):
     for panel in (dist, rank):
         panel.spines[["top", "right"]].set_visible(False)
         panel.tick_params(axis="y", labelsize=8)
-    fig.savefig(output / "core_figure1.png", dpi=300)
+    with plt.rc_context({"pdf.fonttype": 42, "ps.fonttype": 42}):
+        fig.savefig(output / "core_figure1.png", dpi=300)
     plt.close(fig)
