@@ -1,4 +1,4 @@
-﻿"""Plot archived noise experiments and field-design evidence for the core paper."""
+"""Plot archived noise experiments and field-design evidence for the core paper."""
 import json
 
 import matplotlib
@@ -31,14 +31,14 @@ def plot_noise(archive, output):
     rows = pd.read_csv(archive / "appendix5_noise_contrasts.csv").query("metric == 'composite'")
     figure, panels = plt.subplots(1, 3, figsize=(7.2, 2.9), sharex=True, sharey=True,
                                   layout="constrained")
-    bands = (("100_500", TEAL, "-", "100–500 Hz"),
-             ("500_3000", ORANGE, "--", ">500–3,000 Hz"))
+    bands = (("100_500", TEAL, "-", "100-500 Hz"),
+             ("500_3000", ORANGE, "--", ">500-3,000 Hz"))
     clip_names = ("flat", "modulated", "two-voice")
     for ax, clip, name, letter in zip(panels, clip_names, CALL_LABELS, "ABC"):
         ax.axhline(0, color="#9a9fa5", lw=.8)
         ax.axvline(0, color="#d4d8dc", lw=.7, zorder=0)
         for band, color, linestyle, label in bands:
-            part = rows.loc[rows.clip.eq(clip) & rows.band.eq(band)].sort_values("snr_db")
+            part = rows.loc[rows["clip"].eq(clip) & rows.band.eq(band)].sort_values("snr_db")
             ax.fill_between(part.snr_db, part.low95, part.high95, color=color, alpha=.14, linewidth=0)
             ax.plot(part.snr_db, part["mean"], color=color, linestyle=linestyle, marker="o",
                     markersize=3.0, linewidth=1.4, label=label)
