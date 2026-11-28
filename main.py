@@ -106,11 +106,18 @@ def main():
                           help="Invert bounded-context Q4 behavioral noise loss")
     analyses.add_argument("--observation-window", action="store_true",
                           help="Compare paired playback responses across observation windows")
+    analyses.add_argument("--playback-endpoints", action="store_true",
+                          help="Compare head-raising and timely response and validate noise evidence")
     analyses.add_argument("--core", action="store_true",
                           help="Reproduce the core Q1?Q4 model comparison and figures")
     analyses.add_argument("--archived", action="store_true",
                           help="Reproduce the archived full baseline and sensitivity pipeline")
     args = parser.parse_args()
+    if args.playback_endpoints:
+        from playback_endpoints import run
+
+        run(args.data, args.output, Path(__file__).resolve().parent / "results")
+        return
     if args.observation_window:
         from observation_window import run
 
@@ -258,12 +265,14 @@ def main():
         import core_q3
         import core_integration
         import core_paper_figures
+        import playback_endpoints
 
         core_q2.run(args.data, args.output)
         core_q3.run(args.data, args.output)
         core_q1.run(args.data, args.output)
         core_integration.run(args.output)
         core_paper_figures.run(Path(__file__).resolve().parent / "results", args.output)
+        playback_endpoints.run(args.data, args.output, args.output)
         return
     if args.bootstrap < 2:
         parser.error("--bootstrap must be at least 2")

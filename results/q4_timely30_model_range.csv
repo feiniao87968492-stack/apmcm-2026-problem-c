@@ -1,0 +1,7 @@
+call,loss,models,shared_prefix_m,largest_passing_m,above_support_models,no_passing_models
+flat,0.0,4,84.5,84.5,0,0
+flat,0.2,4,58.0,58.0,0,0
+mod,0.0,4,144.0,144.0,0,0
+mod,0.2,4,81.5,107.0,0,0
+tv,0.0,4,150.0,150.0,4,0
+tv,0.2,4,81.5,132.0,0,0

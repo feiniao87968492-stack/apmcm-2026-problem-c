@@ -1,0 +1,4 @@
+scheme,model,metric,estimate,trials,dates,reference,difference,ci_low,ci_high
+ordinary,call_hurdle,squared_error,129.0328104986093,278,12,stimulus_mean,-15.677341445323691,-28.95185911407317,-1.312575657857734
+ordinary,pooled_hurdle,squared_error,129.3574269410228,278,12,stimulus_mean,-15.352725002910205,-26.360543165510705,-2.626170286747494
+ordinary,stimulus_mean,squared_error,144.710151943933,278,12,,,,
